@@ -35,6 +35,9 @@
 | 39 | **Everything about paid extra classes is a Setting**: price, bundles, cancellation cut-off, refund or credit, pay-at-venue, and so on. In general: club default, overridable per age group | |
 | 40 | Plans are presented **visually** (web page), not only as Markdown; the repository also keeps a CLAUDE.md so work can resume locally | |
 | 41 | **Focus:** the product exists to make **compliance easier for UAE football academies**. Broader class-management features (as in ClassCard) come later, not now. Aim: release before Statixa | Details of what is in the first release still to agree |
+| 42 | **Foundation first.** The owner prefers one strong foundation (no two-release split) so features are added on top without rebuilding. Build in layers: foundation blocks, then features through them (FOUNDATION_PLAN.md) | Supersedes my earlier two-release suggestion. Payment timing is therefore unchanged: gateway in the first release, provider parked |
+| 43 | **Multi-sport-ready underneath, football only in the product.** Sport is data (packs); a person is a "participant" in the data and "player" on screen | Football completed first; other sports not designed |
+| 44 | Biggest pain to fix first: **registration status is invisible and one wrong upload restarts everything.** So: parents upload (not coaches), instant checks, per-document status, a rejection touches only that document, one live status for parent, coach and manager | |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |

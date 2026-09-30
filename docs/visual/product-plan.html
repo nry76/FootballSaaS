@@ -117,14 +117,34 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .dec{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:8px}
 .dec div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13.5px;display:flex;gap:8px}
 .dec b{color:var(--ok)}
+/* foundation */
+.layer{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--card)}
+.layer.top{border-color:var(--accent)}
+.layer h3{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.layer h3 .note{font-family:var(--body);font-weight:400}
+.mods{display:flex;flex-wrap:wrap;gap:6px}
+.mod{border:1px solid var(--line);background:var(--chip);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600}
+.mod.hi{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.mod.later{border-style:dashed;background:transparent;color:var(--muted)}
+.blocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:8px}
+.blk{text-align:start;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:9px 10px;display:flex;flex-direction:column;gap:3px}
+.blk b{font-family:var(--display);font-size:13.5px}.blk span{font-size:12px;color:var(--muted)}
+.blk[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 2px var(--accent-soft)}
+.sport td:first-child{font-weight:600;white-space:nowrap}
+/* tracker */
+.docrow{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:13.5px;width:100%;text-align:start}
+.docrow[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.docrow .n{display:flex;flex-direction:column;gap:2px}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.acts button:disabled{opacity:.35;cursor:not-allowed}
 footer{font-size:13px;color:var(--muted)}
 </style>
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v0.5 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v0.6 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
-    <p class="lede">Six tabs: the parent's journey, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
+    <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
   </header>
 
@@ -152,6 +172,33 @@ footer{font-size:13px;color:var(--muted)}
         </table>
         <p class="note">Coaches are not in the registration loop.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- FOUNDATION -->
+  <section class="panel" id="p-foundation" role="tabpanel">
+    <div class="card">
+      <h2>Built once, used by everything</h2>
+      <p class="note">Your goal: build on top without demolishing. So the plan has three layers. <b>Tap a foundation block</b> to see which features rely on it.</p>
+    </div>
+    <div class="layer top">
+      <h3>Sport packs <span class="note">what is different from sport to sport: only data, no new engine</span></h3>
+      <div class="mods"><span class="mod hi">Football (built and completed first)</span><span class="mod later">Another sport (not planned; the door stays open)</span></div>
+    </div>
+    <div class="layer">
+      <h3>Product features <span class="note">what people see</span></h3>
+      <div class="mods" id="mods"></div>
+    </div>
+    <div class="layer">
+      <h3>Foundation blocks <span class="note">what every feature stands on</span></h3>
+      <div class="blocks" id="blocks"></div>
+      <p class="note" id="blockNote">Tap a block.</p>
+    </div>
+    <div class="card">
+      <h2>What a sport pack changes (illustration)</h2>
+      <p class="note">Only football is planned. This shows why other sports would need data, not a rebuild.</p>
+      <div class="row" id="sportBtns"></div>
+      <div class="scroll"><table class="sport" id="sportTbl"></table></div>
     </div>
   </section>
 
@@ -194,6 +241,24 @@ footer{font-size:13px;color:var(--muted)}
         <label class="row" style="gap:6px"><input type="checkbox" id="q3"> Born in the UAE</label>
         <label class="row" style="gap:6px"><input type="checkbox" id="q4"> Lived in the UAE over 5 years</label>
         <span class="tag w">Placement rules are my guess: to confirm</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Nobody in the dark, and no restarts</h2>
+      <p class="note">The pain you described: parents do not know where they are, and one wrong upload restarts everything. Try it. Pick a document, then press a button. <b>A rejection touches only that document.</b> Everything already approved stays approved.</p>
+      <div class="cols">
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div class="pipe" id="trkPipe"></div>
+          <div class="bar"><i id="trkBar"></i></div><span class="note" id="trkTxt"></span>
+          <div id="trkDocs" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div class="acts" id="trkActs"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <h4>What the parent is told, and when</h4>
+          <ul class="tl" id="trkLog"></ul>
+          <div class="row"><span class="tag a">Parent: full tracker + messages</span><span class="tag">Coach: read-only status, can nudge</span><span class="tag">Manager: one queue</span></div>
+          <p class="note">Coaches do not upload registration documents. The parent uploads, the system checks instantly, a person confirms, and every change is recorded with who did it.</p>
+        </div>
       </div>
     </div>
     <div class="cols">
@@ -282,7 +347,7 @@ function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 /* ---------- tabs ---------- */
-var TABS=[['journey','Journey'],['schedule','Schedule'],['reg','Registration'],['leads','Leads and coaches'],['settings','Settings'],['decide','Decisions and questions']];
+var TABS=[['journey','Journey'],['foundation','Foundation'],['schedule','Schedule'],['reg','Registration'],['leads','Leads and coaches'],['settings','Settings'],['decide','Decisions and questions']];
 var tabsEl=$('tabs');
 tabsEl.innerHTML=TABS.map(function(t){return '<button class="tab" role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('');
 function show(t){
@@ -430,6 +495,82 @@ $('list').addEventListener('click',function(e){var b=e.target.closest('.chk');if
   cat=$('q1').checked?0:$('q2').checked?1:$('q3').checked?2:$('q4').checked?3:4; drawReg()})});
 drawReg();
 
+/* ---------- foundation ---------- */
+var BLOCKS=[
+ ['Clubs and access','Each club walled off; roles and permissions',['Everything']],
+ ['People and families','Parents, children, relationships (mother, father)',['Registration','Trials and leads','Schedule','Payments','Coach feed']],
+ ['Settings engine','Club default, override per group or session',['Everything']],
+ ['Consent and data stages','What may be stored, and when',['Registration','Trials and leads']],
+ ['Rules engine','Requirements by the child\'s profile, versioned',['Registration','Match-day checks (later)']],
+ ['Documents and checks','Files, automatic checks, review, expiry',['Registration','Staff files (later)']],
+ ['Status engine','Steps with history, one truth for everyone',['Registration','Trials and leads','Payments']],
+ ['Messages and log','Email, WhatsApp, in-app; everything recorded',['Registration','Trials and leads','Coach feed','Schedule']],
+ ['Tasks','Assigned to-dos with due dates',['Registration','Trials and leads']],
+ ['Scheduling engine','Weekly rules become dated sessions',['Schedule','Trials and leads','Coach feed']],
+ ['Ledger and payments','Charges, payments, receipts, gateway adapter',['Payments','Trials and leads']],
+ ['Audit and deletion','Who did what; self-serve removal',['Everything']]
+];
+var MODS=['Registration','Schedule','Trials and leads','Payments','Coach feed','Match-day checks (later)','Staff files (later)','Progress and ratings (later)','Messaging (later)','Photos (later)'];
+var pickB=-1;
+function drawFound(){
+  var used=pickB>=0?BLOCKS[pickB][2]:[];
+  $('blocks').innerHTML=BLOCKS.map(function(b,i){return '<button class="blk" data-i="'+i+'" aria-pressed="'+(i===pickB)+'"><b>'+esc(b[0])+'</b><span>'+esc(b[1])+'</span></button>'}).join('');
+  $('mods').innerHTML=MODS.map(function(m){var on=used.indexOf('Everything')>-1||used.indexOf(m)>-1;return '<span class="mod'+(on?' hi':'')+(m.indexOf('later')>-1&&!on?' later':'')+'">'+esc(m)+'</span>'}).join('');
+  $('blockNote').textContent=pickB>=0?(BLOCKS[pickB][0]+' is used by: '+(used[0]==='Everything'?'every feature':used.join(', '))+'.'):'Tap a block.';
+}
+$('blocks').addEventListener('click',function(e){var b=e.target.closest('.blk');if(b){pickB=(pickB===+b.dataset.i)?-1:+b.dataset.i;drawFound()}});
+drawFound();
+var SPORTS={
+ 'Football (planned)':[['Person is called','Player'],['Positions','Goalkeeper, defender, midfielder, forward'],['Age groups','By birth year: U10 = 2017'],['Rule set','UAE FA 2026/27: documents by category'],['Shirt numbers','Yes, reserved ranges'],['Match sheet','Yes: squad size, medical staff']],
+ 'Swimming (example)':[['Person is called','Swimmer'],['Positions','None'],['Age groups','By age band or ability level'],['Rule set','Only if a federation requires one'],['Shirt numbers','No'],['Match sheet','No: meets or galas instead']],
+ 'Basketball (example)':[['Person is called','Player'],['Positions','Guard, forward, center'],['Age groups','By birth year'],['Rule set','That federation\'s own rules'],['Shirt numbers','Yes'],['Match sheet','Yes: roster limits']]
+};
+var sp='Football (planned)';
+function drawSport(){
+  $('sportBtns').innerHTML=Object.keys(SPORTS).map(function(k){return '<button class="pill" data-k="'+esc(k)+'" aria-pressed="'+(k===sp)+'">'+esc(k)+'</button>'}).join('');
+  $('sportTbl').innerHTML='<thead><tr><th>Thing</th><th>'+esc(sp)+'</th></tr></thead><tbody>'+SPORTS[sp].map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+'</tbody>';
+}
+$('sportBtns').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){sp=b.dataset.k;drawSport()}});
+drawSport();
+
+/* ---------- status tracker demo ---------- */
+var TD=[
+ {n:'Omar\'s passport',s:'approved'},{n:'Omar\'s Emirates ID',s:'approved'},{n:'Birth certificate',s:'review'},
+ {n:'Father\'s passport',s:'missing'},{n:'Mother\'s passport',s:'missing'},{n:'Medical report',s:'missing'}
+];
+var TLABEL={missing:'Not uploaded',review:'In review',approved:'Approved',fix:'Needs a new copy'};
+var TCLS={missing:'',review:'w',approved:'a',fix:'b'};
+var tsel=2, tlog=[['Mon 09:00','Checklist created for Omar (Resident > 5 years). Email + WhatsApp sent to parent.'],['Mon 09:20','Omar\'s passport approved.'],['Mon 09:25','Omar\'s Emirates ID approved.']], treason={};
+var tnow=['Mon 10:05','Mon 10:12','Mon 10:30','Tue 08:40','Tue 09:15','Tue 11:00','Tue 14:20'], tn=0;
+function stamp(){return tnow[Math.min(tn++,tnow.length-1)]}
+function drawTrk(){
+  var ok=TD.filter(function(d){return d.s==='approved'}).length, fix=TD.some(function(d){return d.s==='fix'}), rev=TD.some(function(d){return d.s==='review'}), miss=TD.some(function(d){return d.s==='missing'});
+  var stepNo=ok===TD.length?3:fix?2:(rev&&!miss)?1:0;
+  var steps=['Collecting documents','In review','Needs fixing','Ready to send to UAE FA'];
+  var cur=ok===TD.length?3:fix?2:(rev?1:0);
+  $('trkPipe').innerHTML=steps.map(function(s,i){return '<span class="s'+(i===cur?' on':'')+'">'+s+'</span>'+(i<steps.length-1?'<span class="note">&rarr;</span>':'')}).join('');
+  $('trkBar').style.width=Math.round(100*ok/TD.length)+'%'; $('trkTxt').textContent=ok+' of '+TD.length+' approved';
+  $('trkDocs').innerHTML=TD.map(function(d,i){return '<button class="docrow" data-i="'+i+'" aria-pressed="'+(i===tsel)+'"><span class="n"><b>'+esc(d.n)+'</b>'+(d.s==='fix'?'<span class="note" style="color:var(--bad)">'+esc(treason[i]||'')+'</span>':'')+'</span><span class="tag '+TCLS[d.s]+'">'+TLABEL[d.s]+'</span></button>'}).join('');
+  var d=TD[tsel];
+  $('trkActs').innerHTML='<button class="pill" data-a="up"'+((d.s==='missing'||d.s==='fix')?'':' disabled')+'>Parent uploads</button>'
+   +'<button class="pill" data-a="blur"'+((d.s==='missing'||d.s==='fix')?'':' disabled')+'>Upload fails instant check</button>'
+   +'<button class="pill" data-a="ok"'+(d.s==='review'?'':' disabled')+'>Club approves</button>'
+   +'<button class="pill" data-a="no"'+(d.s==='review'?'':' disabled')+'>Club rejects</button>'
+   +'<button class="pill" data-a="undo">Start over</button>';
+  $('trkLog').innerHTML=tlog.slice().reverse().map(function(e){return '<li><time>'+e[0]+'</time><span>'+esc(e[1])+'</span></li>'}).join('');
+}
+$('trkDocs').addEventListener('click',function(e){var b=e.target.closest('.docrow');if(b){tsel=+b.dataset.i;drawTrk()}});
+$('trkActs').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b||b.disabled)return;var a=b.dataset.a,d=TD[tsel];
+  if(a==='undo'){TD[0].s='approved';TD[1].s='approved';TD[2].s='review';for(var i=3;i<6;i++)TD[i].s='missing';treason={};tn=0;tlog=[['Mon 09:00','Checklist created for Omar (Resident > 5 years). Email + WhatsApp sent to parent.'],['Mon 09:20','Omar\'s passport approved.'],['Mon 09:25','Omar\'s Emirates ID approved.']];drawTrk();return}
+  if(a==='up'){d.s='review';delete treason[tsel];tlog.push([stamp(),d.n+' uploaded. Instant check passed. Waiting for the club.'])}
+  if(a==='blur'){d.s='fix';treason[tsel]='Photo is blurry. Please retake it in good light.';tlog.push([stamp(),d.n+': the instant check found a blurry photo. Parent asked to retake it right away. Nothing else changed.'])}
+  if(a==='ok'){d.s='approved';tlog.push([stamp(),d.n+' approved by the club.'])}
+  if(a==='no'){d.s='fix';treason[tsel]='Name does not match the profile. Please upload the full certificate.';tlog.push([stamp(),d.n+' needs a new copy: the name does not match. WhatsApp + email sent. All other approved documents stay approved.'])}
+  drawTrk();
+});
+drawTrk();
+
 /* ---------- leads ---------- */
 var LST=['New','Contacted','Trial booked','Trial attended','Committed','Paid'];
 var LEADS=[
@@ -498,7 +639,11 @@ var QS=[
  'Grace period after a player turns 18 (30 days proposed). Do parents lose access at 18 unless the player links them?',
  'Can Admin see medical records and staff documents, or Manager only?',
  'Age-group rule: is "U-number = 2027 minus birth year" right for every league you will use?',
- 'Which lead sources on day one (Instagram, WhatsApp, website, referral, walk-in, school event, other)?'
+ 'Which lead sources on day one (Instagram, WhatsApp, website, referral, walk-in, school event, other)?',
+ 'Multi-sport: the plan calls a person a "participant" underneath, and shows "player" (or swimmer, etc.) on screen per sport. OK?',
+ 'Which other sport is most likely to come second, so we can test the foundation against a real case (on paper only)?',
+ 'How fast must the club review an uploaded document (a target, such as one working day), so parents are promised a response time?',
+ 'When UAE FA itself rejects a registration, how does the club hear about it today (email, portal), and what detail does it give?'
 ];
 var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
 function drawQs(){
@@ -506,7 +651,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the player','Parent-driven registration; coaches are not in the registration loop','Prospects give 7 fields; documents only after commit and payment','Two-step consent: trial, then membership and registration (incl. clinic and UAE FA/FIFA sharing)','Platform support sees a club only when the club approves: read-only, up to 7 days','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt (EU standards); PWA only; no app stores','Payment gateway is in the first release (provider parked); staff can also record POS payments','Campaigns only to people who contacted the club and opted in','Leads: default owner by rule, transferable singly or in bulk','Everything about paid classes is a setting','Deletion: everything removed except financial records, kept 1 year (Terms must say so)','No leaderboards or ranking of children','Age groups are birth-year ranges; a session can serve several groups','Registration rules are a table by category, not code','Pilot first with sample data, then approach clubs'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the player','Parent-driven registration; coaches are not in the registration loop','Prospects give 7 fields; documents only after commit and payment','Two-step consent: trial, then membership and registration (incl. clinic and UAE FA/FIFA sharing)','Platform support sees a club only when the club approves: read-only, up to 7 days','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt (EU standards); PWA only; no app stores','Payment gateway is in the first release (provider parked); staff can also record POS payments','Campaigns only to people who contacted the club and opted in','Leads: default owner by rule, transferable singly or in bulk','Everything about paid classes is a setting','Deletion: everything removed except financial records, kept 1 year (Terms must say so)','No leaderboards or ranking of children','Age groups are birth-year ranges; a session can serve several groups','Registration rules are a table by category, not code','Pilot first with sample data, then approach clubs','Focus: make UAE football academies\' compliance easy; broader class management later','Foundation first: shared building blocks, then features on top, so nothing is demolished','Multi-sport-ready underneath (sport as data); football built and completed first','A rejection affects only that document; nothing already approved restarts','Coaches do not upload registration documents; parents do, and the system checks instantly','Everyone sees the same live status: parent, coach (read-only), manager'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 

@@ -19,6 +19,8 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 |---|---|
 | `docs/MVP_PLAN.md` | Lifecycle, foundation changes F1-F15, registration rules, schedule builder, questions |
 | `docs/LEADS_PLAN.md` | Lead pipeline, channels (WhatsApp/Instagram/email), coach feed, paid classes, phases, foundation changes F16-F23 |
+| `docs/FOUNDATION_PLAN.md` | **Read this early.** The 12 shared foundation blocks, multi-sport approach, registration status design, build order |
+| `docs/reference/COMPETITORS.md` | Notes on ClassCard and Statixa (unverified; sites were unreachable) |
 | `docs/SCHEMA_PLAN.md` | Earlier (v0.2) table catalogue; MVP_PLAN and LEADS_PLAN override where they differ |
 | `docs/UI_UX_PLAN.md` | Earlier text wireframes (dashboard, coach view, parent home, compliance) |
 | `docs/TECH_STACK.md` | Supabase (Frankfurt), Next.js, PWA only, and why |
@@ -27,6 +29,9 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `docs/visual/product-plan.html` | The visual plan (open in a browser). Kept in step with the docs |
 | `docs/visual/schema-plan-v0.2.html` | Older visual schema map (v0.2, out of date on MVP points) |
 | `drafts/db-v0.2-unapproved/` | First SQL draft. **Reference only, out of date, never run it** |
+
+## Design stance
+**Foundation first, no rebuilds.** Build shared blocks (tenancy, people, settings, consent, rules engine, documents, status engine, messages, tasks, scheduling engine, ledger, audit) and put features on top through them. **Sport is data, not code**: a person is a `participant` underneath and "player" on screen; positions, age-group naming, rule sets and switches like shirt numbers live in a sport pack. Only football is built; do not build a generic sport designer. Purpose of the product: make **compliance easy for UAE football academies**; wider class management comes later.
 
 ## Hard rules
 1. Never commit secrets. Environment variables and a `.env.example` only.
