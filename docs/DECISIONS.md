@@ -46,6 +46,10 @@
 | 50 | **AI screens, a person decides.** Real children's documents wait for a vetted AI vendor and a separate consent line; the pilot uses test documents | |
 | 51 | **Assisted upload into FANet is later**, only inside the coach's own logged-in session with a person pressing Send, never storing FANet passwords, and only if UAE FA allows it (public FANet terms are silent) | Ask UAE FA first |
 | 52 | Competitor facts re-checked from the live sites; ClassCard's pricing conflicts with the owner's scan, so the **pricing unit is still open** | See reference/COMPETITORS.md |
+| 53 | **Registration applies to any person role, not only players.** Coaches and other on-field staff also register on FANet; the same engine (rules by role, documents, checks, status, zip) serves them. Whether staff registration is in the pilot is open | Owner-reported UAE FA facts, to verify |
+| 54 | An **authorisation status with valid-until date** on people; coaches without it cannot enter the field or dressing room (owner-reported) | Feeds the later match-day check |
+| 55 | New foundation block 13: **Outside contacts** (clinic, medical provider, ground contact): messaged by WhatsApp/email with one-time links, no login | |
+| 56 | **Match day is designed now, built later**: fixtures, team sheet, authorisation checks, medical provider notice, home/away/goalkeeper kit, notification lists | Owner: "deal with this later" |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |

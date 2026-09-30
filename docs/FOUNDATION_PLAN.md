@@ -12,7 +12,7 @@ Goal (from the product owner): a foundation strong enough that features are adde
 | **Product features** | Registration, schedule, trials and leads, payments, coach feed, later progress, messaging, photos | We add or improve a feature |
 | **Foundation blocks** | The twelve shared building blocks below | Rarely. This is the part that must be right first |
 
-## 2. The twelve foundation blocks
+## 2. The thirteen foundation blocks
 
 | # | Block | Job | Used by |
 |---|---|---|---|
@@ -28,6 +28,7 @@ Goal (from the product owner): a foundation strong enough that features are adde
 | 10 | Scheduling engine | Weekly rules become dated sessions | Schedule, trials, coach feed |
 | 11 | Ledger and payments | Charges, payments, receipts, gateway adapter | Payments, leads |
 | 12 | Audit and deletion | Who did what; self-serve removal | Everything |
+| 13 | Outside contacts | People and companies who are not users but must be told things or asked to act: clinics, a match-day medical provider, ground contacts. They get messages and one-time links, no login | Registration (medical fitness), match day (later) |
 
 Blocks 7 (status engine) and 5 (rules engine) are what make new features cheap: registration, lead pipeline and payment follow-up are all "steps with history", and registration lists, match-day checks and future sports' requirements are all "rules by profile".
 
@@ -46,6 +47,20 @@ Sport is **data**, not a separate product. Do not build a "sport designer". Foot
 | S6 | Sports with no federation still work: the rules engine can be empty | Many academies have no compliance list |
 
 Honest limit: only football is designed against real documents. A second sport should be tested **on paper** against a real example before we promise it.
+
+## 3b. Staff, outside parties and match day (facts added by the owner; verify with UAE FA)
+
+Reported by the owner, **not yet checked against UAE FA regulations**: coaches and other on-field staff must also be registered on FANet.ae; a coach without UAE FA authorisation cannot enter the field or the dressing room; each team must bring its own registered medical professional (a trained person, or their company), who must be told about each match (time, place); and match-day rules cover which kit is worn (home or away, and a different kit for goalkeepers).
+
+| # | Change to the foundation | Why |
+|---|---|---|
+| S8 | **Registration applies to any person, not only athletes.** The rules engine is keyed by *person role* (athlete, coach, assistant, team manager, medical), so a coach's FANet registration uses the same documents, checks, status timeline and zip as a player's | Same machinery, no second system |
+| S9 | An **authorisation status with a valid-until date** on each person (for example "authorised on FANet until 30 Jun 2027"), visible everywhere it matters | A coach without it cannot enter the field |
+| S10 | **Outside contacts** (foundation block 13): a medical provider, a clinic, a ground contact. They are told things by WhatsApp or email and answer through one-time links. The clinic in the registration flow is the first user | Match-day medical cover needs it |
+| S11 | The **fixture** is a first-class thing: opponent, home or away, venue, kick-off, competition, team sheet, who must be present | Everything on match day hangs off it |
+| S12 | **Kits are club data**: kit sets (home, away, goalkeeper, maybe third) with colours; a fixture picks the outfield kit and the goalkeeper kit (home or away, avoiding a colour clash) | The wear-this message to parents and players |
+
+**Match day is designed now and built later** (owner's call). It will need: a check that every listed player and staff member is authorised; the medical provider assigned and confirmed; a notification list per fixture (parents of selected players, coaches, medical provider, ground contact) with the right message for each; and the kit instruction.
 
 ## 4. Registration: no one in the dark, no restarts
 

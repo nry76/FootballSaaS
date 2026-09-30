@@ -54,7 +54,14 @@ Unchanged: drag-and-drop weekly builder over fixed blocks, groups by birth year,
 ## 7. Communication
 WhatsApp and email from day one for **service messages** (confirmations, reminders, status changes, rejections). WhatsApp uses pre-approved templates. Everything goes in one communication log.
 
-## 8. Open questions
+## 8. Designed now, built later: staff registration and match day
+Facts reported by the owner (to verify with UAE FA): coaches and on-field staff also register on FANet.ae; a coach without authorisation cannot enter the field or dressing room; each team brings its own registered medical professional (person or company) who must be told the match details; match day also sets the kit (home or away; goalkeepers wear a different kit).
+
+* The registration engine is built for **any person role**, so coach registration can be switched on with only a rules table for staff. See FOUNDATION_PLAN.md section 3b.
+* **Whether staff registration is part of the pilot is the owner's decision** (question 8).
+* Match day (fixtures, team sheet, authorisation checks, medical provider notice, kit instruction, notification lists) is not in the pilot.
+
+## 9. Open questions
 1. Working name: is "SportPortal" the product name?
 2. Does UAE FA allow a helper tool for FANet, or offer any official upload?
 3. Should we only capture and track leads from ads you run elsewhere (recommended), or also create and manage ads?
@@ -62,3 +69,6 @@ WhatsApp and email from day one for **service messages** (confirmations, reminde
 5. Default reviewer: Admin or coach?
 6. Is there a fixed list of document names UAE FA expects?
 7. What does FANet show when it rejects an application?
+8. Should coach and staff FANet registration be part of the pilot? (It reuses the same machinery.) If yes, please share the staff requirements list, like the player table.
+9. Medical professional: a person or a company? Does it change match to match? How is it told today?
+10. Kits: how many sets does a club have (home, away, goalkeeper, third)? Who decides which is worn?

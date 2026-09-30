@@ -20,8 +20,8 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `docs/PILOT_SCOPE.md` | **Current scope.** Pilot pillars, FANet registration flow, AI screening rules, lead sources, what changed |
 | `docs/MVP_PLAN.md` | Lifecycle, foundation changes F1-F15, registration rules, schedule builder, questions |
 | `docs/LEADS_PLAN.md` | Lead pipeline, channels (WhatsApp/Instagram/email), coach feed, paid classes, phases, foundation changes F16-F23 |
-| `docs/FOUNDATION_PLAN.md` | **Read this early.** The 12 shared foundation blocks, multi-sport approach, registration status design, build order |
-| `docs/reference/COMPETITORS.md` | Notes on ClassCard and Statixa (unverified; sites were unreachable) |
+| `docs/FOUNDATION_PLAN.md` | **Read this early.** The 13 shared foundation blocks, multi-sport approach, registration status design, build order |
+| `docs/reference/COMPETITORS.md` | Notes on ClassCard, Statixa and FANet.ae, checked from the live sites (pricing conflict flagged) |
 | `docs/SCHEMA_PLAN.md` | Earlier (v0.2) table catalogue; MVP_PLAN and LEADS_PLAN override where they differ |
 | `docs/UI_UX_PLAN.md` | Earlier text wireframes (dashboard, coach view, parent home, compliance) |
 | `docs/TECH_STACK.md` | Supabase (Frankfurt), Next.js, PWA only, and why |
@@ -48,7 +48,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 Supabase (Postgres with RLS, Auth, Storage, Edge Functions, Vault, pg_cron), region **Frankfurt**; Next.js + TypeScript on Vercel; Tailwind + shadcn/ui; supabase-js with generated types (no ORM for user reads); **PWA only**, no app stores; English only (Arabic only in a few optional name fields); Vitest, Playwright, pgTAP; Sentry without session replay on children's screens.
 
 ## Parked on purpose
-Payment provider/gateway, talks with Fursan, the WhatsApp number, AI photo and document reading, video, FANet.ae automation, legal review (consent age by country, UAE marketing rules, retention period).
+Payment provider/gateway, match day (fixtures, kits, medical provider notices), talks with Fursan, the WhatsApp number, AI photo and document reading, video, FANet.ae automation, legal review (consent age by country, UAE marketing rules, retention period).
 
 ## Working with the visual plan
 `docs/visual/product-plan.html` is a plain HTML file with a small script; open it in a browser. When plans change, update the Markdown in `docs/` first, then the HTML to match. (On claude.ai it was also published as a private artifact; the file in the repo is the durable copy.)

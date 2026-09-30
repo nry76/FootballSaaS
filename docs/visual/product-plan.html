@@ -200,6 +200,15 @@ footer{font-size:13px;color:var(--muted)}
       <p class="note" id="blockNote">Tap a block.</p>
     </div>
     <div class="card">
+      <h2>Match day: designed now, built later</h2>
+      <p class="note">Facts you told me (to verify with UAE FA): coaches need FANet authorisation to enter the field, the team brings its own registered medical professional, and kit depends on home or away. Toggle to see what the system would check and say. Invented example.</p>
+      <div class="row"><button class="pill" id="mdHome" aria-pressed="true">Home fixture</button><button class="pill" id="mdAway" aria-pressed="false">Away fixture</button><button class="pill" id="mdCoach" aria-pressed="false">A coach's authorisation has expired</button><button class="pill" id="mdMed" aria-pressed="false">No medical provider confirmed</button></div>
+      <div class="cols">
+        <div class="card" style="background:var(--bg)"><h4 id="mdTitle"></h4><div id="mdChecks" style="display:flex;flex-direction:column;gap:6px"></div><div class="msg" id="mdStatus"></div></div>
+        <div class="card" style="background:var(--bg)"><h4>Who is told, and what</h4><div id="mdTold" style="display:flex;flex-direction:column;gap:6px"></div><h4>Kit</h4><div class="row" id="mdKit"></div></div>
+      </div>
+    </div>
+    <div class="card">
       <h2>What a sport pack changes (illustration)</h2>
       <p class="note">Only football is planned. Swimming, tennis and fencing are illustrations of how a sport pack changes wording and rules, not a rebuild. Individual sports are simpler: no team to pick each weekend.</p>
       <div class="row" id="sportBtns"></div>
@@ -372,7 +381,7 @@ footer{font-size:13px;color:var(--muted)}
       <p class="note">Ticks stay on this device only. Tell me your answers in the chat so they are recorded in the repository.</p>
       <ul class="qs" id="qs"></ul></div>
     <div class="card"><h2>Parked on purpose</h2>
-      <div class="row"><span class="tag w">Online payments, gateway, Zoho Books (later builds)</span><span class="tag w">Talks with Fursan (after the pilot)</span><span class="tag w">Which WhatsApp number</span><span class="tag w">AI photo and document reading</span><span class="tag w">Video</span><span class="tag w">Assisted upload into FANet</span><span class="tag w">Legal review: consent age by country, UAE marketing rules, 1-year financial retention</span></div></div>
+      <div class="row"><span class="tag w">Online payments, gateway, Zoho Books (later builds)</span><span class="tag w">Talks with Fursan (after the pilot)</span><span class="tag w">Which WhatsApp number</span><span class="tag w">AI photo and document reading</span><span class="tag w">Video</span><span class="tag w">Assisted upload into FANet</span><span class="tag w">Match day</span><span class="tag w">Legal review: consent age by country, UAE marketing rules, 1-year financial retention</span></div></div>
     <div class="card"><h2>Decided</h2><div class="dec" id="dec"></div></div>
   </section>
 
@@ -535,19 +544,20 @@ drawReg();
 /* ---------- foundation ---------- */
 var BLOCKS=[
  ['Clubs and access','Each club walled off; roles and permissions',['Everything']],
- ['People and families','Parents, children, relationships (mother, father)',['Registration','Trials and leads','Schedule','Payments (later)','Coach feed']],
+ ['People and families','Athletes, staff, parents, relationships (mother, father)',['Registration','Staff registration','Trials and leads','Schedule','Payments (later)','Coach feed','Match day (later)']],
  ['Settings engine','Club default, override per group or session',['Everything']],
  ['Consent and data stages','What may be stored, and when',['Registration','Trials and leads']],
- ['Rules engine','Requirements by the child\'s profile, versioned',['Registration','Match-day checks (later)']],
- ['Documents and checks','Files, automatic checks, review, expiry',['Registration','Staff files (later)']],
+ ['Rules engine','Requirements by the person\'s role and profile, versioned',['Registration','Staff registration','Match day (later)']],
+ ['Documents and checks','Files, automatic checks, review, expiry',['Registration','Staff registration']],
  ['Status engine','Steps with history, one truth for everyone',['Registration','Trials and leads','Payments (later)']],
- ['Messages and log','Email, WhatsApp, in-app; everything recorded',['Registration','Trials and leads','Coach feed','Schedule']],
+ ['Messages and log','Email, WhatsApp, in-app; everything recorded',['Registration','Trials and leads','Coach feed','Schedule','Match day (later)']],
  ['Tasks','Assigned to-dos with due dates',['Registration','Trials and leads']],
  ['Scheduling engine','Weekly rules become dated sessions',['Schedule','Trials and leads','Coach feed']],
  ['Ledger and payments','Charges, payments, receipts, gateway adapter',['Payments (later)','Trials and leads']],
- ['Audit and deletion','Who did what; self-serve removal',['Everything']]
+ ['Audit and deletion','Who did what; self-serve removal',['Everything']],
+ ['Outside contacts','Clinic, medical provider, ground contact: told by WhatsApp or email, no login',['Registration','Match day (later)']]
 ];
-var MODS=['Registration','Schedule','Trials and leads','Payments (later)','Coach feed','Match-day checks (later)','Staff files (later)','Progress and ratings (later)','Messaging (later)','Photos (later)'];
+var MODS=['Registration','Staff registration','Schedule','Trials and leads','Coach feed','Payments (later)','Match day (later)','Progress and ratings (later)','Messaging (later)','Photos (later)'];
 var pickB=-1;
 function drawFound(){
   var used=pickB>=0?BLOCKS[pickB][2]:[];
@@ -570,6 +580,26 @@ function drawSport(){
 }
 $('sportBtns').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){sp=b.dataset.k;drawSport()}});
 drawSport();
+
+/* ---------- match day preview ---------- */
+var md={home:true,coach:false,med:false};
+function drawMd(){
+  $('mdHome').setAttribute('aria-pressed',md.home);$('mdAway').setAttribute('aria-pressed',!md.home);$('mdCoach').setAttribute('aria-pressed',md.coach);$('mdMed').setAttribute('aria-pressed',md.med);
+  $('mdTitle').textContent='U12 vs Al Wasl · Sat 4:00 pm · '+(md.home?'Home':'Away');
+  var rows=[[true,'All 14 players listed are authorised on FANet'],[!md.coach,md.coach?'Coach Hamad: FANet authorisation expired last week (cannot enter the field)':'Both coaches authorised on FANet'],[!md.med,md.med?'Medical provider not yet confirmed for this match':'Medical provider confirmed (Dr Layla, Al Noor Medical)']];
+  $('mdChecks').innerHTML=rows.map(function(r){return '<div class="chk'+(r[0]?' done':'')+'"><span class="bx" style="'+(r[0]?'':'border-color:var(--bad);color:var(--bad)')+'">'+(r[0]?'&#10003;':'!')+'</span><span class="t" style="'+(r[0]?'':'text-decoration:none;color:var(--fg)')+'">'+esc(r[1])+'</span></div>'}).join('');
+  var blocked=md.coach||md.med;
+  $('mdStatus').className='msg'+(blocked?' w':'');
+  $('mdStatus').textContent=blocked?'Blocked: fix the red items before the sheet is submitted. Reminders go out automatically.':'Ready to submit.';
+  var told=[['Parents of the 14 selected players','WhatsApp','Kick-off, place, arrive by, kit to wear'],['Coaches and team manager','WhatsApp + app','Squad, kit bag, dressing room'],['Medical provider','WhatsApp or email link','Date, time, ground address; tap to confirm'],['Ground contact','Email','Arrival time, number of people']];
+  $('mdTold').innerHTML=told.map(function(t){return '<div class="docrow" style="cursor:default"><span class="n"><b>'+esc(t[0])+'</b><span class="note">'+esc(t[2])+'</span></span><span class="tag a">'+esc(t[1])+'</span></div>'}).join('');
+  var out=md.home?['Home kit (white)','#EDEDED']:['Away kit (red)','#C8452B'];
+  $('mdKit').innerHTML='<span class="lg" style="--gc:'+out[1]+'">Outfield: '+out[0]+'</span><span class="lg" style="--gc:#2FA84F">Goalkeeper: green</span>';
+}
+['mdHome','mdAway','mdCoach','mdMed'].forEach(function(id){$(id).addEventListener('click',function(){
+  if(id==='mdHome')md.home=true; if(id==='mdAway')md.home=false; if(id==='mdCoach')md.coach=!md.coach; if(id==='mdMed')md.med=!md.med; drawMd();
+})});
+drawMd();
 
 /* ---------- status tracker demo ---------- */
 var TD=[
@@ -696,7 +726,10 @@ var QS=[
  'Which social channels first for lead capture: Instagram, Facebook, WhatsApp, TikTok?',
  'Who reviews documents by default: an Admin, or the coach? Can it differ by club?',
  'Is there a fixed list of document names UAE FA or FANet expects, so file names can match exactly?',
- 'When FANet rejects an application, what does the club see (which fields, any email)?'
+ 'When FANet rejects an application, what does the club see (which fields, any email)?',
+ 'Should coach and staff FANet registration be part of the pilot? If yes, please share the staff requirements list, like the player table.',
+ 'The team medical professional: a person or a company? Does it change match to match? How is it told today?',
+ 'Kits: how many sets does a club have (home, away, goalkeeper, third)? Who decides which is worn?'
 ];
 var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
 function drawQs(){
@@ -704,7 +737,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the player','Parent-driven registration; coaches are not in the registration loop','Prospects give 7 fields; documents only after commit and payment','Two-step consent: trial, then membership and registration (incl. clinic and UAE FA/FIFA sharing)','Platform support sees a club only when the club approves: read-only, up to 7 days','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt (EU standards); PWA only; no app stores','Pilot = lead management + FANet registration + scheduling + status and WhatsApp / email. Online payments and Zoho Books come in later builds; staff record "fee received" for now','Campaigns only to people who contacted the club and opted in','Leads: default owner by rule, transferable singly or in bulk','Everything about paid classes is a setting','Deletion: everything removed except financial records, kept 1 year (Terms must say so)','No leaderboards or ranking of children','Age groups are birth-year ranges; a session can serve several groups','Registration rules are a table by category, not code','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Assisted upload into FANet comes later, in the coach\'s own logged-in session, with a person pressing Send, and only if UAE FA allows it','Focus: make UAE football academies\' compliance easy; broader class management later','Foundation first: shared building blocks, then features on top, so nothing is demolished','Multi-sport-ready underneath (sport as data, a person is an athlete underneath, and a player, swimmer or fencer on screen); football built and completed first','A rejection affects only that document; nothing already approved restarts','Parents upload and the system checks instantly; AI screens, a person (admin by default, or a coach) decides; nobody retypes documents from WhatsApp; files are named automatically','Everyone sees the same live status: parent, coach (read-only), manager'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the player','Parent-driven registration; coaches are not in the registration loop','Prospects give 7 fields; documents only after commit and payment','Two-step consent: trial, then membership and registration (incl. clinic and UAE FA/FIFA sharing)','Platform support sees a club only when the club approves: read-only, up to 7 days','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt (EU standards); PWA only; no app stores','Pilot = lead management + FANet registration + scheduling + status and WhatsApp / email. Online payments and Zoho Books come in later builds; staff record "fee received" for now','Campaigns only to people who contacted the club and opted in','Leads: default owner by rule, transferable singly or in bulk','Everything about paid classes is a setting','Deletion: everything removed except financial records, kept 1 year (Terms must say so)','No leaderboards or ranking of children','Age groups are birth-year ranges; a session can serve several groups','Registration rules are a table by category, not code','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Registration covers any person role: coaches and medical staff too (in the pilot or right after)','Match day (fixtures, authorisation checks, medical provider notice, home/away/goalkeeper kit) is designed now and built later','Assisted upload into FANet comes later, in the coach\'s own logged-in session, with a person pressing Send, and only if UAE FA allows it','Focus: make UAE football academies\' compliance easy; broader class management later','Foundation first: shared building blocks, then features on top, so nothing is demolished','Multi-sport-ready underneath (sport as data, a person is an athlete underneath, and a player, swimmer or fencer on screen); football built and completed first','A rejection affects only that document; nothing already approved restarts','Parents upload and the system checks instantly; AI screens, a person (admin by default, or a coach) decides; nobody retypes documents from WhatsApp; files are named automatically','Everyone sees the same live status: parent, coach (read-only), manager'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 
