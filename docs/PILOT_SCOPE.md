@@ -77,13 +77,27 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 | Photos | Checked without AI first. AI changes later, as a club choice |
 | Access at 18 | Parents keep access, recorded in the athlete's fresh consent |
 
-## 10. Open questions
-1. **Please upload the official UAE FA registration documents (player and staff) and the UAE FA medical form.** They are on your computer; this cloud session cannot see them. Local Claude Code can, later.
-2. "UAE Child": confirm it means a child of a UAE-national mother. (Only "Local = UAE national" was confirmed.)
-3. Medical: what exactly is the **PCMA test**? Does the orthopaedic doctor sign on paper (parent uploads), or can the clinic upload?
-4. Photo specification: passport size, white background, club T-shirt. Does UAE FA publish an exact size?
-5. Do all clubs have exactly 3 terms a season? Who sets the dates?
-6. Is there a downloadable fixture list from UAE FA (file or calendar), or only on the website?
-7. Wallet ticket: iPhone only at first, or Android too?
-8. Which club-specific forms exist beyond the terms and conditions (registration form, minor-player form)? Please share blanks.
-9. Product name: Athlon or Sportal? (Check trademark and domain before choosing.)
+## 10. What the official UAE FA documents changed (v0.9)
+* The authoritative rules are in `docs/reference/UAEFA_OFFICIAL_2026_27.md`. The rule set now follows **UAE FA's own structure** (6 categories x player type x document), not Fursan's five columns.
+* The "over 5 years / under 5 years" lists are **two routes** for Born-in-UAE and Resident minors.
+* The photo, medical form, staff table, dates and fees are now known (see the reference file).
+* Age rules are split into **registration** and **participation**; the earlier checker was too simple.
+* **Training groups are not UAE FA teams.** Mapping is by birth year; U18/U5/U6 do not exist at UAE FA.
+* **Match-day** rules (kits, match list window, numbers, host duties) are now known and still built later.
+
+**Photo:** the pilot includes a photo helper that runs in the browser (crop to 4 x 6 cm, size, white background, sharpness checks). Background fix and club-kit overlay are later, as club choices; outside links are off by default.
+
+## 11. Open questions
+1. **Please upload the UAE FA Licensing Regulations again** (the upload failed). It may hold the fine for a missing medical professional and staff licensing rules.
+2. Use UAE FA's own structure (6 categories x player type) for the rule set? (Recommended.)
+3. What is a **"Passport Holder"** player in UAE FA's categories?
+4. Please share **DOFA** and **YFL** registration and competition documents. You said DOFA is lighter.
+5. **A and B teams:** does a club always enter A at UAE FA and B at DOFA, or can both enter UAE FA (UAE FA allows A/B in an age group)?
+6. Please share blanks of the **medical Form (1) and Form (2)**, and the other UAE FA forms (registration form, guardian declaration).
+7. Which **UAE FA teams** does a typical academy field (for the "club lacks the team" rules)?
+8. Who holds the **FA-Net user** role at a club, and who is the authorised signatory?
+9. Wallet ticket: iPhone first, or Android too? (Apple needs a developer account.)
+10. Which club-specific forms exist besides terms and conditions? Blanks, please.
+11. Programme types (Academy and Squad) and whether fees differ.
+12. Medical company: how does the club check today that a professional is pre-registered?
+13. What does FANet show when it rejects an application?

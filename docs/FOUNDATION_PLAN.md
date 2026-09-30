@@ -74,6 +74,18 @@ Reported by the owner, **not yet checked against UAE FA regulations**: coaches a
 | S18 | **Terms and fee options**: a season has terms (3 at most clubs); fee options are Term 1, Terms 1+2, or the year. Payment itself is a later build | "Confirmed = first term paid" |
 | S19 | **Consent purposes** grow: club terms and waiver, media, school engagement, clinic sharing, federation sharing, AI screening. Each versioned and signed | Seen in a real club's terms |
 
+## 3d. Changes from the official UAE FA documents (v0.9)
+
+| # | Change | Why |
+|---|---|---|
+| S20 | **Rule sets are keyed by category x player type x document**, with **route choices** (bundles of alternatives) and **team-level requirements** (medical form 1 or 2 depends on the team) | UAE FA's own table |
+| S21 | **Three layers for teams:** a club's training group, a UAE FA team entry (by birth year, including A and B), and the squad. U18, U5 and U6 exist only as training groups | UAE FA has no U18 team |
+| S22 | **Registration rules and participation rules are separate rule types** with their own inputs (does the club field the team; how many older players per match; A and B may not cross) | The circulars treat them separately |
+| S23 | **Federation data per season**: teams and birth years, registration periods, request fees, fines, participation fees. Loaded as data, never coded | Changes every season |
+| S24 | **Validity windows and card validity** as first-class: medical valid from 1 June to season end; BLS and ACLS two years; card valid to season end; review takes 5 working days | Reminders depend on them |
+| S25 | **Staff rules** in the same engine: staff type x document, licences and certificates with expiry, at most two teams, age 21 or over | Same machinery as players |
+| S26 | **Match-day objects** (later): kit sets (official and reserve; outfield and goalkeeper), the match-list window (24 hours to 90 minutes), bench composition, host duties with their own fines | Official regulations |
+
 ## 4. Registration: no one in the dark, no restarts
 
 Your pain: parents do not know where they are, cannot tell if documents are complete, and a wrong upload by a coach restarts the whole process.

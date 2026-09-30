@@ -147,7 +147,7 @@ footer{font-size:13px;color:var(--muted)}
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v0.8 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v0.9 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
     <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
@@ -206,8 +206,8 @@ footer{font-size:13px;color:var(--muted)}
     </div>
     <div class="card">
       <h2>Match day: designed now, built later</h2>
-      <p class="note">Facts you told me (to verify with UAE FA): coaches need FANet authorisation to enter the field, the team brings its own registered medical professional, and kit depends on home or away. Toggle to see what the system would check and say. Invented example.</p>
-      <div class="row"><button class="pill" id="mdHome" aria-pressed="true">Home fixture</button><button class="pill" id="mdAway" aria-pressed="false">Away fixture</button><button class="pill" id="mdCoach" aria-pressed="false">A coach's authorisation has expired</button><button class="pill" id="mdMed" aria-pressed="false">No medical provider confirmed</button></div>
+      <p class="note">Now based on UAE FA's regulations: a valid card for everyone listed, medical staff on the bench, the kit chosen 48 hours ahead, and the match list open from 24 hours to 90 minutes before kick-off. Toggle to see what the system would check and say. Invented example.</p>
+      <div class="row"><button class="pill" id="mdHome" aria-pressed="true">Home fixture</button><button class="pill" id="mdAway" aria-pressed="false">Away fixture</button><button class="pill" id="mdCoach" aria-pressed="false">A coach's UAE FA card has expired</button><button class="pill" id="mdMed" aria-pressed="false">No medical staff on the match list</button></div>
       <div class="cols">
         <div class="card" style="background:var(--bg)"><h4 id="mdTitle"></h4><div id="mdChecks" style="display:flex;flex-direction:column;gap:6px"></div><div class="msg" id="mdStatus"></div></div>
         <div class="card" style="background:var(--bg)"><h4>Who is told, and what</h4><div id="mdTold" style="display:flex;flex-direction:column;gap:6px"></div><h4>Kit</h4><div class="row" id="mdKit"></div></div>
@@ -259,16 +259,12 @@ footer{font-size:13px;color:var(--muted)}
   <!-- REGISTRATION -->
   <section class="panel" id="p-reg" role="tabpanel">
     <div class="card">
-      <h2>Registration: what a parent must upload depends on the child</h2>
-      <p class="note">Pick a category, or answer the questions. Tick documents to see the parent's progress. From Fursan's UAE FA 2026/27 table; not verified against the federation.</p>
+      <h2>Registration: what must be uploaded depends on the child</h2>
+      <p class="note">This now follows UAE FA's own 2026/27 circular: six categories and three player types. Pick them, then tick documents to see the parent's progress.</p>
       <div class="row" id="cats"></div>
-      <div class="row"><b style="font-size:13px">Not sure?</b>
-        <label class="row" style="gap:6px"><input type="checkbox" id="q1"> UAE national</label>
-        <label class="row" style="gap:6px"><input type="checkbox" id="q2"> Mother is a UAE national</label>
-        <label class="row" style="gap:6px"><input type="checkbox" id="q3"> Born in the UAE</label>
-        <label class="row" style="gap:6px"><input type="checkbox" id="q4"> Lived in the UAE over 5 years</label>
-        <span class="tag w">Placement rules are my guess: to confirm</span>
-      </div>
+      <div class="row" id="types"></div>
+      <div class="row" id="routeRow"><span class="note">Born in UAE or Resident minors choose a route:</span><span id="routes" class="row"></span></div>
+      <div class="row"><label class="row" style="gap:6px"><input type="checkbox" id="u79"> Team is U7, U8 or U9 (only five documents)</label><span class="tag" id="regNote"></span></div>
     </div>
     <div class="card">
       <h2>From the parent's phone to FANet, without retyping</h2>
@@ -305,13 +301,37 @@ footer{font-size:13px;color:var(--muted)}
           <tr><td>Club forms</td><td>Club registration form and minor-player form (Golden Stars) · minor-player approval form (Fursan)</td></tr>
           <tr><td>Emirati player</td><td>Own ID, father's ID, photo and medical only (another club); 3 documents (Fursan)</td></tr>
         </tbody></table></div>
-      <p class="note">I need the official UAE FA list to mark which lines are federation rules and which are club add-ons.</p>
+      <p class="note">UAE FA's official list is now loaded in this tab. Anything a club asks beyond it (extra bills, club forms, translations) is a club add-on that the club can switch on or off.</p>
     </div>
     <div class="card">
-      <h2>Which group can this child play in?</h2>
-      <p class="note">Your rule: registered in U(2027 minus birth year). Playing up is allowed. Playing down only for September to December births of the year just before the group's year.</p>
-      <div class="row"><label class="row" style="gap:6px">Born <select id="gcM"></select> <select id="gcY"></select></label><label class="row" style="gap:6px">Wants to play in <select id="gcG"></select></label></div>
+      <h2>Which UAE FA team, and which matches?</h2>
+      <p class="note">UAE FA separates <b>registering</b> a player from <b>letting him play</b>. Teams are by birth year: U-number is 2027 minus the birth year for U7 to U17; U19 covers 2008 and 2009. Training groups such as U18 or U5/6 are not UAE FA teams.</p>
+      <div class="row"><label class="row" style="gap:6px">Born <select id="gcM"></select> <select id="gcY"></select></label><label class="row" style="gap:6px">Team <select id="gcG"></select></label><label class="row" style="gap:6px"><input type="checkbox" id="gcOwn" checked> Our club fields a team for the child's own birth year</label></div>
       <div class="msg" id="gcOut"></div>
+    </div>
+    <div class="card">
+      <h2>Staff registration: same engine, different table</h2>
+      <p class="note">Coaches, managers and medical staff register with UAE FA too. Staff must be 21 or older, coaches need a licence, and technical and administrative staff can be on at most two teams.</p>
+      <div class="row" id="stTypes"></div>
+      <div class="row" id="stMedRow"><span class="note">Medical role:</span><select id="stMed"><option>Team Doctor</option><option>Physiotherapist / Paramedic / Nurse</option><option>Psychologist / Nutritionist / Masseur / Sports Scientist</option></select></div>
+      <div id="stList" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+    <div class="card">
+      <h2>Photo helper</h2>
+      <p class="note">UAE FA photo: recent, <b>4 x 6 cm</b>, white background, club sports uniform, head uncovered, head and shoulders only, colour and clear. Try one of your own photos. It is processed in your browser and goes nowhere.</p>
+      <div class="cols">
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <input type="file" id="phFile" accept="image/*" aria-label="Choose a photo">
+          <label class="row" style="gap:8px">Zoom <input type="range" id="phZoom" min="100" max="300" value="100" style="flex:1;min-width:0"></label>
+          <label class="row" style="gap:8px">Left / right <input type="range" id="phX" min="-100" max="100" value="0" style="flex:1;min-width:0"></label>
+          <label class="row" style="gap:8px">Up / down <input type="range" id="phY" min="-100" max="100" value="0" style="flex:1;min-width:0"></label>
+          <canvas id="phCv" width="472" height="709" style="width:200px;max-width:100%;border:1px solid var(--line);border-radius:8px;background:#fff" aria-label="Photo preview, 4 by 6"></canvas>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div id="phChecks" style="display:flex;flex-direction:column;gap:6px"></div>
+          <p class="note">In the product the cropped, correctly sized photo goes straight into the checklist. Face and shoulders framing and a background fix are the next step. Putting the club kit on a photo stays a club choice for later. Links to outside photo services are off by default, because the photo shows a child.</p>
+        </div>
+      </div>
     </div>
     <div class="card">
       <h2>Nobody in the dark, and no restarts</h2>
@@ -551,48 +571,125 @@ $('combine').addEventListener('click',function(){combine=!combine;$('combine').s
 $('reset').addEventListener('click',function(){combine=false;$('combine').setAttribute('aria-pressed','false');resetCal()});
 resetCal();
 
-/* ---------- registration ---------- */
-var CATS=['Local Player','UAE Child','UAE Born','Resident > 5 years','Resident < 5 years'];
+/* ---------- registration (UAE FA structure) ---------- */
+var CATS=['Citizen','Son of UAE Women','Passport Holder','Born in UAE','Resident','Foreigner'];
+var FURSAN=['Fursan calls this: Local Player','Fursan calls this: UAE Child','No Fursan column','Fursan: UAE Born, or Resident (by route)','Fursan: Resident over or under 5 years (by route)','No Fursan column'];
+var TYPES=['Minor amateur','Adult amateur','Professional'];
 var DOCS=[
- ['Emirates ID, front and back','Player',[1,1,1,1,1],''],
- ['Passport','Player',[1,1,1,1,1],''],
- ['Medical report','Player',[1,1,1,1,1],'Booked with the assigned clinic through the platform'],
- ['Birth certificate','Player',[0,1,1,1,1],''],
- ['Emirates ID, front and back','Mother',[0,1,0,0,0],''],
- ['Passport','Mother',[0,1,1,1,1],''],
- ['Passport','Father',[0,1,1,1,1],''],
- ['Family Book or UAE-nationality document','Family',[0,1,0,0,0],'Either one'],
- ['Residence visa (valid page)','Player',[0,0,1,1,1],''],
- ['5-years proof','Player',[0,0,1,1,0],'Bundle: visas covering 5 years + school registration history (KHDA)'],
- ['Continuation studies certificate (this year)','Player',[0,0,1,1,1],'Renewed every year'],
- ['Minor-player approval form (UAE FA)','Parent + club',[0,0,1,1,1],'Season form: parent completes and signs, club adds its declaration and stamp'],
- ['Father work contract and validation','Father',[0,0,0,0,1],'One document'],
- ['Rent contract or title deed','Family',[0,0,0,0,1],'Either one']
+ [1,'Registration form','Club + parent','CCCCCCCCCCCCCCCCC','Signed by the club\'s authorised signatory'],
+ [2,'Photo','Player','CCCCCCCCCCCCCCCCC','4 x 6 cm, white background, club kit, head and shoulders'],
+ [3,'Player ID','Player','CCCCCCCCCCCCCCC..',''],
+ [4,'Player passport','Player','OOOCCCCCCCCCCCCCC',''],
+ [5,'Medical statement and examinations (PCMA)','Player','CCCCCCCCCCCCCCCCC','Form 2 for U16 and below; in colour; valid 1 June to season end'],
+ [6,'Player birth certificate','Player','...CCCCCCCCCCCC..','Certified English translation for Born in UAE and Resident minors'],
+ [7,'Player contract','Player + club','..C..C..C..C..C.C','Professionals only'],
+ [8,'Valid player residence','Player','.........CCCCCC..',''],
+ [9,'Player\'s guardian ID','Guardian','C........I..I....',''],
+ [10,'Father / guardian passport or ID + residence','Father','.........C..C....',''],
+ [11,'Guardian passport or ID','Guardian','...C..C..........',''],
+ [12,'Mother passport + residence','Mother','.........C..C....',''],
+ [13,'Mother ID','Mother','...CCC...I..I....',''],
+ [14,'Unified request for minor player registration','Guardian + club','.........C..C....','Parent and club declarations, signed, club stamp'],
+ [15,'Loan agreement','Club','..C..C..C..C..C.C','Loans only (hidden here)'],
+ [16,'Salary-cap declaration','Player + club','..C..............','Professional citizens only'],
+ [17,'Guardian employment contract','Guardian','.........C..C....','Standard route'],
+ [18,'Guardian work permit','Guardian','.........C..C....','Standard route'],
+ [19,'House lease contract + electricity or telephone bill','Family','.........C..C....','Standard route'],
+ [20,'Education continuity certificate','Player','.........I..I....','5-year route'],
+ [21,'Proof of residence for more than 5 years','Player','.........I..I....','5-year route: one KHDA letter for Dubai private schools'],
+ [22,'Club declaration','Club','..........CC.CC..','Adult and professional Born in UAE and Resident']
 ];
-var cat=2, ticks={};
-$('cats').innerHTML=CATS.map(function(c,i){return '<button class="pill" data-i="'+i+'" aria-pressed="false">'+c+'</button>'}).join('');
-function drawReg(){
-  document.querySelectorAll('#cats .pill').forEach(function(b){b.setAttribute('aria-pressed',(+b.dataset.i===cat)?'true':'false')});
-  var need=DOCS.map(function(d,i){return {d:d,i:i}}).filter(function(x){return x.d[2][cat]});
-  var done=need.filter(function(x){return ticks[cat+'_'+x.i]}).length;
-  $('phoneTitle').textContent='Omar (sample) · '+CATS[cat];
-  $('bar').style.width=Math.round(100*done/need.length)+'%';
-  $('barTxt').textContent=done+' of '+need.length+' done';
-  $('list').innerHTML=need.map(function(x){var k=cat+'_'+x.i,on=!!ticks[k];
-    return '<button class="chk'+(on?' done':'')+'" data-k="'+k+'"><span class="bx">'+(on?'&#10003;':'')+'</span><span class="t"><span>'+esc(x.d[0])+' <span class="tag">'+x.d[1]+'</span></span>'+(x.d[3]?'<span class="note">'+esc(x.d[3])+'</span>':'')+'</span></button>'}).join('');
-  var rows='<thead><tr><th>Document</th><th>Holder</th>'+CATS.map(function(c){return '<th>'+c.replace('Resident','Res.')+'</th>'}).join('')+'</tr></thead><tbody>'+
-    DOCS.map(function(d){return '<tr><td>'+esc(d[0])+'</td><td>'+d[1]+'</td>'+d[2].map(function(v,i){return '<td style="'+(i===cat?'background:var(--accent-soft)':'')+'">'+(v?'&#10003;':'')+'</td>'}).join('')+'</tr>'}).join('')+
-    '<tr><td><b>Total</b></td><td></td>'+CATS.map(function(c,i){return '<td style="'+(i===cat?'background:var(--accent-soft)':'')+'"><b>'+DOCS.filter(function(d){return d[2][i]}).length+'</b></td>'}).join('')+'</tr></tbody>';
-  $('matrix').innerHTML=rows;
-  var steps=['Collecting documents','Ready for review','Needs fixes','Approved','Submitted to UAE FA','With UAE FA / FIFA (3-4 weeks)','Registered'];
-  var cur=done===need.length?1:0;
-  $('pipe').innerHTML=steps.map(function(s,i){return '<span class="s'+(i===cur?' on':'')+'">'+s+'</span>'+(i<steps.length-1?'<span class="note">&rarr;</span>':'')}).join('');
+var cat=3,type=0,route='A',u79=false,ticks={};
+function idxOf(c,t){return c<5?c*3+t:(t===2?16:15)}
+function cellVal(d,c,t){return d[3].charAt(idxOf(c,t))}
+function minorRoute(){return (cat===3||cat===4)&&type===0}
+function levelFor(d){
+  var no=d[0];
+  if(no===15) return '';
+  if(u79) return [1,2,3,5,9].indexOf(no)>-1?'C':'';
+  var v=cellVal(d,cat,type); if(v==='.')v='';
+  if(minorRoute()){
+    if(route==='A'){ if(no===17||no===18||no===19) return ''; if(no===20||no===21) return 'C'; }
+  }
+  return v;
 }
-$('cats').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){cat=+b.dataset.i;['q1','q2','q3','q4'].forEach(function(q){$(q).checked=false});drawReg()}});
+function buildCats(){
+  $('cats').innerHTML=CATS.map(function(c,i){return '<button class="pill" data-i="'+i+'" aria-pressed="'+(i===cat)+'">'+c+'</button>'}).join('');
+  $('types').innerHTML=TYPES.map(function(c,i){var dis=(cat===5&&i===0);return '<button class="pill" data-t="'+i+'" aria-pressed="'+(i===type)+'"'+(dis?' disabled style="opacity:.35"':'')+'>'+c+'</button>'}).join('');
+  $('routes').innerHTML=[['A','Route A: 5-year proof'],['B','Route B: standard documents']].map(function(r){return '<button class="pill" data-r="'+r[0]+'" aria-pressed="'+(route===r[0])+'">'+r[1]+'</button>'}).join('');
+  $('routeRow').style.display=minorRoute()?'flex':'none';
+  $('regNote').textContent=FURSAN[cat];
+}
+function drawReg(){
+  if(cat===5&&type===0)type=1;
+  buildCats();
+  var need=[];DOCS.forEach(function(d){var l=levelFor(d);if(l==='C'||l==='I'||l==='O')need.push({d:d,l:l})});
+  var req=need.filter(function(x){return x.l==='C'});
+  var done=req.filter(function(x){return ticks[cat+'_'+type+'_'+route+'_'+x.d[0]]}).length;
+  $('phoneTitle').textContent='Omar (sample) · '+CATS[cat]+' · '+TYPES[type];
+  $('bar').style.width=(req.length?Math.round(100*done/req.length):0)+'%';
+  $('barTxt').textContent=done+' of '+req.length+' required done';
+  $('list').innerHTML=need.map(function(x){var k=cat+'_'+type+'_'+route+'_'+x.d[0],on=!!ticks[k];
+    return '<button class="chk'+(on?' done':'')+'" data-k="'+k+'"><span class="bx">'+(on?'&#10003;':'')+'</span><span class="t"><span>'+esc(x.d[1])+' <span class="tag">'+esc(x.d[2])+'</span>'+(x.l!=='C'?' <span class="tag w">'+(x.l==='I'?'if you have it':'optional')+'</span>':'')+'</span>'+(x.d[4]?'<span class="note">'+esc(x.d[4])+'</span>':'')+'</span></button>'}).join('');
+  var rows='<thead><tr><th>#</th><th>Document (minor amateur)</th>'+CATS.map(function(c,i){return '<th'+(i===cat?' style="background:var(--accent-soft)"':'')+'>'+esc(c)+'</th>'}).join('')+'</tr></thead><tbody>'+
+   DOCS.filter(function(d){return d[0]!==15&&d[0]!==7&&d[0]!==16}).map(function(d){return '<tr><td>'+d[0]+'</td><td>'+esc(d[1])+'</td>'+CATS.map(function(c,i){var t=(i===5?1:0),v=cellVal(d,i,t);var txt=v==='C'?'&#10003;':v==='I'?'if any':v==='O'?'optional':'';return '<td'+(i===cat?' style="background:var(--accent-soft)"':'')+'>'+txt+'</td>'}).join('')+'</tr>'}).join('')+
+   '<tr><td></td><td><b>Compulsory</b></td>'+CATS.map(function(c,i){var t=(i===5?1:0),n=DOCS.filter(function(d){return d[0]!==15&&d[0]!==7&&d[0]!==16&&cellVal(d,i,t)==='C'}).length;return '<td'+(i===cat?' style="background:var(--accent-soft)"':'')+'><b>'+n+'</b></td>'}).join('')+'</tr></tbody>';
+  $('matrix').innerHTML=rows;
+  var steps=['Collecting documents','Ready for review','Needs fixes','Approved','Submitted to UAE FA','With UAE FA / FIFA (5 working days to review, plus TMS)','Registered'];
+  var cur=(req.length&&done===req.length)?1:0;
+  $('pipe').innerHTML=steps.map(function(t,i){return '<span class="s'+(i===cur?' on':'')+'">'+t+'</span>'+(i<steps.length-1?'<span class="note">&rarr;</span>':'')}).join('');
+}
+$('cats').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){cat=+b.dataset.i;drawReg()}});
+$('types').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b&&!b.disabled){type=+b.dataset.t;drawReg()}});
+$('routes').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){route=b.dataset.r;drawReg()}});
+$('u79').addEventListener('change',function(){u79=$('u79').checked;drawReg()});
 $('list').addEventListener('click',function(e){var b=e.target.closest('.chk');if(b){ticks[b.dataset.k]=!ticks[b.dataset.k];drawReg()}});
-['q1','q2','q3','q4'].forEach(function(q){$(q).addEventListener('change',function(){
-  cat=$('q1').checked?0:$('q2').checked?1:$('q3').checked?2:$('q4').checked?3:4; drawReg()})});
 drawReg();
+
+/* ---------- staff registration ---------- */
+var STAFFT=['Technical','Administrative','Medical','Board of directors','Organisers'];
+var STAFFD=[['Registration form','YYYYY'],['Recent photo','YYYYY'],['ID copy','YYYYY'],['Passport copy (passport holders)','YYYYY'],['Employment contract (Arabic or translated) or board decision','Y-YYY'],['Professional licence','Y-Y--'],['Certificate of good conduct','-Y--Y'],['Qualification or experience','-Y---']];
+var STAFFM={'Team Doctor':['ACLS certificate (valid 2 years, in person)','BLS certificate (valid 2 years, in person)'],'Physiotherapist / Paramedic / Nurse':['BLS certificate (valid 2 years, in person)'],'Psychologist / Nutritionist / Masseur / Sports Scientist':['CV in English','Attested qualifications in English','Experience certificates in English','Professional licence, if any']};
+var stT=2;
+function drawStaff(){
+  $('stTypes').innerHTML=STAFFT.map(function(t,i){return '<button class="pill" data-i="'+i+'" aria-pressed="'+(i===stT)+'">'+t+'</button>'}).join('');
+  $('stMedRow').style.display=stT===2?'flex':'none';
+  var items=STAFFD.filter(function(r){return r[1].charAt(stT)==='Y'}).map(function(r){return r[0]});
+  if(stT===2&&$('stMed').value.indexOf('Psychologist')===0) items=items.filter(function(x){return x!=='Professional licence'});
+  if(stT===2) items=items.concat(STAFFM[$('stMed').value]||[]).concat(['If employed elsewhere: no-objection letter, or a written undertaking by the club']);
+  $('stList').innerHTML=items.map(function(t){return '<div class="sess"><span>'+esc(t)+'</span><span class="tag">required</span></div>'}).join('');
+}
+$('stTypes').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){stT=+b.dataset.i;drawStaff()}});
+$('stMed').addEventListener('change',drawStaff);
+drawStaff();
+
+/* ---------- photo helper (runs in the browser) ---------- */
+function lum(r,g,b){return 0.2126*r+0.7152*g+0.0722*b}
+function lapVar(g,w,h){var n=0,sum=0,sq=0;for(var y=1;y<h-1;y++)for(var x=1;x<w-1;x++){var i=y*w+x,v=4*g[i]-g[i-1]-g[i+1]-g[i-w]-g[i+w];sum+=v;sq+=v*v;n++}var m=sum/n;return sq/n-m*m}
+function bgStats(d,w,h){var sum=0,col=0,n=0;function px(x,y){var i=(y*w+x)*4;var r=d[i],g=d[i+1],b=d[i+2];sum+=lum(r,g,b);col+=Math.max(Math.abs(r-g),Math.abs(g-b),Math.abs(r-b));n++}
+  for(var y=0;y<Math.round(h*0.12);y++)for(var x=0;x<w;x+=4)px(x,y);
+  for(var y2=Math.round(h*0.12);y2<Math.round(h*0.5);y2+=2)for(var x2=0;x2<Math.round(w*0.08);x2+=2){px(x2,y2);px(w-1-x2,y2)}
+  return {lum:sum/n,col:col/n}}
+var phImg=null,phUrl=null;
+function drawPhoto(){
+  var cv=$('phCv'),ctx=cv.getContext('2d'),W=472,H=709;
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+  var box=$('phChecks');
+  if(!phImg){ctx.fillStyle='#d7ded8';ctx.fillRect(W*0.3,H*0.2,W*0.4,H*0.5);box.innerHTML='<div class="sess"><span>Choose a photo to see the checks</span><span class="tag">waiting</span></div>';return}
+  var zoom=(+$('phZoom').value)/100,ox=(+$('phX').value)/100,oy=(+$('phY').value)/100;
+  var base=Math.max(W/phImg.width,H/phImg.height),scale=base*zoom;
+  var dw=phImg.width*scale,dh=phImg.height*scale;
+  var dx=(W-dw)/2+ox*(dw-W)/2,dy=(H-dh)/2+oy*(dh-H)/2;
+  ctx.drawImage(phImg,dx,dy,dw,dh);
+  var img=ctx.getImageData(0,0,W,H),bg=bgStats(img.data,W,H);
+  var g=new Float32Array(118*177),sc=document.createElement('canvas');sc.width=118;sc.height=177;var sx=sc.getContext('2d');sx.drawImage(cv,0,0,118,177);var sd=sx.getImageData(0,0,118,177).data;for(var i=0;i<118*177;i++)g[i]=lum(sd[i*4],sd[i*4+1],sd[i*4+2]);
+  var sharp=lapVar(g,118,177),srcOk=scale<=1.0001;
+  var checks=[[true,'Output size 472 x 709 px = 4 x 6 cm at 300 dpi'],[srcOk,srcOk?'Source has enough pixels for this crop':'Zoomed past the photo\'s real resolution: too soft'],[bg.lum>=225&&bg.col<=24,bg.lum>=225&&bg.col<=24?'Background looks white':'Background does not look plain white (brightness '+Math.round(bg.lum)+')'],[sharp>60,sharp>60?'Photo looks sharp':'Photo looks blurry'],[null,'Head and shoulders only, club kit, head uncovered: checked by a person now, by face detection in the product']];
+  box.innerHTML=checks.map(function(c){return '<div class="sess"><span>'+esc(c[1])+'</span><span class="tag '+(c[0]===null?'':(c[0]?'a':'b'))+'">'+(c[0]===null?'person':(c[0]?'pass':'fix'))+'</span></div>'}).join('');
+}
+$('phFile').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(!f)return;if(phUrl)URL.revokeObjectURL(phUrl);phUrl=URL.createObjectURL(f);var im=new Image();im.onload=function(){phImg=im;$('phZoom').value=100;$('phX').value=0;$('phY').value=0;drawPhoto()};im.src=phUrl});
+['phZoom','phX','phY'].forEach(function(id){$(id).addEventListener('input',drawPhoto)});
+drawPhoto();
 
 /* ---------- foundation ---------- */
 var BLOCKS=[
@@ -639,14 +736,14 @@ var md={home:true,coach:false,med:false};
 function drawMd(){
   $('mdHome').setAttribute('aria-pressed',md.home);$('mdAway').setAttribute('aria-pressed',!md.home);$('mdCoach').setAttribute('aria-pressed',md.coach);$('mdMed').setAttribute('aria-pressed',md.med);
   $('mdTitle').textContent='U12 vs Al Wasl · Sat 4:00 pm · '+(md.home?'Home':'Away');
-  var rows=[[true,'All 14 players listed are authorised on FANet'],[!md.coach,md.coach?'Coach Hamad: FANet authorisation expired last week (cannot enter the field)':'Both coaches authorised on FANet'],[!md.med,md.med?'Medical provider not yet confirmed for this match':'Medical provider confirmed (Dr Layla, Al Noor Medical)']];
+  var rows=[[true,'All 14 players listed hold valid UAE FA cards'],[!md.coach,md.coach?'Coach Hamad: accreditation card expired (cannot enter the field)':'Head coach and team manager hold valid cards'],[!md.med,md.med?'No doctor, physiotherapist, paramedic or nurse on the match list':'Physiotherapist (Al Noor Medical) on the match list'],[true,md.home?'Kit chosen in FA-Net (at least 48 hours ahead): official white kit':'Kit chosen in FA-Net (at least 48 hours ahead): official or reserve'],[true,md.home?'Home club duty: ambulance booked, arriving 1 hour before kick-off':'Away: the host club supplies ambulance and security']];
   $('mdChecks').innerHTML=rows.map(function(r){return '<div class="chk'+(r[0]?' done':'')+'"><span class="bx" style="'+(r[0]?'':'border-color:var(--bad);color:var(--bad)')+'">'+(r[0]?'&#10003;':'!')+'</span><span class="t" style="'+(r[0]?'':'text-decoration:none;color:var(--fg)')+'">'+esc(r[1])+'</span></div>'}).join('');
   var blocked=md.coach||md.med;
   $('mdStatus').className='msg'+(blocked?' w':'');
-  $('mdStatus').textContent=blocked?'Blocked: fix the red items before the sheet is submitted. Reminders go out automatically.':'Ready to submit.';
-  var told=[['Parents of the 14 selected players','WhatsApp','Kick-off, place, arrive by, kit to wear'],['Coaches and team manager','WhatsApp + app','Squad, kit bag, dressing room'],['Medical provider','WhatsApp or email link','Date, time, ground address; tap to confirm'],['Ground contact','Email','Arrival time, number of people']];
+  $('mdStatus').textContent=blocked?'Blocked: fix the red items before the match list closes, 90 minutes before kick-off. Reminders go out automatically.':'Ready: the match list can be entered from 24 hours before kick-off.';
+  var told=[['Parents of the 14 selected players','WhatsApp','Kick-off, place, arrive by, kit to wear'],['Coaches and team manager','WhatsApp + app','Cards to carry, kit bag, be present at verification'],['Medical staff or their company','WhatsApp or email link','Date, time, ground; must be on the list and present at verification'],['Ground contact','Email','Arrival time, number of people']];
   $('mdTold').innerHTML=told.map(function(t){return '<div class="docrow" style="cursor:default"><span class="n"><b>'+esc(t[0])+'</b><span class="note">'+esc(t[2])+'</span></span><span class="tag a">'+esc(t[1])+'</span></div>'}).join('');
-  var out=md.home?['Home kit (white)','#EDEDED']:['Away kit (red)','#C8452B'];
+  var out=md.home?['Official kit (white)','#EDEDED']:['Official, or reserve (red) if colours clash','#C8452B'];
   $('mdKit').innerHTML='<span class="lg" style="--gc:'+out[1]+'">Outfield: '+out[0]+'</span><span class="lg" style="--gc:#2FA84F">Goalkeeper: green</span>';
 }
 ['mdHome','mdAway','mdCoach','mdMed'].forEach(function(id){$(id).addEventListener('click',function(){
@@ -729,24 +826,47 @@ $('perG').addEventListener('change',drawPer);$('perD').addEventListener('input',
 document.querySelectorAll('#p-schedule .pill[data-d]').forEach(function(b){b.addEventListener('click',function(){$('perD').value=b.dataset.d;drawPer()})});
 drawPer();
 
-/* ---------- group checker ---------- */
-var GY={'U5/6':[2021,2022],'U7':[2020,2020],'U8':[2019,2019],'U9':[2018,2018],'U10':[2017,2017],'U11':[2016,2016],'U12':[2015,2015],'U13':[2014,2014],'U14':[2013,2013],'U15':[2012,2012],'U16':[2011,2011],'U18':[2009,2010]};
+/* ---------- UAE FA team checker ---------- */
+var TEAMS=[['U7',[2020]],['U8',[2019]],['U9',[2018]],['U10',[2017]],['U11',[2016]],['U12',[2015]],['U13',[2014]],['U14',[2013]],['U15',[2012]],['U16',[2011]],['U17',[2010]],['U19',[2008,2009]],['U21',[2005,2006,2007]]];
+var PUP={'U21':[2010],'U19':[2010,2011],'U17':[2011,2012],'U16':[2012,2013],'U15':[2013,2014],'U14':[2014,2015],'U13':[2015],'U12':[2016],'U11':[2017],'U10':[2018],'U9':[2019],'U8':[2020],'U7':[]};
+var PDOWN={'U14':2012,'U13':2013,'U12':2014,'U11':2015,'U10':2016};
 var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-(function(){
-  var y='';for(var i=2022;i>=2008;i--)y+='<option'+(i===2015?' selected':'')+'>'+i+'</option>';
-  $('gcY').innerHTML=y;$('gcM').innerHTML=MONTHS.map(function(m,i){return '<option value="'+(i+1)+'"'+(i===9?' selected':'')+'>'+m+'</option>'}).join('');
-  $('gcG').innerHTML=Object.keys(GY).map(function(k){return '<option'+(k==='U11'?' selected':'')+'>'+k+'</option>'}).join('');
-  function calc(){
-    var by=+$('gcY').value,m=+$('gcM').value,g=$('gcG').value,r=GY[g],own='',k;
-    for(k in GY){if(by>=GY[k][0]&&by<=GY[k][1])own=k}
-    var reg=own||('no group in this list (U'+(2027-by)+')'),txt='Registered in '+reg+' (2027 minus '+by+' = U'+(2027-by)+'). ';
-    if(by>=r[0]&&by<=r[1])txt+='Playing in '+g+': their own group.';
-    else if(by>r[1])txt+='Playing UP in '+g+': allowed.';
-    else if(by===r[0]-1&&m>=9)txt+='Playing DOWN in '+g+': allowed, because born in '+MONTHS[m-1]+' of the year just before the group\'s year.';
-    else txt+='Playing DOWN in '+g+': not allowed. Only September to December births of the year just before the group\'s year may play down.';
-    $('gcOut').textContent=txt;
+function teamOf(by){for(var i=0;i<TEAMS.length;i++){if(TEAMS[i][1].indexOf(by)>-1)return i}return -1}
+function tIdx(n){for(var i=0;i<TEAMS.length;i++){if(TEAMS[i][0]===n)return i}return -1}
+function checkTeam(by,m,tn,hasOwn){
+  var oi=teamOf(by),ti=tIdx(tn),out=[];
+  if(oi<0) return ['No UAE FA youth team covers birth year '+by+' (teams cover 2005 to 2020).'];
+  var own=TEAMS[oi][0],T=TEAMS[ti];
+  out.push('Registered in: '+own+' (by birth year).');
+  var d=ti-oi,reg;
+  if(d===0) reg='Registering in '+tn+': this is the child\'s own team.';
+  else if(d>0){
+    var lv=(oi<=tIdx('U11'))?1:2;
+    if(hasOwn) reg='Registering in the older team '+tn+': not allowed, because the club fields the child\'s own team '+own+'.';
+    else if(d<=lv) reg='Registering in the older team '+tn+': allowed, because the club has no '+own+' team ('+d+' level'+(d>1?'s':'')+', maximum '+lv+').';
+    else reg='Registering in '+tn+': not allowed, that is '+d+' levels up and the maximum is '+lv+'.';
+  } else {
+    var inRange=tIdx(tn)>=tIdx('U10')&&tIdx(tn)<=tIdx('U14');
+    if(inRange&&by===T[1][0]-1&&m>=9&&!hasOwn) reg='Registering in the younger team '+tn+': allowed (born September to December of the year before, and the club has no '+own+' team).';
+    else if(hasOwn&&inRange&&by===T[1][0]-1&&m>=9) reg='Registering in the younger team '+tn+': not allowed, because the club fields the direct higher team '+own+'.';
+    else reg='Registering in the younger team '+tn+': not allowed. Only September to December births of the year before, for U10 to U14.';
   }
-  ['gcY','gcM','gcG'].forEach(function(id){$(id).addEventListener('change',calc)});calc();
+  out.push(reg);
+  var part;
+  if(T[1].indexOf(by)>-1) part='Playing in '+tn+' matches: their own team.';
+  else if((PUP[tn]||[]).indexOf(by)>-1) part='Playing in '+tn+' matches: allowed as a younger player'+(tn==='U21'?' (must have completed 16 years)':'')+'.';
+  else if(PDOWN[tn]===by&&m>=9) part='Playing in '+tn+' matches: allowed, but only 2 such older players (born September to December) per match.';
+  else part='Playing in '+tn+' matches: not allowed.';
+  out.push(part);
+  out.push('If the club has an A and a B team in the age group, the child plays for only one of them (fine AED 10,000 if not).');
+  return out;
+}
+(function(){
+  var y='';for(var i=2022;i>=2005;i--)y+='<option'+(i===2015?' selected':'')+'>'+i+'</option>';
+  $('gcY').innerHTML=y;$('gcM').innerHTML=MONTHS.map(function(m,i){return '<option value="'+(i+1)+'"'+(i===9?' selected':'')+'>'+m+'</option>'}).join('');
+  $('gcG').innerHTML=TEAMS.map(function(t){return '<option'+(t[0]==='U11'?' selected':'')+'>'+t[0]+'</option>'}).join('');
+  function calc(){$('gcOut').innerHTML=checkTeam(+$('gcY').value,+$('gcM').value,$('gcG').value,$('gcOwn').checked).map(esc).join('<br>')}
+  ['gcY','gcM','gcG'].forEach(function(id){$(id).addEventListener('change',calc)});$('gcOwn').addEventListener('change',calc);calc();
 })();
 
 /* ---------- trial allowance ---------- */
@@ -812,7 +932,7 @@ var SET=[
  ['Prospects',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Prospect sources and landing pages','Instagram, WhatsApp, website, referral, walk-in'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
  ['Messages',[['Channels on','email, WhatsApp'],['Quiet hours (marketing)','9 pm - 7 am'],['Templates and wording','editable'],['Sender names','club name']]],
  ['Coach alerts',[['Channel per coach','app / email / WhatsApp'],['Instant or digest','digest 4 pm'],['Call tasks per week','max 3'],['What WhatsApp shows','first name, class, paid']]],
- ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['Terms per season','3 (Term 1, Terms 1+2, year)'],['Photo rule','white background, club T-shirt']]],
+ ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['Terms per season','3 (Term 1, Terms 1+2, year)'],['Photo rule','4 x 6 cm, white background, club kit (UAE FA)'],['Photo helper','built-in crop and checks; outside links off by default'],['Rule set','UAE FA 2026/27: category x type x document'],['FA-Net user and signatory','named people']]],
  ['Privacy',[['Age of consent for data','18'],['Minimum age for own login','13'],['Deletion undo window','7 days'],['Financial records kept','1 year'],['Consent wording versions','tracked']]]
 ];
 var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Fee amounts (recorded by staff)','Default owner rule','Capacity and waiting list','Default session length','Default venue per group','More trials'];
@@ -820,15 +940,17 @@ $('sgrid').innerHTML=SET.map(function(g){return '<div class="card"><h3>'+g[0]+'<
 
 /* ---------- decisions ---------- */
 var QS=[
- 'Please upload the official UAE FA registration documents (player and staff) and the UAE FA medical form. They are on your computer; this cloud session cannot see them.',
- '"UAE Child": confirm it means a child of a UAE-national mother. (Only "Local = UAE national" is confirmed.)',
- 'What exactly is the PCMA test? Does the orthopaedic doctor sign on paper, or can the clinic upload the form?',
- 'Photo: passport size, white background, club T-shirt. Does UAE FA publish an exact size?',
- 'Do all clubs have exactly 3 terms a season? Who sets the dates?',
- 'Is there a downloadable fixture list from UAE FA (file or calendar), or only the website?',
- 'Wallet ticket: iPhone only at first, or Android too? (Apple needs a developer account.)',
- 'Which club-specific forms exist besides the terms and conditions? Please share blanks.',
- 'Product name: Athlon or Sportal? Trademark and domain need checking before you choose.',
+ 'Please upload the UAE FA Licensing Regulations again. The upload failed. It may hold the fine for a missing medical professional and the staff licensing rules.',
+ 'Use UAE FA\'s own structure (6 categories x 3 player types) for the rules? That is what this page now shows. Recommended.',
+ 'What is a "Passport Holder" player in UAE FA\'s categories?',
+ 'Please share the DOFA and YFL registration and competition documents. You said DOFA is lighter.',
+ 'A and B teams: does a club always enter A at UAE FA and B at DOFA, or can both enter UAE FA (UAE FA allows A and B in an age group)?',
+ 'Please share blanks of the medical Form (1) and Form (2) and the other UAE FA forms (registration form, guardian declaration).',
+ 'Which UAE FA teams does a typical academy field? It decides the "club lacks the team" rules.',
+ 'Who holds the FA-Net user role at a club, and who is the authorised signatory?',
+ 'Photo helper: is a built-in crop and check enough for now, or do you also want a background fix in the pilot?',
+ 'Wallet ticket: iPhone first, or Android too? (Apple needs a developer account.)',
+ 'Which club-specific forms exist besides terms and conditions? Please share blanks.',
  'Which programme types does a club have (for example Academy and Squad), and do fees differ?',
  'Medical company: how does the club check today that a professional is pre-registered?',
  'What does FANet show when it rejects an application?'
@@ -839,7 +961,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = first term paid: Term 1, Terms 1+2, or the full year','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','Registration group = 2027 minus birth year; play up allowed; play down only Sep-Dec births of the previous year','Rules: federation layer + club add-ons; forms versioned by season','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Kits: home and away for matches, practice separate, goalkeeper optional, manual override','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = first term paid: Term 1, Terms 1+2, or the full year','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Product name: Sportal for now','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 

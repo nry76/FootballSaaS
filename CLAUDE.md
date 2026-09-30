@@ -26,6 +26,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `docs/UI_UX_PLAN.md` | Earlier text wireframes (dashboard, coach view, parent home, compliance) |
 | `docs/TECH_STACK.md` | Supabase (Frankfurt), Next.js, PWA only, and why |
 | `docs/DECISIONS.md` | **Source of truth for what is decided and what is open** |
+| `docs/reference/UAEFA_OFFICIAL_2026_27.md` | **Authoritative UAE FA rules** (registration circular, competitions circular and regulations): categories, documents, photo, medical, staff, dates, fees, fines, kits, numbers, match list, A/B teams |
 | `docs/reference/CLUB_REGISTRATION_LISTS.md` | How four clubs list requirements, the UAE FA minor-player form, KHDA certificate, one club's T&Cs: the key finding is federation rules + club add-ons |
 | `docs/reference/` | Hand transcriptions of the club's UAE FA 2026/27 document list and weekly schedule (not official) |
 | `docs/visual/product-plan.html` | The visual plan (open in a browser). Kept in step with the docs |
