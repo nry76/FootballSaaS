@@ -1,5 +1,7 @@
 # Schema plan (v0.1, for review, no SQL yet)
 
+> **Note (v0.4):** the current focus and the newest structural changes are in [MVP_PLAN.md](MVP_PLAN.md). Where the two differ, MVP_PLAN.md wins.
+
 Status: **PLAN ONLY. Nothing here is approved.** The SQL is written after you approve this document.
 Decisions this plan relies on are in [DECISIONS.md](DECISIONS.md).
 
