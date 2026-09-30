@@ -79,7 +79,7 @@ Reported by the owner, **not yet checked against UAE FA regulations**: coaches a
 | # | Change | Why |
 |---|---|---|
 | S20 | **Rule sets are keyed by category x player type x document**, with **route choices** (bundles of alternatives) and **team-level requirements** (medical form 1 or 2 depends on the team) | UAE FA's own table |
-| S21 | **Three layers for teams:** a club's training group, a UAE FA team entry (by birth year, including A and B), and the squad. U18, U5 and U6 exist only as training groups | UAE FA has no U18 team |
+| S21 | **Three layers for teams:** a club's training group, a UAE FA team entry (by birth year, including A and B), and the squad. U18, U5 and U6 exist only as training groups. **Each team (A or B) has its own competition entry**: A may be at UAE FA and B at DOFA or YFL | UAE FA has no U18 team |
 | S22 | **Registration rules and participation rules are separate rule types** with their own inputs (does the club field the team; how many older players per match; A and B may not cross) | The circulars treat them separately |
 | S23 | **Federation data per season**: teams and birth years, registration periods, request fees, fines, participation fees. Loaded as data, never coded | Changes every season |
 | S24 | **Validity windows and card validity** as first-class: medical valid from 1 June to season end; BLS and ACLS two years; card valid to season end; review takes 5 working days | Reminders depend on them |
