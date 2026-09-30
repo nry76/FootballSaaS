@@ -1,5 +1,7 @@
 # MVP plan v0.4: Trials, Registration and Scheduling (for review, no SQL yet)
 
+> **Note (v0.7):** scope is now defined in [PILOT_SCOPE.md](PILOT_SCOPE.md). Payments and the gateway are a later build; the reviewer role is assignable; a person is an "athlete" underneath. Where this file differs, PILOT_SCOPE.md and DECISIONS.md win.
+
 Status: **PLAN ONLY. Nothing here is approved.**
 Adds to, and where they differ overrides, [SCHEMA_PLAN.md](SCHEMA_PLAN.md) v0.2. Decisions are logged in [DECISIONS.md](DECISIONS.md).
 

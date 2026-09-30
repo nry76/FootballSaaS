@@ -9,7 +9,7 @@ Core idea: a parent does the whole journey alone (enquiry, trial, commit and pay
 ## Current phase: PLANNING ONLY
 **Do not write SQL or application code until the product owner (the repository owner) explicitly approves the plan.** They want to review and iterate first so nothing is redone. Present plans visually (see below), not as long Markdown.
 
-MVP scope: **trials + lead management + UAE FA registration + scheduling**, on a safe foundation (tenants, roles, consent, deletion), with **payments including an online gateway** (provider still parked until after the pilot exists).
+Pilot scope (see `docs/PILOT_SCOPE.md`): **lead management (social, search, website) + FANet.ae registration workflow + scheduling + robust status reporting and communication (WhatsApp, email)**, on a safe foundation (tenants, roles, consent, deletion). **Online payments, the gateway and Zoho Books are later builds**; the pilot records "fee received" by staff. Where PILOT_SCOPE.md and older plans differ, PILOT_SCOPE.md and DECISIONS.md win.
 
 ## Who you are talking to
 Non-technical product owner. Prefer plain words, pictures and short answers. Ask before structural decisions. Say plainly when something is unverified. When they answer a question, record it in `docs/DECISIONS.md`.
@@ -17,6 +17,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 ## Where things are
 | Path | What |
 |---|---|
+| `docs/PILOT_SCOPE.md` | **Current scope.** Pilot pillars, FANet registration flow, AI screening rules, lead sources, what changed |
 | `docs/MVP_PLAN.md` | Lifecycle, foundation changes F1-F15, registration rules, schedule builder, questions |
 | `docs/LEADS_PLAN.md` | Lead pipeline, channels (WhatsApp/Instagram/email), coach feed, paid classes, phases, foundation changes F16-F23 |
 | `docs/FOUNDATION_PLAN.md` | **Read this early.** The 12 shared foundation blocks, multi-sport approach, registration status design, build order |
@@ -31,7 +32,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `drafts/db-v0.2-unapproved/` | First SQL draft. **Reference only, out of date, never run it** |
 
 ## Design stance
-**Foundation first, no rebuilds.** Build shared blocks (tenancy, people, settings, consent, rules engine, documents, status engine, messages, tasks, scheduling engine, ledger, audit) and put features on top through them. **Sport is data, not code**: a person is a `participant` underneath and "player" on screen; positions, age-group naming, rule sets and switches like shirt numbers live in a sport pack. Only football is built; do not build a generic sport designer. Purpose of the product: make **compliance easy for UAE football academies**; wider class management comes later.
+**Foundation first, no rebuilds.** Build shared blocks (tenancy, people, settings, consent, rules engine, documents, status engine, messages, tasks, scheduling engine, ledger, audit) and put features on top through them. **Sport is data, not code**: a person is an `athlete` underneath and the sport pack picks the word on screen (Player, Swimmer, Fencer...); positions, age-group naming, rule sets and switches like shirt numbers live in a sport pack. Only football is built; do not build a generic sport designer. Purpose of the product: make **compliance easy for UAE football academies**; wider class management comes later.
 
 ## Hard rules
 1. Never commit secrets. Environment variables and a `.env.example` only.

@@ -38,7 +38,8 @@ Sport is **data**, not a separate product. Do not build a "sport designer". Foot
 | # | Change | Why |
 |---|---|---|
 | S1 | A `sport` on every group, competition, rule set and position list. A club offers one or more sports | A club may run football and another sport |
-| S2 | Underneath, a person is a **participant**; the screen says "player", "swimmer", etc. from a per-sport dictionary | Avoids football words in the data |
+| S2 | Underneath, a person is an **athlete**; the screen says "player", "swimmer", "fencer", etc. from a per-sport dictionary (fallback "Athlete") | Avoids football words in the data |
+| S7 | A sport pack says how people **take part**: *team picked for each fixture* (football: match sheet) or *individual entries to events* (swimming, tennis, fencing). Individual sports are simpler | Football is the hardest case, so the foundation covers the others |
 | S3 | Football-only ideas become **switches on the sport pack**: shirt numbers, match sheets, fines, goalkeeper ranges | Other sports may not have them |
 | S4 | "Age group" becomes a general **group** (age group, team, level, custom like "2nd Team"), still defined by birth years when it is an age group | Fits football and other sports |
 | S5 | Rule sets are keyed by **sport × governing body × season** (UAE FA 2026/27 is one) | Same engine, other bodies later |
@@ -71,8 +72,11 @@ Your pain: parents do not know where they are, cannot tell if documents are comp
 
 Each step ships something usable, but always through the blocks, never around them.
 
-## 6. Questions
-1. "Participant" underneath, "player" on screen: acceptable?
-2. Which other sport is most likely to come second, for a paper test?
-3. Review-time target for uploaded documents?
-4. How does UAE FA tell the club about a rejection today, and how detailed is it?
+## 6. Answered
+* Naming: **athlete** underneath, sport word on screen (decision 47).
+* Likely later sports: swimming, tennis, fencing; individual sports are simpler.
+* Review-time targets: none yet (decision 48).
+* Today the club re-enters documents by hand into FANet from parents' WhatsApp messages (decision 49).
+
+## 7. Still open
+See PILOT_SCOPE.md section 8 (product name, UAE FA's stance on helper tools, ads scope, social channels, default reviewer, document naming list, what FANet shows on rejection).
