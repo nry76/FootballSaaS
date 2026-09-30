@@ -91,8 +91,8 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 1. **Please upload the UAE FA Licensing Regulations again** (the upload failed). It may hold the fine for a missing medical professional and staff licensing rules.
 2. Use UAE FA's own structure (6 categories x player type) for the rule set? (Recommended.)
 3. What is a **"Passport Holder"** player in UAE FA's categories?
-4. Please share **DOFA** and **YFL** registration and competition documents. You said DOFA is lighter.
-5. **A and B across competitions:** a small club enters A at UAE FA and B at DOFA or YFL. May a child registered with the A team also play for the B team in DOFA or YFL, and the reverse? (DOFA and YFL rules needed.)
+4. ~~DOFA and YFL documents~~ Not needed now: **UAE FA first**; DOFA and YFL are light and come later.
+5. **A and B across competitions:** answered (possible but rare). Still to check with UAE FA: does playing in DOFA or YFL ever count against UAE FA's A/B crossing rule (fine AED 10,000)?
 6. Please share blanks of the **medical Form (1) and Form (2)**, and the other UAE FA forms (registration form, guardian declaration).
 7. Which **UAE FA teams** does a typical academy field (for the "club lacks the team" rules)?
 8. Who holds the **FA-Net user** role at a club, and who is the authorised signatory?
