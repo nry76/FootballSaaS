@@ -1,0 +1,60 @@
+# FootballSaaS: project brief for Claude Code
+
+Read this first. It replaces the chat history, which does not travel with the repository.
+
+## What this is
+A multi-tenant SaaS for football clubs and academies, starting with UAE clubs. First customer type: an academy like Fursan Hispania (pilot target; **not yet approached**, so nothing here is promised to anyone).
+Core idea: a parent does the whole journey alone (enquiry, trial, commit and pay, documents, UAE FA registration, schedule), and coaches and managers stop answering one-to-one questions.
+
+## Current phase: PLANNING ONLY
+**Do not write SQL or application code until the product owner (the repository owner) explicitly approves the plan.** They want to review and iterate first so nothing is redone. Present plans visually (see below), not as long Markdown.
+
+MVP scope: **trials + lead management + UAE FA registration + scheduling**, on a safe foundation (tenants, roles, consent, deletion), with **payments including an online gateway** (provider still parked until after the pilot exists).
+
+## Who you are talking to
+Non-technical product owner. Prefer plain words, pictures and short answers. Ask before structural decisions. Say plainly when something is unverified. When they answer a question, record it in `docs/DECISIONS.md`.
+
+## Where things are
+| Path | What |
+|---|---|
+| `docs/MVP_PLAN.md` | Lifecycle, foundation changes F1-F15, registration rules, schedule builder, questions |
+| `docs/LEADS_PLAN.md` | Lead pipeline, channels (WhatsApp/Instagram/email), coach feed, paid classes, phases, foundation changes F16-F23 |
+| `docs/SCHEMA_PLAN.md` | Earlier (v0.2) table catalogue; MVP_PLAN and LEADS_PLAN override where they differ |
+| `docs/UI_UX_PLAN.md` | Earlier text wireframes (dashboard, coach view, parent home, compliance) |
+| `docs/TECH_STACK.md` | Supabase (Frankfurt), Next.js, PWA only, and why |
+| `docs/DECISIONS.md` | **Source of truth for what is decided and what is open** |
+| `docs/reference/` | Hand transcriptions of the club's UAE FA 2026/27 document list and weekly schedule (not official) |
+| `docs/visual/product-plan.html` | The visual plan (open in a browser). Kept in step with the docs |
+| `docs/visual/schema-plan-v0.2.html` | Older visual schema map (v0.2, out of date on MVP points) |
+| `drafts/db-v0.2-unapproved/` | First SQL draft. **Reference only, out of date, never run it** |
+
+## Hard rules
+1. Never commit secrets. Environment variables and a `.env.example` only.
+2. Row-level security on every table. Every tenant-owned row has `club_id`, and child tables use composite keys `(club_id, id)` so cross-club links are impossible.
+3. Under-18 data and parental consent are enforced in the database, not the UI. Prospects give only 7 fields (parent name, phone, WhatsApp, email; child name, birth date, position). Documents, photo and IDs only after commit and payment.
+4. Money is stored as whole numbers of the currency's smallest unit, with a currency code on every row. Currency is a club setting (default AED).
+5. Everything tunable is a **setting** with a club default, overridable per age group where it makes sense.
+6. Messages are two kinds: service and marketing, with separate recorded consent. Marketing only to people who contacted the club and opted in. UAE rules need a lawyer's confirmation.
+7. No leaderboards or ranking of children.
+8. Deletion: remove everything except financial records, kept 1 year (must be stated in the Terms).
+
+## Stack (agreed direction)
+Supabase (Postgres with RLS, Auth, Storage, Edge Functions, Vault, pg_cron), region **Frankfurt**; Next.js + TypeScript on Vercel; Tailwind + shadcn/ui; supabase-js with generated types (no ORM for user reads); **PWA only**, no app stores; English only (Arabic only in a few optional name fields); Vitest, Playwright, pgTAP; Sentry without session replay on children's screens.
+
+## Parked on purpose
+Payment provider/gateway, talks with Fursan, the WhatsApp number, AI photo and document reading, video, FANet.ae automation, legal review (consent age by country, UAE marketing rules, retention period).
+
+## Working with the visual plan
+`docs/visual/product-plan.html` is a plain HTML file with a small script; open it in a browser. When plans change, update the Markdown in `docs/` first, then the HTML to match. (On claude.ai it was also published as a private artifact; the file in the repo is the durable copy.)
+
+## Resuming locally
+```
+git clone https://github.com/nry76/FootballSaaS.git
+cd FootballSaaS
+git checkout claude/brave-planck-c47qs6   # the working branch
+claude                                    # start Claude Code in this folder
+```
+Then ask: "Read CLAUDE.md and docs/DECISIONS.md and tell me where we are."
+
+## Git
+Work on branch `claude/brave-planck-c47qs6`. Do not open pull requests unless asked.

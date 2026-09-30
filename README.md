@@ -9,6 +9,9 @@ A multi-tenant SaaS platform for UAE football clubs and academies: league compli
 | Document | What it is | Status |
 |---|---|---|
 | [docs/MVP_PLAN.md](docs/MVP_PLAN.md) | **Current focus:** trials, UAE FA registration and scheduling; lifecycle; real Fursan rules and calendar; foundation changes; open questions | Draft v0.4, awaiting review |
+| [docs/visual/product-plan.html](docs/visual/product-plan.html) | **Start here:** the plan as clickable pictures (download and open in a browser) | Draft v0.5 |
+| [CLAUDE.md](CLAUDE.md) | Project brief for Claude Code, so work can resume on any machine | Living |
+| [drafts/](drafts/db-v0.2-unapproved/README.md) | First SQL draft. Reference only, not approved, out of date | Parked |
 | [docs/LEADS_PLAN.md](docs/LEADS_PLAN.md) | Lead management and communication: pipeline, playbooks, channels (WhatsApp, Instagram, email), coach feed, paid classes, phases, questions | Draft v0.1, awaiting review |
 | [docs/reference/](docs/reference/) | Transcribed club inputs: UAE FA 2026/27 document list, Fursan weekly schedule | Reference |
 | [docs/SCHEMA_PLAN.md](docs/SCHEMA_PLAN.md) | Planned database: entity diagrams, table catalogue, jersey, consent and tenant-isolation logic, roles, data lifecycle | Draft v0.2; MVP_PLAN.md overrides where they differ |

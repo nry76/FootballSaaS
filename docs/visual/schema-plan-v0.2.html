@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FootballSaaS Schema Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: one calm reading column; a filter bar, then a grid of area cards, then three worked explainers.
+   Palette: chalk-line off-white, turf ink, touchline green accent, amber for "decide this". */
+:root{
+  --bg:#F3F5F1; --card:#FFFFFF; --fg:#13201A; --muted:#55665D; --line:#D7DED8;
+  --accent:#1B6B4E; --accent-soft:#DDEDE4; --accent-fg:#FFFFFF;
+  --warn:#9A4A0F; --warn-soft:#F8E9D8; --bad:#A3302B; --bad-soft:#F6DEDC;
+  --chip:#E8ECE7;
+  --display:'Archivo',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1613; --card:#16211C; --fg:#E7EFE9; --muted:#9BAEA3; --line:#2A3A32;
+  --accent:#5CC49A; --accent-soft:#1D3A2E; --accent-fg:#0E1613;
+  --warn:#F0B37A; --warn-soft:#3A2A18; --bad:#F09A94; --bad-soft:#3B1E1C; --chip:#22302A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1613; --card:#16211C; --fg:#E7EFE9; --muted:#9BAEA3; --line:#2A3A32;
+  --accent:#5CC49A; --accent-soft:#1D3A2E; --accent-fg:#0E1613;
+  --warn:#F0B37A; --warn-soft:#3A2A18; --bad:#F09A94; --bad-soft:#3B1E1C; --chip:#22302A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:1080px;margin-inline:auto;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:700}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.lede{max-width:65ch;color:var(--muted);font-size:16px}
+.status{display:inline-flex;gap:8px;align-items:center;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:4px 10px;font-size:13px;font-weight:600;width:fit-content}
+section{display:flex;flex-direction:column;gap:16px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.rule{border-top:3px solid var(--accent);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.rule b{font-family:var(--display)}
+.rule span{color:var(--muted);font-size:14px}
+
+/* filter bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.roles{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.roles .lab{font-size:13px;color:var(--muted);margin-inline-end:4px}
+button,input{font:inherit;color:inherit}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:13px;font-weight:500;min-height:36px}
+.pill[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.pill:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=search]{flex:1 1 220px;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 12px;min-height:38px}
+.hint{font-size:13px;color:var(--muted)}
+
+/* area cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px;align-items:start}
+details.area{background:var(--card);border:1px solid var(--line);border-radius:10px}
+details.area>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+details.area>summary::-webkit-details-marker{display:none}
+.area .top{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.area .count{font-size:12px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.area .blurb{color:var(--muted);font-size:14px}
+.area .links{font-size:12.5px;color:var(--muted)}
+.area .links b{color:var(--fg);font-weight:600}
+.area[open]>summary{border-bottom:1px solid var(--line)}
+.rows{display:flex;flex-direction:column}
+.row{padding:11px 16px;display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row.dim{opacity:.32}
+.row.hide{display:none}
+.tname{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);overflow-wrap:anywhere}
+.desc{font-size:14px}
+.who{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font-size:11.5px;background:var(--chip);border-radius:4px;padding:1px 7px;color:var(--muted);font-weight:600}
+.chip.on{background:var(--accent-soft);color:var(--accent)}
+.note{font-size:12.5px;color:var(--muted)}
+
+/* tables & explainers */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:start;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td:first-child{font-weight:600;white-space:nowrap}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.nums{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.n{aspect-ratio:1;min-height:30px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--card);cursor:pointer;padding:0}
+.n.taken{background:var(--chip);color:var(--muted);text-decoration:line-through;cursor:default}
+.n.res{background:var(--bad-soft);color:var(--bad);cursor:default}
+.n.both{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.n.pick{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:5px;vertical-align:-1px;border:1px solid var(--line)}
+.callout{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px;counter-reset:s}
+.step{border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px;background:var(--card)}
+.step.cur{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.step .st{font-family:var(--display);font-weight:700}
+.step .blk{font-size:13px;color:var(--muted)}
+.step button{align-self:start}
+.ok{color:var(--accent);font-weight:600}.no{color:var(--bad);font-weight:600}
+.q{display:flex;flex-direction:column;gap:8px;padding-inline-start:0;margin:0;list-style:none}
+.q li{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--warn);border-radius:8px;padding:10px 12px;font-size:14px}
+.q li b{font-weight:600}
+.q li span{color:var(--muted)}
+.ex{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bill{border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-width:150px;background:var(--bg)}
+.bill b{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:18px}
+footer{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.n,.pill{transition:background .12s,color .12s}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <span class="eyebrow">FootballSaaS · database plan v0.2</span>
+    <h1>What we will store, and who can see it</h1>
+    <p class="lede">A plain-language map of the planned database. Pick a role to see only what that person can see. Open any area for its tables. Nothing here is built yet.</p>
+    <span class="status">Plan only · nothing is approved · no code written</span>
+  </header>
+
+  <section aria-labelledby="rules">
+    <h2 id="rules">Five ideas the whole design rests on</h2>
+    <div class="rules">
+      <div class="rule"><b>Every club is walled off</b><span>Each record belongs to one club. The database itself refuses to link one club's data to another's.</span></div>
+      <div class="rule"><b>Children are protected in the database</b><span>Under 18: no personal data is used until the parent confirms by email. This is enforced below the app, so a bug cannot skip it.</span></div>
+      <div class="rule"><b>Few roles, many permissions</b><span>Manager, Admin, Coach, Player, Parent. A person can hold several roles, so a small club's owner can be Manager and Admin.</span></div>
+      <div class="rule"><b>Built for clubs worldwide</b><span>Currency, country, time zone, tax label and consent age are club settings. Default: AED, UAE, 18.</span></div>
+      <div class="rule"><b>No rankings of children</b><span>Progress is shown against the child's own past only. There is no leaderboard anywhere in the design.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="map">
+    <h2 id="map">The map: 13 areas</h2>
+    <div class="bar">
+      <div class="roles" role="group" aria-label="View as role">
+        <span class="lab">View as</span>
+        <button class="pill" data-role="" aria-pressed="true">Everyone</button>
+        <button class="pill" data-role="M" aria-pressed="false">Manager</button>
+        <button class="pill" data-role="A" aria-pressed="false">Admin</button>
+        <button class="pill" data-role="C" aria-pressed="false">Coach</button>
+        <button class="pill" data-role="P" aria-pressed="false">Parent</button>
+        <button class="pill" data-role="L" aria-pressed="false">Player</button>
+        <button class="pill" data-role="S" aria-pressed="false">Platform support</button>
+      </div>
+      <div class="tools">
+        <input id="q" type="search" placeholder="Search tables, e.g. fees, consent, jersey" aria-label="Search tables">
+        <button class="pill" id="toggle" aria-pressed="false">Expand all</button>
+      </div>
+      <p class="hint" id="hint">Showing every table. Coaches see only their own squads; parents only their own children; players only themselves.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section aria-labelledby="settings">
+    <h2 id="settings">Club settings (new: built for global clubs)</h2>
+    <div class="panel">
+      <p>The Manager sets these once when the club signs up. Defaults suit a UAE club, and every default can be changed.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Setting</th><th>Default</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Currency</td><td>AED</td><td>Used for fees, fines and reports. Any standard currency works.</td></tr>
+          <tr><td>Country and time zone</td><td>UAE · Asia/Dubai</td><td>Dates, times and which league templates are offered.</td></tr>
+          <tr><td>Tax label and rate</td><td>VAT · 5%</td><td>Could be GST, sales tax, or none.</td></tr>
+          <tr><td>Weekend days</td><td>Sat, Sun</td><td>Calendar and deadline reminders.</td></tr>
+          <tr><td>Age of consent for data</td><td>18</td><td>Below this age a parent must consent. Laws differ by country; a lawyer should confirm the value for each country we open in.</td></tr>
+          <tr><td>Minimum age for own login</td><td>13</td><td>Younger players never get a login; the parent acts for them.</td></tr>
+          <tr><td>Language</td><td>English</td><td>English only at launch. Arabic appears only in optional name fields a league may ask for, such as UAE FA.</td></tr>
+        </tbody></table></div>
+      <div class="ex" aria-label="Currency example">
+        <span class="hint">If a club switches currency later:</span>
+        <div class="bill"><span class="hint">Term 1 bill, issued before</span><br><b>AED 450</b></div>
+        <span aria-hidden="true">→</span>
+        <div class="bill"><span class="hint">Term 2 bill, issued after</span><br><b>EUR 120</b></div>
+      </div>
+      <p class="note">Every bill remembers its own currency. Old bills never change, and reports show each currency separately.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="how">
+    <h2 id="how">Three rules explained</h2>
+
+    <div class="panel">
+      <h3>1. One jersey number for a player who plays in two squads</h3>
+      <p>The player owns one number for the season. When Omar (U11) also plays U12, we show only numbers free in <b>both</b> squads, so the club buys one kit. Try it.</p>
+      <div class="two">
+        <div><p class="eyebrow">U11 (Omar's own squad)</p><div class="nums" id="g1" aria-label="U11 numbers 1 to 20"></div></div>
+        <div><p class="eyebrow">U12 (playing up)</p><div class="nums" id="g2" aria-label="U12 numbers 1 to 20"></div></div>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--chip)"></i>worn by someone else</span>
+        <span><i style="background:var(--bad-soft)"></i>reserved (goalkeeper or retired)</span>
+        <span><i style="background:var(--accent-soft);border-color:var(--accent)"></i>free in both squads: can be chosen</span>
+        <span><i style="background:var(--accent)"></i>chosen</span>
+      </div>
+      <div class="callout" id="jmsg">Choose a number that is highlighted green.</div>
+    </div>
+
+    <div class="panel">
+      <h3>2. The parent-consent gate for under-18s</h3>
+      <p>Click a stage to see what the system may hold about the child at that point.</p>
+      <div class="steps" id="steps"></div>
+      <p class="note">Turning 18: the player is asked for their own consent 30 days ahead. If it is not given within the grace period, the profile is hidden again until they consent.</p>
+    </div>
+
+    <div class="panel">
+      <h3>3. Deleting data</h3>
+      <p>When a parent or adult asks to delete, there is a 7-day undo window. After that:</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Data</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Login, name, contact details, date of birth</td><td class="ok">Deleted</td></tr>
+          <tr><td>Photos, ID images, documents, medical details</td><td class="ok">Deleted, files removed</td></tr>
+          <tr><td>Ratings, drills, attendance, badges</td><td class="ok">Deleted</td></tr>
+          <tr><td>Message text</td><td class="ok">Replaced with "[deleted]"; other people's side of the thread stays</td></tr>
+          <tr><td>Consent proof</td><td>Reduced to type, date and status; no email or IP</td></tr>
+          <tr><td>Payments, bills, refunds, invoices</td><td class="no">Kept 1 year, under a reference number instead of a name, then deleted</td></tr>
+          <tr><td>The deletion request and audit entries (no personal values)</td><td class="no">Kept 1 year</td></tr>
+        </tbody></table></div>
+      <p class="note">This is the wording the Terms and Privacy Policy will need. A lawyer must confirm whether 1 year is long enough for a club's tax and accounting duties.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="open">
+    <h2 id="open">Still to decide before any SQL</h2>
+    <ul class="q">
+      <li><b>Grace period after a player turns 18.</b> <span>Proposed 30 days. Do parents lose access at 18 unless the player links them?</span></li>
+      <li><b>Deletion undo window.</b> <span>Proposed 7 days.</span></li>
+      <li><b>Can Admins see medical records and staff documents,</b> <span>or Manager only?</span></li>
+      <li><b>Shortcut for existing rosters.</b> <span>May staff invite a parent by email to register their child, or must every parent start it themselves?</span></li>
+      <li><b>One account per club.</b> <span>A parent with children at two clubs needs a different email for each club. Accepted?</span></li>
+      <li><b>Platform support access.</b> <span>Read-only, up to 7 days, only compliance, fees and analytics summaries. Right level?</span></li>
+      <li><b>Age groups.</b> <span>Does your league use single birth years (U11 = born 2015) or two-year bands? This decides how "playing up" is detected.</span></li>
+      <li><b>Age of consent by country.</b> <span>18 is the default. Which other countries do you expect early on?</span></li>
+    </ul>
+  </section>
+
+  <footer>Source of truth: docs/SCHEMA_PLAN.md and docs/DECISIONS.md in the repository. This page is a reading view of the same plan.</footer>
+</div>
+
+<script>
+/* codes: M manager, A admin, C coach, P parent, L player, S platform support (read-only, only with club approval) */
+var ALL = 'MACPL';
+var AREAS = [
+ {n:'Club and settings', b:'The club itself, its seasons and venues, and what it pays us.', l:'Everything else hangs off the club.', t:[
+  ['clubs','Your club: name, country, and the settings above.',ALL+'S'],
+  ['seasons','Each season, with the date that fixes age groups.',ALL],
+  ['venues','Pitches and training grounds.',ALL],
+  ['club_subscriptions, platform_invoices','What the club pays us for the service.','MS'],
+  ['support_access_grants','A window, chosen by the club, in which our support team may look. Max 7 days, read-only, revocable.','MS','Support sees only compliance, fees and analytics summaries. Never children, medical, messages or HR.'],
+  ['platform_staff','Our own owner and support logins. Not a club role.','S','Platform team only.']]},
+ {n:'Accounts and roles', b:'Everyone who logs in, and what they may do.', l:'Links to: club, players (guardians), squads (staff).', t:[
+  ['profiles','One account per person per club. Not approved means no access at all.',ALL,'Each person sees themselves and people they work with.'],
+  ['role_permissions','Fixed list: which role may do which action.',ALL],
+  ['profile_roles','The set of roles each person holds.','MA','Everyone can see their own.'],
+  ['invitations','Single-use, expiring invites for staff and second guardians.','MA']]},
+ {n:'Players and family', b:'The children and adults being coached, their guardians, consent, and documents.', l:'Links to: accounts, squads, payments, everything about a player.', t:[
+  ['players','Name, optional Arabic name, date of birth, position group, status. Under 13 never has a login.','MACPL','Coach: own squads. Parent: own children. Player: self.'],
+  ['player_guardians','Parents and guardians of a player, and who may consent or pay.','MACP','Coach sees contact details only.'],
+  ['consents','Every consent given: who, what, when, from where, which policy text. Cannot be written from the browser.','MAP'],
+  ['player_medical','Allergies, conditions, emergency contact. Tightest rules.','MAP','Admin access still to decide. Club medical staff for that squad also see it.'],
+  ['player_documents','Emirates ID, birth certificate, photo, medical clearance, with expiry.','MAPL'],
+  ['identity_checks','Photo and ID review before a new staff or player account is approved. Images auto-deleted afterwards.','MA','The person being checked sees the status.']]},
+ {n:'Squads and jersey numbers', b:'Teams, who coaches them, who plays in them, and who wears which number.', l:'Links to: players, schedule, compliance.', t:[
+  ['squads','A team such as "U12 A", with the birth years it covers.',ALL],
+  ['squad_staff','Which coaches, medical staff and team managers belong to which squad. This decides what a coach can see.',ALL],
+  ['squad_memberships','Which players are in which squads. A player may be in several. "Playing up or down" is worked out automatically.','MACPL'],
+  ['player_jersey_numbers','The number a player owns for the season. Ownership lives here, not per squad.','MACPL'],
+  ['jersey_reservations','Numbers nobody may take (retired), or only goalkeepers may take.',ALL]]},
+ {n:'League rules and compliance', b:'Deadlines, checklists and fines, copied from a league template that the club can adjust.', l:'Links to: matches, squads, staff and player documents.', t:[
+  ['league templates','Platform-maintained rules for each league: deadlines, fines, checklist items. UAE FA first, other countries added the same way.',ALL],
+  ['competitions','The club\'s own editable copy of a template. It remembers the template version so the club can review changes.','MAS'],
+  ['deadlines','League dates, with alerts 7, 3 and 1 days before by default.','MAS'],
+  ['fine_rules','Fine amounts and how they are counted (per missing player, per match, each time).','MAS','Amounts are data, never fixed in code.'],
+  ['checklist_items','Pre-match checks: squad complete, medical staff listed, documents on file, licences valid, required fields filled (e.g. Arabic name for UAE FA).','MACS'],
+  ['matchday checklists and results','One checklist per match, pass or fail per item, with detail like "9 of 11".','MAC','Coach: own squads.'],
+  ['fines','Fines at risk and fines issued, so the dashboard can show money at risk.','MAS'],
+  ['notifications','Queue of alerts and reminders.',ALL,'Each person sees their own.']]},
+ {n:'Schedule and attendance', b:'Training, matches, RSVP replies and who turned up.', l:'Links to: squads, players, compliance, media.', t:[
+  ['events','Training sessions, matches, other. A club-cancelled match is flagged because it can trigger a fine.','MACPL','Families see their squad\'s events.'],
+  ['matches','Opponent, home or away, score, competition, league fixture reference.','MACPL'],
+  ['event_participants','One row per player per event: their RSVP and the coach\'s attendance mark.','MACPL'],
+  ['match sheet (players, staff)','Who is listed for the match, with numbers, including medical staff.','MAC','Coach: own squad only. Other families do not see it.']]},
+ {n:'Player development', b:'Ratings, drills and gentle recognition.', l:'Links to: players, coaches, schedule.', t:[
+  ['ratings and scores','A coach\'s session rating: 1 to 5 for technical, physical, tactical, decision-making, personality and creativity, plus a note.','MACPL','Note is visible to the player and parents.'],
+  ['drills','Drill library: platform drills plus the club\'s own.',ALL],
+  ['drill_assignments','A drill given to one player, with a due date.','MACPL'],
+  ['drill_completions','Each time a drill is done, with optional result and coach feedback. Repeats give the improvement trend.','MACPL'],
+  ['achievements and streaks','Weekly, forgiving streaks and personal bests. A parent can switch these off.','CPL','No ranking exists. Only the child, parents and coaches see them.']]},
+ {n:'Messaging and safety', b:'Coach-to-player and coach-to-parent messages, and reporting.', l:'Links to: coaches, players, guardians.', t:[
+  ['conversations','Only coaches can start one. For a coach and a minor, guardians are added automatically as observers.','CPL','Participants only.'],
+  ['messages','Append-only. A reviewer can hide a message but never delete it.','CPL'],
+  ['message_reports','A player or parent reports a message; a copy of the text is kept as evidence.','MPL','The reporter and the club\'s safeguarding reviewer (Manager). The person reported, including a coach, never sees it.']]},
+ {n:'Payments', b:'Price list, bills per player, and payments through the club\'s own gateway.', l:'Links to: players, guardians, matches, currency setting.', t:[
+  ['payment_gateways','The club\'s own gateway account. Secret keys are kept in a vault; the table holds only a reference.','M'],
+  ['fee_plans','Price list: membership, academy, match fee, kit deposit; recurrence; tax; refundable.','MAS','Each price has a currency, default the club\'s.'],
+  ['player_charges','One bill line per player. Stored status: due, part-paid, paid, waived, void. "Overdue" is worked out from the due date.','MAPLS','Player: adults only.'],
+  ['payments','Each payment and refund. Online payments are written only by the payment service.','MAPLS'],
+  ['gateway notifications','Raw messages from the gateway, kept for safe de-duplication.','','Not visible in the app.']]},
+ {n:'Photos and media', b:'Match photos organised by game. Video comes later.', l:'Links to: matches, players.', t:[
+  ['media_assets','A photo under a game, with visibility (staff, squad or club) and an approval state.','MACPL','Follows the visibility chosen.'],
+  ['media_tags','Which children appear in a photo. A minor cannot be tagged without photo consent; withdrawing consent removes the tag.','MACP']]},
+ {n:'Staff HR', b:'Staff files and each person\'s own compliance record.', l:'Links to: accounts, compliance.', t:[
+  ['staff_profiles','Job title, employment type, dates, and whether the person may be listed as medical staff.','MC','Coach: own record.'],
+  ['staff_documents','Licences, first aid, safeguarding certificate, background check, with expiry.','MAC','Admin can verify; coach sees own.'],
+  ['staff_doc_requirements','Which documents each role must hold.',ALL]]},
+ {n:'Data control and audit', b:'Self-serve deletion and a record of who did what.', l:'Links to: everything a person owns.', t:[
+  ['deletion_requests','Self-serve request with an undo window.','M','Every person sees their own.'],
+  ['erasure_ledger','What was deleted, what was kept, and the date the kept items will be purged.','M','The requester sees their own.'],
+  ['audit_log','Who did what to which record. Ids and field names only, never personal values.','M']]},
+ {n:'Reserved for later', b:'Empty tables that leave room for later features.', l:'FANet.ae document upload.', t:[
+  ['integration_connections, external_refs, integration_jobs','Room for the FANet.ae upload without changing any core table.','M','Unused for now.']]}
+];
+var NAMES = {M:'Manager',A:'Admin',C:'Coach',P:'Parent',L:'Player',S:'Platform support'};
+var role = '', query = '';
+var grid = document.getElementById('grid');
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function build(){
+  grid.innerHTML = AREAS.map(function(a,i){
+    var rows = a.t.map(function(r){
+      var chips = (r[2]||'').split('').map(function(c){return '<span class="chip" data-c="'+c+'">'+NAMES[c]+'</span>'}).join('') || '<span class="chip">Nobody in the app</span>';
+      return '<div class="row" data-name="'+esc(r[0]+' '+r[1])+'" data-who="'+(r[2]||'')+'">'
+        +'<span class="tname">'+esc(r[0])+'</span><span class="desc">'+esc(r[1])+'</span>'
+        +'<span class="who">'+chips+'</span>'+(r[3]?'<span class="note">'+esc(r[3])+'</span>':'')+'</div>';
+    }).join('');
+    return '<details class="area" data-i="'+i+'"><summary><span class="top"><h3>'+esc(a.n)+'</h3><span class="count"></span></span>'
+      +'<span class="blurb">'+esc(a.b)+'</span><span class="links">'+esc(a.l)+'</span></summary><div class="rows">'+rows+'</div></details>';
+  }).join('');
+}
+function apply(){
+  var q = query.trim().toLowerCase(), shown = 0, total = 0;
+  grid.querySelectorAll('details.area').forEach(function(d){
+    var rows = d.querySelectorAll('.row'), vis = 0;
+    rows.forEach(function(r){
+      var who = r.dataset.who, okRole = !role || who.indexOf(role) > -1;
+      var okQ = !q || r.dataset.name.toLowerCase().indexOf(q) > -1;
+      r.classList.toggle('hide', !okQ);
+      r.classList.toggle('dim', !okRole);
+      r.querySelectorAll('.chip[data-c]').forEach(function(c){c.classList.toggle('on', !!role && c.dataset.c === role)});
+      if (okQ) { total++; if (okRole) { vis++; shown++; } }
+    });
+    var totalHere = Array.prototype.filter.call(rows,function(r){return !r.classList.contains('hide')}).length;
+    d.querySelector('.count').textContent = (role ? vis + ' of ' + totalHere : totalHere) + ' table' + (totalHere===1?'':'s');
+    d.hidden = q && totalHere === 0;
+    if (q && totalHere > 0) d.open = true;
+  });
+  var h = document.getElementById('hint');
+  h.textContent = role
+    ? NAMES[role] + ' can see ' + shown + ' of ' + total + ' tables shown (dimmed ones are hidden from them).' + (role==='C'?' Only their own squads.':role==='P'?' Only their own children.':role==='L'?' Only themselves.':role==='S'?' Only during a club-approved window, read-only.':'')
+    : 'Showing every table. Coaches see only their own squads; parents only their own children; players only themselves.';
+}
+build(); apply();
+document.querySelectorAll('.roles .pill').forEach(function(b){
+  b.addEventListener('click', function(){
+    role = b.dataset.role;
+    document.querySelectorAll('.roles .pill').forEach(function(x){x.setAttribute('aria-pressed', x===b ? 'true':'false')});
+    apply();
+  });
+});
+document.getElementById('q').addEventListener('input', function(e){ query = e.target.value; apply(); });
+var tg = document.getElementById('toggle');
+tg.addEventListener('click', function(){
+  var open = tg.getAttribute('aria-pressed') !== 'true';
+  tg.setAttribute('aria-pressed', open ? 'true':'false'); tg.textContent = open ? 'Collapse all':'Expand all';
+  grid.querySelectorAll('details.area').forEach(function(d){d.open = open});
+});
+
+/* jersey demo */
+var TAKEN1=[9,10,11,14,15], TAKEN2=[7,10,12,17], RES=[1,13,20]; /* 1 & 13 goalkeeper-only, 20 retired */
+var sel = null;
+function jerseyGrid(id, taken){
+  var el = document.getElementById(id); el.innerHTML='';
+  for (var i=1;i<=20;i++){
+    var b = document.createElement('button'); b.className='n'; b.textContent=i; b.type='button';
+    var isRes = RES.indexOf(i)>-1, isTaken = taken.indexOf(i)>-1, free1 = TAKEN1.indexOf(i)<0, free2 = TAKEN2.indexOf(i)<0;
+    if (isRes) { b.classList.add('res'); b.title='Reserved'; b.disabled=true; }
+    else if (isTaken) { b.classList.add('taken'); b.title='Worn by another player in this squad'; b.disabled=true; }
+    else if (free1 && free2) { b.classList.add('both'); b.title='Free in both squads'; b.dataset.n=i; }
+    else { b.title='Free here but taken in the other squad'; b.dataset.n=i; b.setAttribute('aria-disabled','true'); }
+    if (sel===i && b.dataset.n) b.classList.add('pick');
+    el.appendChild(b);
+  }
+}
+function drawJersey(){ jerseyGrid('g1',TAKEN1); jerseyGrid('g2',TAKEN2);
+  document.getElementById('jmsg').textContent = sel ? 'Omar wears #'+sel+' in both squads. One kit.' : 'Choose a number that is highlighted green.'; }
+['g1','g2'].forEach(function(id){
+  document.getElementById(id).addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b || !b.dataset.n) return;
+    var n = +b.dataset.n;
+    if (TAKEN1.indexOf(n)>-1 || TAKEN2.indexOf(n)>-1){
+      document.getElementById('jmsg').textContent = '#'+n+' is taken in the other squad, so it would need a second kit. The club can allow it, with a reason.';
+      return;
+    }
+    sel = n; drawJersey();
+  });
+});
+drawJersey();
+
+/* consent stages */
+var STAGES = [
+ {t:'Parent registers child', h:'Only: first name, date of birth, parent name and email.', b:'Ratings, attendance, photos, messages, medical, documents, payments.', ok:false},
+ {t:'Parent confirms by email link', h:'Consent recorded with time and policy version. The link is single-use and expires.', b:'Nothing yet; the club still has to approve the photo and ID.', ok:false},
+ {t:'Club approves photo and ID', h:'Full profile, squad places, schedule, drills, messages (if allowed).', b:'Nothing needed is blocked.', ok:true},
+ {t:'Parent withdraws consent', h:'The record of the withdrawal.', b:'Everything above is hidden again immediately.', ok:false}
+];
+var cur = 0, stepsEl = document.getElementById('steps');
+function drawSteps(){
+  stepsEl.innerHTML = STAGES.map(function(s,i){
+    return '<div class="step'+(i===cur?' cur':'')+'"><span class="st">'+(i+1)+'. '+esc(s.t)+'</span>'
+      +(i===cur ? '<span class="blk"><span class="ok">Held:</span> '+esc(s.h)+'</span><span class="blk"><span class="no">Blocked:</span> '+esc(s.b)+'</span>' : '')
+      +(i===cur ? '' : '<button class="pill" type="button" data-i="'+i+'">Show</button>')+'</div>';
+  }).join('');
+}
+stepsEl.addEventListener('click', function(e){ var b=e.target.closest('button'); if(b){cur=+b.dataset.i; drawSteps();} });
+drawSteps();
+</script>
+
+</body></html>

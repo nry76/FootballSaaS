@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FootballSaaS Pilot Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky tab bar over one wide working area. Each tab is a picture you can poke, with plain text beside it.
+   Palette: chalk off-white, turf ink, touchline green; amber = needs a decision; each age group keeps Fursan's own calendar hue. */
+:root{
+  --bg:#F3F5F1; --card:#FFFFFF; --fg:#13201A; --muted:#55665D; --line:#D7DED8; --chip:#E8ECE7;
+  --accent:#1B6B4E; --accent-soft:#DDEDE4; --accent-fg:#FFFFFF;
+  --warn:#9A4A0F; --warn-soft:#F8E9D8; --bad:#A3302B; --bad-soft:#F6DEDC; --ok:#1B6B4E;
+  --display:'Archivo',system-ui,sans-serif; --body:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1613; --card:#16211C; --fg:#E7EFE9; --muted:#9BAEA3; --line:#2A3A32; --chip:#22302A;
+  --accent:#5CC49A; --accent-soft:#1D3A2E; --accent-fg:#0E1613;
+  --warn:#F0B37A; --warn-soft:#3A2A18; --bad:#F09A94; --bad-soft:#3B1E1C; --ok:#5CC49A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1613; --card:#16211C; --fg:#E7EFE9; --muted:#9BAEA3; --line:#2A3A32; --chip:#22302A;
+  --accent:#5CC49A; --accent-soft:#1D3A2E; --accent-fg:#0E1613;
+  --warn:#F0B37A; --warn-soft:#3A2A18; --bad:#F09A94; --bad-soft:#3B1E1C; --ok:#5CC49A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:20px 60px}
+.wrap{max-width:1120px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(26px,4.6vw,38px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:700} h3{font-size:16px;font-weight:700} h4{font-size:14px;font-weight:700}
+p{margin:0}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.lede{max-width:70ch;color:var(--muted);font-size:16px}
+.status{display:inline-flex;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:4px 10px;font-size:13px;font-weight:600;width:fit-content}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding-block:8px}
+.tab{border:0;background:transparent;padding:9px 14px;border-radius:8px;font-weight:600;font-size:14px;color:var(--muted);white-space:nowrap;min-height:40px}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-fg)}
+.panel{display:none;flex-direction:column;gap:18px}
+.panel.on{display:flex}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:16px;align-items:start}
+.note{font-size:13px;color:var(--muted)}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 7px;background:var(--chip);color:var(--muted)}
+.tag.a{background:var(--accent-soft);color:var(--accent)} .tag.w{background:var(--warn-soft);color:var(--warn)} .tag.b{background:var(--bad-soft);color:var(--bad)}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:500;min-height:36px}
+.pill[aria-pressed="true"],.pill.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:start;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* journey */
+.stepper{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.st{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 8px;text-align:start;display:flex;flex-direction:column;gap:4px;min-height:74px}
+.st b{font-family:var(--display);font-size:13px}.st span{font-size:11.5px;color:var(--muted)}
+.st[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft);background:var(--accent-soft)}
+@media (max-width:760px){.stepper{grid-template-columns:repeat(2,1fr)}}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:14px}
+.kv dt{color:var(--muted);font-weight:600;font-size:13px}.kv dd{margin:0}
+.locked{display:flex;flex-wrap:wrap;gap:6px}
+
+/* calendar */
+.cal{display:grid;grid-template-columns:74px repeat(5,minmax(132px,1fr));gap:6px;min-width:820px}
+.cal .h{font-family:var(--display);font-weight:700;font-size:13px;text-align:center;padding:6px}
+.cal .b{font-size:12px;font-weight:600;color:var(--muted);padding:8px 4px;text-align:center;border:1px solid var(--line);border-radius:8px;background:var(--card);display:flex;align-items:center;justify-content:center}
+.cell{min-height:92px;border:1px dashed var(--line);border-radius:8px;padding:5px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start;background:var(--card)}
+.cell.over{border-color:var(--accent);background:var(--accent-soft)}
+.cell.tgt{cursor:copy}
+.chip{--gc:#888;border:0;border-inline-start:5px solid var(--gc);background:color-mix(in srgb,var(--gc) 20%,var(--card));color:var(--fg);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:600;cursor:grab;min-height:28px}
+.chip.sel{outline:2px solid var(--fg);outline-offset:1px}
+.chip.dim{opacity:.22}
+.chip.bad{outline:2px solid var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:6px}
+.lg{--gc:#888;border:1px solid var(--line);border-inline-start:5px solid var(--gc);background:var(--card);border-radius:6px;padding:3px 9px;font-size:12.5px;font-weight:600}
+.lg[aria-pressed="true"]{background:color-mix(in srgb,var(--gc) 25%,var(--card));border-color:var(--gc)}
+.counts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.cnt{display:flex;justify-content:space-between;gap:6px;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:13px;background:var(--card)}
+.cnt.ok b{color:var(--ok)}.cnt.no b{color:var(--bad)}
+.msg{background:var(--accent-soft);border-radius:8px;padding:10px 12px;font-size:14px}
+.msg.w{background:var(--warn-soft)}
+
+/* phone */
+.phone{border:2px solid var(--fg);border-radius:22px;padding:14px;background:var(--bg);display:flex;flex-direction:column;gap:10px;max-width:340px;width:100%;margin-inline:auto}
+.phone h4{font-size:15px}
+.chk{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:13.5px;width:100%;text-align:start}
+.chk .bx{flex:none;width:20px;height:20px;border-radius:5px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.chk.done .bx{background:var(--ok);border-color:var(--ok);color:var(--accent-fg)}
+.chk.done .t{color:var(--muted);text-decoration:line-through}
+.chk .t{display:flex;flex-direction:column;gap:3px}
+.bar{height:8px;background:var(--chip);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .2s}
+.pipe{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.pipe span.s{background:var(--chip);border-radius:6px;padding:4px 9px;font-weight:600}
+.pipe span.s.on{background:var(--accent);color:var(--accent-fg)}
+
+/* leads */
+.board{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:8px;min-width:940px}
+.col{background:var(--chip);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;min-height:140px}
+.col h4{display:flex;justify-content:space-between;font-size:12.5px}
+.lead{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:start;display:flex;flex-direction:column;gap:3px;font-size:12.5px}
+.lead b{font-size:13px}.lead[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.tl li{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:13.5px;border-inline-start:3px solid var(--accent-soft);padding-inline-start:10px}
+.tl time{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* settings + decisions */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px;align-items:start}
+.sgrid .card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.sgrid li{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;border-bottom:1px solid var(--line);padding-bottom:5px}
+.sgrid li span:last-child{color:var(--muted);text-align:end;font-size:12.5px}
+.qs{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
+.qs label{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--warn);border-radius:8px;padding:10px 12px;font-size:14px;cursor:pointer}
+.qs input{margin-top:4px;width:18px;height:18px;flex:none}
+.qs li.done label{border-inline-start-color:var(--ok);opacity:.65}
+.dec{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:8px}
+.dec div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13.5px;display:flex;gap:8px}
+.dec b{color:var(--ok)}
+footer{font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <span class="eyebrow">FootballSaaS · pilot plan v0.5 · sample data throughout</span>
+    <h1>The plan, as pictures you can click</h1>
+    <p class="lede">Six tabs: the parent's journey, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
+    <span class="status">Plan only · nothing approved · no product code written</span>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Plan sections" id="tabs"></div>
+
+  <!-- JOURNEY -->
+  <section class="panel" id="p-journey" role="tabpanel">
+    <div class="card">
+      <h2>From first enquiry to registered player</h2>
+      <p class="note">Click a stage. The rule: ask for very little first, and ask for documents only after the parent commits and pays.</p>
+      <div class="stepper" id="stepper"></div>
+    </div>
+    <div class="cols">
+      <div class="card" id="stageDetail"></div>
+      <div class="card">
+        <h3>Who does what</h3>
+        <table>
+          <thead><tr><th>Person</th><th>Their part</th></tr></thead>
+          <tbody>
+            <tr><td><b>Parent</b></td><td>Everything, alone: enquire, book, pay, upload, follow the checklist</td></tr>
+            <tr><td><b>Manager / Admin</b></td><td>Builds the calendar, owns leads (transferable), reviews documents, submits to UAE FA</td></tr>
+            <tr><td><b>Coach</b></td><td>Sees who is coming and who has paid, marks attendance, invites more trials, rarely makes a call</td></tr>
+            <tr><td><b>System</b></td><td>Reminders, stage moves, checklists, payment links, coach updates</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Coaches are not in the registration loop.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section class="panel" id="p-schedule" role="tabpanel">
+    <div class="card">
+      <h2>Weekly schedule builder</h2>
+      <p class="note">This is Fursan's real week. <b>Drag a group</b> to another cell, or <b>tap a group and then tap a cell</b>. Tap a name in the key to highlight that group. Nothing is saved.</p>
+      <div class="row">
+        <span class="note">Key:</span><div class="legend" id="legend"></div>
+      </div>
+      <div class="row">
+        <button class="pill" id="combine" aria-pressed="false">Pre-season: combine U10 + U11</button>
+        <button class="pill" id="reset">Reset to Fursan's week</button>
+        <span class="tag">Venue: International School of Choueifat</span>
+      </div>
+      <div class="scroll"><div class="cal" id="cal"></div></div>
+      <div class="msg" id="calmsg">Ready. Every group trains 3 times a week.</div>
+    </div>
+    <div class="cols">
+      <div class="card"><h3>Sessions per week</h3><div class="counts" id="counts"></div><p class="note">The manager plans by "3 of 3", so the builder counts it for them.</p></div>
+      <div class="card">
+        <h3>When you change a session, it asks one question</h3>
+        <div class="row"><span class="tag a">Only this session</span><span class="tag a">This and all following</span><span class="tag a">All sessions in this rule</span></div>
+        <p class="note">"Combined in weeks 1-2, split from week 3" = end the combined rule and start two new ones. Parents see only published changes, one summary each.</p>
+        <p class="note">Clash warnings, not blocks: a coach in two places, a group twice in a day, a session outside opening hours. Overridable with a note.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTRATION -->
+  <section class="panel" id="p-reg" role="tabpanel">
+    <div class="card">
+      <h2>Registration: what a parent must upload depends on the child</h2>
+      <p class="note">Pick a category, or answer the questions. Tick documents to see the parent's progress. From Fursan's UAE FA 2026/27 table; not verified against the federation.</p>
+      <div class="row" id="cats"></div>
+      <div class="row"><b style="font-size:13px">Not sure?</b>
+        <label class="row" style="gap:6px"><input type="checkbox" id="q1"> UAE national</label>
+        <label class="row" style="gap:6px"><input type="checkbox" id="q2"> Mother is a UAE national</label>
+        <label class="row" style="gap:6px"><input type="checkbox" id="q3"> Born in the UAE</label>
+        <label class="row" style="gap:6px"><input type="checkbox" id="q4"> Lived in the UAE over 5 years</label>
+        <span class="tag w">Placement rules are my guess: to confirm</span>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="phone" aria-label="Parent phone view">
+        <h4 id="phoneTitle"></h4>
+        <div class="bar"><i id="bar"></i></div>
+        <span class="note" id="barTxt"></span>
+        <div id="list" style="display:flex;flex-direction:column;gap:6px"></div>
+        <span class="note">Submit by 14 Oct. UAE FA takes 3-4 weeks, so we remind every 2 days.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div class="card">
+          <h3>What happens after the parent uploads</h3>
+          <div class="pipe" id="pipe"></div>
+          <ul class="note" style="margin:0;padding-inline-start:18px;display:flex;flex-direction:column;gap:4px">
+            <li>Automatic checks: format (PDF/JPG/PNG), readable, both sides of the Emirates ID, expiry dates, name and date of birth match.</li>
+            <li>A person approves or says exactly what to fix.</li>
+            <li>One download per child, files named the way the club wants (Robert.Passport.pdf).</li>
+            <li>Medical: the platform emails the assigned clinic; the clinic offers times through a one-time link; the parent picks one.</li>
+          </ul>
+        </div>
+        <div class="card"><h3>The whole rules table</h3><div class="scroll"><table id="matrix"></table></div><p class="note">This table is data, not code. Change a row, or add DOFA and YFL, without a rebuild.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADS -->
+  <section class="panel" id="p-leads" role="tabpanel">
+    <div class="card">
+      <h2>Leads pipeline</h2>
+      <p class="note">Tap a family to see its whole conversation in one place. Stages move by themselves when the parent books, attends or pays.</p>
+      <div class="scroll"><div class="board" id="board"></div></div>
+    </div>
+    <div class="cols">
+      <div class="card" id="leadDetail"></div>
+      <div class="phone" aria-label="Coach phone view">
+        <h4>Tonight · Thu 5:00 · U10</h4>
+        <span class="note">14 members going · 3 trialists</span>
+        <div class="chk done"><span class="bx">&#10003;</span><span class="t" style="text-decoration:none;color:var(--fg)"><b>Omar</b><span class="note">free trial 1 of 1</span></span></div>
+        <div class="chk done"><span class="bx">&#10003;</span><span class="t" style="text-decoration:none;color:var(--fg)"><b>Yousef</b><span class="note">extra class · paid</span></span></div>
+        <div class="chk"><span class="bx" style="border-color:var(--bad);color:var(--bad)">!</span><span class="t"><b>Adam</b><span class="note">extra class · unpaid, link sent</span></span></div>
+        <h4 style="margin-top:4px">Feed</h4>
+        <span class="note">16:02 Yousef paid<br>15:40 Adam booked (unpaid)<br>12:10 Call task: Mr Ahmed about Omar</span>
+        <span class="tag a">Alerts: WhatsApp · digest 4 pm</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Where messages can go</h3>
+      <div class="scroll"><table>
+        <thead><tr><th>Channel</th><th>Plan</th><th>Limit worth knowing</th></tr></thead>
+        <tbody>
+          <tr><td>Email</td><td><span class="tag a">Day one</span></td><td>Sent from the club's own domain</td></tr>
+          <tr><td>WhatsApp</td><td><span class="tag a">Day one: service messages</span></td><td>After 24 hours of silence only pre-approved templates; each message is charged; pricing changes on 1 Oct 2026</td></tr>
+          <tr><td>Instagram</td><td><span class="tag w">Capture first</span></td><td>Businesses cannot send the first DM. Use link in bio, QR code, click-to-WhatsApp</td></tr>
+          <tr><td>Phone call</td><td><span class="tag">Task</span></td><td>A named person, capped per week, rare by design</td></tr>
+          <tr><td>SMS</td><td><span class="tag">Later</span></td><td>UAE sender name needs approval</td></tr>
+        </tbody></table></div>
+      <p class="note">Two message kinds with separate consent: <b>service</b> (answers what the parent did) and <b>marketing</b> (persuades). Marketing goes only to people who contacted the club and opted in, inside 7 am to 9 pm. UAE rules to be confirmed by a lawyer.</p>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="panel" id="p-settings" role="tabpanel">
+    <div class="card">
+      <h2>Everything that is a setting</h2>
+      <p class="note">Your rule: make it configurable. Each setting has a club default; the ones marked <span class="tag a">per group</span> can be overridden for one age group. Values shown are only examples.</p>
+    </div>
+    <div class="sgrid" id="sgrid"></div>
+  </section>
+
+  <!-- DECISIONS -->
+  <section class="panel" id="p-decide" role="tabpanel">
+    <div class="card"><h2>Still open (tick as you decide)</h2>
+      <p class="note">Ticks stay on this device only. Tell me your answers in the chat so they are recorded in the repository.</p>
+      <ul class="qs" id="qs"></ul></div>
+    <div class="card"><h2>Parked on purpose</h2>
+      <div class="row"><span class="tag w">Payment provider / gateway (after the pilot exists)</span><span class="tag w">Talks with Fursan (after the pilot)</span><span class="tag w">Which WhatsApp number</span><span class="tag w">AI photo and document reading</span><span class="tag w">Video</span><span class="tag w">FANet.ae automation</span><span class="tag w">Legal review: consent age by country, UAE marketing rules, 1-year financial retention</span></div></div>
+    <div class="card"><h2>Decided</h2><div class="dec" id="dec"></div></div>
+  </section>
+
+  <footer>Everything here is also written in docs/ in the repository (MVP_PLAN.md, LEADS_PLAN.md, DECISIONS.md). This page is the readable view.</footer>
+</div>
+
+<script>
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---------- tabs ---------- */
+var TABS=[['journey','Journey'],['schedule','Schedule'],['reg','Registration'],['leads','Leads and coaches'],['settings','Settings'],['decide','Decisions and questions']];
+var tabsEl=$('tabs');
+tabsEl.innerHTML=TABS.map(function(t){return '<button class="tab" role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('');
+function show(t){
+  TABS.forEach(function(x){ $('p-'+x[0]).classList.toggle('on',x[0]===t) });
+  tabsEl.querySelectorAll('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t===t?'true':'false')});
+  try{history.replaceState(null,'','#'+t)}catch(e){}
+}
+tabsEl.addEventListener('click',function(e){var b=e.target.closest('.tab');if(b)show(b.dataset.t)});
+var h=(location.hash||'').replace('#','');
+show(TABS.some(function(t){return t[0]===h})?h:'journey');
+
+/* ---------- journey ---------- */
+var STAGES=[
+ {n:'Enquiry',s:'parent fills 7 fields',parent:'Name, phone, WhatsApp, email; child name, birth date, position wanted. Confirms email by link.',sys:'Instant confirmation with trial times. Starts the follow-up playbook. Records the source (Instagram, WhatsApp, website...).',club:'A new lead with an owner, chosen by the default assignment rule.',data:['Parent name and contacts','Child name and birth date','Position wanted'],lock:['Documents','Photo','ID numbers','Medical','Payments']},
+ {n:'Trials',s:'free, within allowance',parent:'Books trial sessions for the child\'s age group. Sees "1 of 5 used".',sys:'Reminders 24 h and 2 h before. Counts the allowance. When it is used up: offers a paid class with a payment link.',club:'Coach sees the trialist on tonight\'s roster with paid/unpaid state. Coach can invite more trials.',data:['Same seven fields','Trial attendance'],lock:['Documents','Photo','ID numbers','Medical']},
+ {n:'Committed',s:'accepts the place',parent:'Taps Join, accepts terms and the registration consent, sees the fee.',sys:'Sends a payment link. Reminds. Releases the place if unpaid after N days (setting).',club:'Lead shows "committed, unpaid".',data:['Consent for membership and registration'],lock:['Documents until paid']},
+ {n:'Confirmed',s:'first fee paid',parent:'Pays online (card or wallet), or the club records a POS payment taken on site.',sys:'Moves the family out of the pipeline. Builds the personal registration checklist from the child\'s category.',club:'Lead is won. Conversion counted for the source and campaign.',data:['Full profile','Emirates ID, passport, birth certificate, photo...'],lock:[]},
+ {n:'Registering',s:'documents and medical',parent:'Uploads what the checklist asks. Books the medical with the assigned clinic.',sys:'Checks each file, nudges the parent, builds the pack, counts the 3-4 week lead time.',club:'Registrar queue: waiting on parents / ready to review / submitted.',data:['Parents\' documents too (mother, father)'],lock:[]},
+ {n:'Registered',s:'UAE FA / FIFA done',parent:'Nothing more. Sees "Registered".',sys:'Tracks submission date and reference; reopens if UAE FA asks for an extra document.',club:'Player can be placed on match sheets.',data:['Registration record'],lock:[]}
+];
+var stage=0;
+function drawStages(){
+  $('stepper').innerHTML=STAGES.map(function(s,i){return '<button class="st" data-i="'+i+'" aria-pressed="'+(i===stage)+'"><b>'+(i+1)+'. '+s.n+'</b><span>'+s.s+'</span></button>'}).join('');
+  var s=STAGES[stage];
+  $('stageDetail').innerHTML='<h3>'+esc(s.n)+'</h3><dl class="kv"><dt>Parent does</dt><dd>'+esc(s.parent)+'</dd><dt>System does</dt><dd>'+esc(s.sys)+'</dd><dt>Club sees</dt><dd>'+esc(s.club)+'</dd><dt>Data allowed</dt><dd class="locked">'+s.data.map(function(x){return '<span class="tag a">'+esc(x)+'</span>'}).join('')+'</dd><dt>Blocked</dt><dd class="locked">'+(s.lock.length?s.lock.map(function(x){return '<span class="tag b">'+esc(x)+'</span>'}).join(''):'<span class="note">Nothing blocked at this stage</span>')+'</dd></dl>';
+}
+$('stepper').addEventListener('click',function(e){var b=e.target.closest('.st');if(b){stage=+b.dataset.i;drawStages()}});
+drawStages();
+
+/* ---------- schedule ---------- */
+var G={ 'U5/6':{y:'2021-22',c:'#4C86D9'},'U7':{y:'2020',c:'#7BA3E6'},'U8':{y:'2019',c:'#7A8B3A'},'U9':{y:'2018',c:'#2FA84F'},'U10':{y:'2017',c:'#6CC24A'},'U11':{y:'2016',c:'#1E8F3E'},'U12':{y:'2015',c:'#F0A030'},'U13':{y:'2014',c:'#5B8FD6'},'U14':{y:'2013',c:'#C8452B'},'U15':{y:'2012',c:'#C98A7C'},'U16':{y:'2011',c:'#B87668'},'U18':{y:'2010-09',c:'#B45FC9'},'2nd Team':{y:'no birth year',c:'#3AA6B9'}};
+var DAYS=['Mon','Tue','Wed','Thu','Fri'], BLK=['5:00-6:30','6:30-8:00','8:00-9:30'];
+var BASE=[
+ [['U10','U11'],['U14','U13'],['2nd Team','U18']],
+ [['U5/6','U7','U8','U9','U12'],['U15','U16'],['U18']],
+ [['U10','U11','U12'],['U14','U13'],['U15','U16','2nd Team']],
+ [['U5/6','U7','U8','U9','U10','U11'],['U15','U16'],['U18','2nd Team']],
+ [['U5/6','U7','U8','U9','U12'],['U13','U14'],[]]
+];
+var cells, sel=null, hi=null, combine=false;
+function clone(){return BASE.map(function(d){return d.map(function(b){return b.slice()})})}
+function resetCal(){cells=clone();sel=null;hi=null;$('calmsg').className='msg';$('calmsg').textContent='Ready. Every group trains 3 times a week.';drawCal()}
+function drawLegend(){
+  $('legend').innerHTML=Object.keys(G).map(function(k){return '<button class="lg" style="--gc:'+G[k].c+'" data-g="'+esc(k)+'" aria-pressed="'+(hi===k)+'">'+esc(k)+' <span class="note">'+G[k].y+'</span></button>'}).join('');
+}
+function drawCal(){
+  var out='<div></div>'+DAYS.map(function(d){return '<div class="h">'+d+'</div>'}).join('');
+  for(var b=0;b<3;b++){
+    out+='<div class="b">'+BLK[b]+'</div>';
+    for(var d=0;d<5;d++){
+      var list=cells[d][b].slice(), showList=list;
+      if(combine && list.indexOf('U10')>-1 && list.indexOf('U11')>-1){
+        showList=list.filter(function(x){return x!=='U10'&&x!=='U11'}); showList.unshift('U10+U11');
+      }
+      out+='<div class="cell'+(sel?' tgt':'')+'" data-d="'+d+'" data-b="'+b+'">'+showList.map(function(g){
+        var combo=g==='U10+U11', key=combo?'U10':g, isSel=sel&&sel.g===g&&sel.d===d&&sel.b===b;
+        var dim=hi&&!(g===hi||(combo&&(hi==='U10'||hi==='U11')));
+        return '<button class="chip'+(isSel?' sel':'')+(dim?' dim':'')+'" draggable="true" style="--gc:'+G[key].c+'" data-g="'+esc(g)+'" data-d="'+d+'" data-b="'+b+'">'+esc(g)+'</button>';
+      }).join('')+'</div>';
+    }
+  }
+  $('cal').innerHTML=out; drawLegend(); drawCounts();
+}
+function perWeek(){var c={};Object.keys(G).forEach(function(k){c[k]=0});cells.forEach(function(d){d.forEach(function(b){b.forEach(function(g){c[g]++})})});return c}
+function drawCounts(){
+  var c=perWeek();
+  $('counts').innerHTML=Object.keys(G).map(function(k){var ok=c[k]===3;return '<div class="cnt '+(ok?'ok':'no')+'"><span>'+esc(k)+'</span><b>'+c[k]+' of 3 '+(ok?'&#10003;':'!')+'</b></div>'}).join('');
+}
+function move(g,d0,b0,d1,b1){
+  if(d0===d1&&b0===b1) return;
+  var src=cells[d0][b0], dst=cells[d1][b1], i=src.indexOf(g);
+  if(i<0) return;
+  if(dst.indexOf(g)>-1){ note('warn',g+' is already in that slot.'); return; }
+  src.splice(i,1); dst.push(g);
+  var sameDay=cells[d1].reduce(function(n,bl){return n+(bl.indexOf(g)>-1?1:0)},0);
+  var txt=g+' moved from '+DAYS[d0]+' '+BLK[b0]+' to '+DAYS[d1]+' '+BLK[b1]+'. The real app would now ask: only this session, this and all following, or all sessions in this rule?';
+  if(sameDay>1) note('warn',txt+' Clash: '+g+' now has two sessions on '+DAYS[d1]+'.'); else note('ok',txt);
+  sel=null; drawCal();
+}
+function note(k,t){var m=$('calmsg');m.className='msg'+(k==='warn'?' w':'');m.textContent=t}
+var cal=$('cal');
+cal.addEventListener('click',function(e){
+  var chip=e.target.closest('.chip'), cell=e.target.closest('.cell');
+  if(chip){
+    var g=chip.dataset.g; if(g==='U10+U11'){note('warn','This combined chip is a preview. Turn off "combine" to move U10 or U11 separately.');return}
+    var d=+chip.dataset.d,b=+chip.dataset.b;
+    if(sel&&sel.g===g&&sel.d===d&&sel.b===b){sel=null}else{sel={g:g,d:d,b:b}}
+    drawCal(); return;
+  }
+  if(cell&&sel){ move(sel.g,sel.d,sel.b,+cell.dataset.d,+cell.dataset.b) }
+});
+cal.addEventListener('dragstart',function(e){var c=e.target.closest('.chip');if(!c)return;if(c.dataset.g==='U10+U11'){e.preventDefault();return}e.dataTransfer.setData('text/plain',[c.dataset.g,c.dataset.d,c.dataset.b].join('|'));e.dataTransfer.effectAllowed='move'});
+cal.addEventListener('dragover',function(e){var c=e.target.closest('.cell');if(c){e.preventDefault();c.classList.add('over')}});
+cal.addEventListener('dragleave',function(e){var c=e.target.closest('.cell');if(c)c.classList.remove('over')});
+cal.addEventListener('drop',function(e){
+  var c=e.target.closest('.cell'); if(!c)return; e.preventDefault(); c.classList.remove('over');
+  var p=(e.dataTransfer.getData('text/plain')||'').split('|'); if(p.length<3)return;
+  move(p[0],+p[1],+p[2],+c.dataset.d,+c.dataset.b);
+});
+$('legend').addEventListener('click',function(e){var b=e.target.closest('.lg');if(!b)return;hi=(hi===b.dataset.g)?null:b.dataset.g;drawCal()});
+$('combine').addEventListener('click',function(){combine=!combine;$('combine').setAttribute('aria-pressed',combine);sel=null;note('ok',combine?'Pre-season view: where U10 and U11 share a slot they show as one combined session. "Split from week 3" would end this rule and start two.':'Split view restored.');drawCal()});
+$('reset').addEventListener('click',function(){combine=false;$('combine').setAttribute('aria-pressed','false');resetCal()});
+resetCal();
+
+/* ---------- registration ---------- */
+var CATS=['Local Player','UAE Child','UAE Born','Resident > 5 years','Resident < 5 years'];
+var DOCS=[
+ ['Emirates ID, front and back','Player',[1,1,1,1,1],''],
+ ['Passport','Player',[1,1,1,1,1],''],
+ ['Medical report','Player',[1,1,1,1,1],'Booked with the assigned clinic through the platform'],
+ ['Birth certificate','Player',[0,1,1,1,1],''],
+ ['Emirates ID, front and back','Mother',[0,1,0,0,0],''],
+ ['Passport','Mother',[0,1,1,1,1],''],
+ ['Passport','Father',[0,1,1,1,1],''],
+ ['Family Book or UAE-nationality document','Family',[0,1,0,0,0],'Either one'],
+ ['Residence visa (valid page)','Player',[0,0,1,1,1],''],
+ ['5-years proof','Player',[0,0,1,1,0],'Bundle: visas covering 5 years + school registration history (KHDA)'],
+ ['Continuation studies certificate (this year)','Player',[0,0,1,1,1],'Renewed every year'],
+ ['Father adoption form','Father',[0,0,1,1,1],'Club form: download, sign, upload'],
+ ['Father work contract and validation','Father',[0,0,0,0,1],'One document'],
+ ['Rent contract or title deed','Family',[0,0,0,0,1],'Either one']
+];
+var cat=2, ticks={};
+$('cats').innerHTML=CATS.map(function(c,i){return '<button class="pill" data-i="'+i+'" aria-pressed="false">'+c+'</button>'}).join('');
+function drawReg(){
+  document.querySelectorAll('#cats .pill').forEach(function(b){b.setAttribute('aria-pressed',(+b.dataset.i===cat)?'true':'false')});
+  var need=DOCS.map(function(d,i){return {d:d,i:i}}).filter(function(x){return x.d[2][cat]});
+  var done=need.filter(function(x){return ticks[cat+'_'+x.i]}).length;
+  $('phoneTitle').textContent='Omar (sample) · '+CATS[cat];
+  $('bar').style.width=Math.round(100*done/need.length)+'%';
+  $('barTxt').textContent=done+' of '+need.length+' done';
+  $('list').innerHTML=need.map(function(x){var k=cat+'_'+x.i,on=!!ticks[k];
+    return '<button class="chk'+(on?' done':'')+'" data-k="'+k+'"><span class="bx">'+(on?'&#10003;':'')+'</span><span class="t"><span>'+esc(x.d[0])+' <span class="tag">'+x.d[1]+'</span></span>'+(x.d[3]?'<span class="note">'+esc(x.d[3])+'</span>':'')+'</span></button>'}).join('');
+  var rows='<thead><tr><th>Document</th><th>Holder</th>'+CATS.map(function(c){return '<th>'+c.replace('Resident','Res.')+'</th>'}).join('')+'</tr></thead><tbody>'+
+    DOCS.map(function(d){return '<tr><td>'+esc(d[0])+'</td><td>'+d[1]+'</td>'+d[2].map(function(v,i){return '<td style="'+(i===cat?'background:var(--accent-soft)':'')+'">'+(v?'&#10003;':'')+'</td>'}).join('')+'</tr>'}).join('')+
+    '<tr><td><b>Total</b></td><td></td>'+CATS.map(function(c,i){return '<td style="'+(i===cat?'background:var(--accent-soft)':'')+'"><b>'+DOCS.filter(function(d){return d[2][i]}).length+'</b></td>'}).join('')+'</tr></tbody>';
+  $('matrix').innerHTML=rows;
+  var steps=['Collecting documents','Ready for review','Needs fixes','Approved','Submitted to UAE FA','With UAE FA / FIFA (3-4 weeks)','Registered'];
+  var cur=done===need.length?1:0;
+  $('pipe').innerHTML=steps.map(function(s,i){return '<span class="s'+(i===cur?' on':'')+'">'+s+'</span>'+(i<steps.length-1?'<span class="note">&rarr;</span>':'')}).join('');
+}
+$('cats').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){cat=+b.dataset.i;['q1','q2','q3','q4'].forEach(function(q){$(q).checked=false});drawReg()}});
+$('list').addEventListener('click',function(e){var b=e.target.closest('.chk');if(b){ticks[b.dataset.k]=!ticks[b.dataset.k];drawReg()}});
+['q1','q2','q3','q4'].forEach(function(q){$(q).addEventListener('change',function(){
+  cat=$('q1').checked?0:$('q2').checked?1:$('q3').checked?2:$('q4').checked?3:4; drawReg()})});
+drawReg();
+
+/* ---------- leads ---------- */
+var LST=['New','Contacted','Trial booked','Trial attended','Committed','Paid'];
+var LEADS=[
+ {n:'Omar A.',a:'U10',p:'Forward',src:'Instagram',st:0,o:'Sara',x:'12 min old'},
+ {n:'Layla S.',a:'U7',p:'Not sure',src:'WhatsApp',st:0,o:'Sara',x:'1 h old'},
+ {n:'Yousef N.',a:'U11',p:'Midfielder',src:'WhatsApp',st:1,o:'Sara',x:'2 days'},
+ {n:'Hamda R.',a:'U9',p:'Defender',src:'Website',st:1,o:'Khaled',x:'1 day'},
+ {n:'Ali K.',a:'U12',p:'Goalkeeper',src:'Referral',st:1,o:'Khaled',x:'3 days'},
+ {n:'Adam R.',a:'U9',p:'Forward',src:'Instagram',st:2,o:'Sara',x:'Thu 5:00, free 1 of 1'},
+ {n:'Noor F.',a:'U6',p:'Not sure',src:'School event',st:2,o:'Khaled',x:'Fri 5:00'},
+ {n:'Khalid F.',a:'U12',p:'Midfielder',src:'Instagram',st:3,o:'Sara',x:'trials used; call task'},
+ {n:'Salem M.',a:'U8',p:'Forward',src:'Walk-in',st:3,o:'Khaled',x:'attended Tue'},
+ {n:'Hamdan K.',a:'U13',p:'Defender',src:'WhatsApp',st:4,o:'Sara',x:'unpaid, link sent'},
+ {n:'Zayed T.',a:'U10',p:'Forward',src:'Instagram',st:5,o:'Sara',x:'paid online'},
+ {n:'Rashid B.',a:'U14',p:'Defender',src:'Referral',st:5,o:'Khaled',x:'paid at POS'}
+];
+var pickLead=7;
+function drawBoard(){
+  $('board').innerHTML=LST.map(function(s,si){
+    var items=LEADS.map(function(l,i){return {l:l,i:i}}).filter(function(x){return x.l.st===si});
+    return '<div class="col"><h4><span>'+s+'</span><span class="note">'+items.length+'</span></h4>'+items.map(function(x){
+      return '<button class="lead" data-i="'+x.i+'" aria-pressed="'+(x.i===pickLead)+'"><b>'+esc(x.l.n)+'</b><span>'+esc(x.l.a)+' · '+esc(x.l.src)+'</span><span class="note">'+esc(x.l.x)+'</span></button>'}).join('')+'</div>';
+  }).join('');
+  var l=LEADS[pickLead], ev=[['Tue 09:12','Enquiry received from '+l.src+' link'],['Tue 09:12','Email sent: "Your trial request" (delivered)'],['Tue 09:13','WhatsApp sent: trial times (read)']];
+  if(l.st>=1) ev.push(['Tue 09:40','Staff replied to a question about age groups']);
+  if(l.st>=2) ev.push(['Tue 18:40','Parent booked a trial (free)'],['Wed 17:00','Reminder sent (delivered)']);
+  if(l.st>=3) ev.push(['Thu 5:00','Attended. Coach note: "great first touch"'],['Thu 7:00','Thank you + fee sent']);
+  if(l.st>=4) ev.push(['Sat 10:15','Parent tapped Join. Payment link sent']);
+  if(l.st>=5) ev.push(['Sat 10:22','Payment received. Registration checklist created']);
+  var next=['Reply within 15 min','Follow up in 2 days','Send reminder Wed 5 pm','Call task for the coach','Chase payment in 2 days','Registration checklist reminders'][l.st];
+  $('leadDetail').innerHTML='<h3>'+esc(l.n)+' <span class="tag a">'+LST[l.st]+'</span></h3><dl class="kv"><dt>Age group</dt><dd>'+esc(l.a)+'</dd><dt>Position</dt><dd>'+esc(l.p)+'</dd><dt>Source</dt><dd>'+esc(l.src)+'</dd><dt>Owner</dt><dd>'+esc(l.o)+' <button class="pill" style="min-height:28px;padding:2px 10px">Transfer</button></dd><dt>Next action</dt><dd>'+next+'</dd></dl><ul class="tl">'+ev.map(function(e){return '<li><time>'+e[0]+'</time><span>'+esc(e[1])+'</span></li>'}).join('')+'</ul>';
+}
+$('board').addEventListener('click',function(e){var b=e.target.closest('.lead');if(b){pickLead=+b.dataset.i;drawBoard()}});
+drawBoard();
+
+/* ---------- settings ---------- */
+var SET=[
+ ['Club',[['Currency','AED'],['Time zone, weekend days','Asia/Dubai, Sat-Sun'],['Tax label and rate','VAT 5%'],['Opening hours','5 pm - 10 pm'],['Block grid','3 x 90 min'],['Club colours','2 colours'],['Language','English']]],
+ ['Age groups',[['Name and birth years','U10 = 2017'],['Calendar colour','green'],['Default session length','90 min'],['Sessions per week target','3']]],
+ ['Trials',[['Free trials allowed','1 or 5 (per group)'],['Counts by','booking / attendance'],['No-shows count','yes / no'],['Coach may invite more','on'],['Capacity and waiting list','per session'],['Delete non-converted after','90 days']]],
+ ['Paid extra classes',[['Price','per class (per group)'],['Bundles, e.g. 5-class pass','optional'],['Cancellation cut-off','12 hours'],['Refund or credit','credit'],['Pay at venue (POS) allowed','on'],['Payment link expires after','48 hours']]],
+ ['Payments',[['Gateway','parked until after pilot'],['Joining fee','per age group'],['POS methods to record','card, cash'],['Receipts and VAT invoices','on']]],
+ ['Leads',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
+ ['Messages',[['Channels on','email, WhatsApp'],['Quiet hours (marketing)','9 pm - 7 am'],['Templates and wording','editable'],['Sender names','club name']]],
+ ['Coach alerts',[['Channel per coach','app / email / WhatsApp'],['Instant or digest','digest 4 pm'],['Call tasks per week','max 3'],['What WhatsApp shows','first name, class, paid']]],
+ ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','Name.Document.ext'],['Assigned clinic','name + email'],['Club forms','upload template']]],
+ ['Privacy',[['Age of consent for data','18'],['Minimum age for own login','13'],['Deletion undo window','7 days'],['Financial records kept','1 year'],['Consent wording versions','tracked']]]
+];
+var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Joining fee','Default owner rule','Capacity and waiting list','Default session length'];
+$('sgrid').innerHTML=SET.map(function(g){return '<div class="card"><h3>'+g[0]+'</h3><ul>'+g[1].map(function(r){return '<li><span>'+esc(r[0])+(PER.indexOf(r[0])>-1?' <span class="tag a">per group</span>':'')+'</span><span>'+esc(r[1])+'</span></li>'}).join('')+'</ul></div>'}).join('');
+
+/* ---------- decisions ---------- */
+var QS=[
+ 'Are "lead" (anyone who has not paid) and the six stages the right words for your world?',
+ 'How is a child placed in Local Player, UAE Child, UAE Born, Resident > 5 or < 5? My guess: Local = UAE national; UAE Child = UAE-national mother; then birth place and years resident.',
+ 'What is the "Father adoption form"? Please share the blank form.',
+ 'Does UAE FA require a player photo (it is not on Fursan\'s list)? Any specification?',
+ 'Trial allowance: count per booking or per attendance? Per child or per age group? Do no-shows count?',
+ 'Who starts "Committed": the parent after trials, the club offering a place, or both?',
+ 'In one block, do groups share a pitch or use separate pitches? Book individual pitches, or only the venue?',
+ 'Are weekend matches part of the first schedule module?',
+ 'Expiry rules: minimum validity for passport, Emirates ID, visa (for example 6 months)? Is the 5-years proof one file or several?',
+ 'After approval, how does the club submit to UAE FA (email, portal)?',
+ 'Delete non-converted prospects after 90 days?',
+ 'Check photos without AI first, add AI later?',
+ 'Grace period after a player turns 18 (30 days proposed). Do parents lose access at 18 unless the player links them?',
+ 'Can Admin see medical records and staff documents, or Manager only?',
+ 'Age-group rule: is "U-number = 2027 minus birth year" right for every league you will use?',
+ 'Which lead sources on day one (Instagram, WhatsApp, website, referral, walk-in, school event, other)?'
+];
+var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
+function drawQs(){
+  $('qs').innerHTML=QS.map(function(q,i){return '<li class="'+(doneQ[i]?'done':'')+'"><label><input type="checkbox" data-i="'+i+'"'+(doneQ[i]?' checked':'')+'><span>'+esc(q)+'</span></label></li>'}).join('');
+}
+$('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
+drawQs();
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the player','Parent-driven registration; coaches are not in the registration loop','Prospects give 7 fields; documents only after commit and payment','Two-step consent: trial, then membership and registration (incl. clinic and UAE FA/FIFA sharing)','Platform support sees a club only when the club approves: read-only, up to 7 days','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt (EU standards); PWA only; no app stores','Payment gateway is in the first release (provider parked); staff can also record POS payments','Campaigns only to people who contacted the club and opted in','Leads: default owner by rule, transferable singly or in bulk','Everything about paid classes is a setting','Deletion: everything removed except financial records, kept 1 year (Terms must say so)','No leaderboards or ranking of children','Age groups are birth-year ranges; a session can serve several groups','Registration rules are a table by category, not code','Pilot first with sample data, then approach clubs'];
+$('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
+</script>
+
+</body></html>
