@@ -19,7 +19,9 @@
 | 13 | **Hosting: Supabase Frankfurt**, aiming to meet EU data-protection standards | |
 | 14 | **PWA only**, no app stores | |
 | 15 | **Video deferred**; photos only in v1 | |
-| 16 | English first; Arabic/RTL designed in from the start | |
+| 16 | **English only at launch.** Arabic only in a few optional fields (e.g. name in Arabic for UAE FA); no RTL work now | |
+| 19 | **Global clubs.** Currency is a club setting, **default AED**; country, time zone, tax label, weekend days and age of consent are settings too | Existing bills keep their currency if the setting changes |
+| 20 | Competition templates are per league and country; UAE FA is the first | |
 | 17 | No leaderboards or child-vs-child ranking | Engagement can be switched off by the parent |
 | 18 | Constraints: no secrets in git (`.env.example` only), row-level security on every table, child data and consent are hard requirements | |
 

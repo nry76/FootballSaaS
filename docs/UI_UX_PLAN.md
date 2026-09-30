@@ -19,10 +19,10 @@ All names, dates and amounts below are **sample data**.
 ## 2. Principles
 
 1. **"What needs my attention?" first.** Dashboards lead with problems and deadlines, not charts.
-2. **Money at risk is always visible in AED** wherever a fine could happen. It makes compliance feel real.
+2. **Money at risk is always visible, in the club's currency** (sketches show AED, the default), wherever a fine could happen. It makes compliance feel real.
 3. **Phone-first for families and coaches; desktop-first for Manager/Admin.**
 4. **Calm for children.** No rankings, no "you're behind X", no red for kids' progress. Streaks are weekly and forgiving. A parent can switch engagement features off.
-5. **English and Arabic (right-to-left) from day one.** Layouts must flip cleanly; nothing is hard-wired left or right. Numbers, currency and dates follow the chosen language. The UAE weekend (Sat-Sun) is respected by the calendar.
+5. **English only at launch, built for the world.** Currency, dates, time zone and weekend days follow the club's settings. Arabic is limited to a few optional fields (e.g. a player's or coach's name in Arabic when the league requires it). Text lives in one translation file so more languages can be added later; no right-to-left layout work now.
 6. **Always show the reason.** A blocked action says why and what fixes it ("2 players are missing Emirates ID").
 7. **PWA:** installable from the browser, no App Store. Works on poor pitch-side signal for marking attendance (queued and synced). Push notifications are best-effort on iPhone (they need "Add to Home Screen").
 8. **Accessibility:** readable contrast, large touch targets (44px), never colour alone (icons and text labels too).
@@ -50,13 +50,15 @@ Parent / Player (bottom tabs)
 
 ## 4. The four key screens
 
+_Amounts in the sketches are in AED, the default currency; they follow each club's currency setting._
+
 ### 4.1 Manager / Admin dashboard (desktop)
 
 Purpose: in ten seconds, see what will cost money or block a match this week.
 
 ```
 +--------------------------------------------------------------------------------------+
-| PASS Abu Dhabi        Season 2026/27 [v]                   (3)   EN | AR    Sara [v]  |
+| PASS Abu Dhabi        Season 2026/27 [v]                   (3)              Sara [v]  |
 +--------------+-----------------------------------------------------------------------+
 | > Dashboard  |  This week                                                            |
 |   Compliance |  +--------------+ +--------------+ +--------------+ +----------------+ |
@@ -177,7 +179,7 @@ Parent view. A player 13-17 sees the same screen without the Fees card and with 
 
 ```
 +--------------------------------+
-| Omar (U11) [v]      EN | AR    |
+| Omar (U11) [v]                 |
 +--------------------------------+
 | NEXT UP                        |
 | Tomorrow, 5:30 pm  Training    |
@@ -328,12 +330,11 @@ Settings > Privacy > "Delete my data / my child's data" shows, before confirming
 
 ---
 
-## 6. Language, RTL and content
+## 6. Settings, language and content
 
-* One switch (EN | AR) always visible; remembered per account.
-* Arabic mirrors layout (sidebar on the right, back arrows flip) but **keeps** charts' time axis direction as agreed with a native reviewer, and keeps player names in the language they were entered, with an optional Arabic name field.
-* Currency shown as "AED 1,000" in English and Arabic-formatted in Arabic; numerals per language setting.
-* Tone for children: short, warm, no shaming. Reviewed by a native Arabic speaker before launch.
+* Club settings (Manager): currency (default AED), time zone, weekend days, tax label. Amounts everywhere use the club's currency and its local formatting.
+* Language: English at launch. Optional Arabic-name fields appear only where needed: on the player and staff form when the club's competition requires them, and flagged by the compliance checklist if blank.
+* Tone for children: short, warm, no shaming.
 
 ## 7. Empty, loading and error states (to design with each screen)
 * Empty: explain what to do next with one button ("No squads yet. Create your first squad").
@@ -349,4 +350,4 @@ Fees and payments (Manager view), roster/squad builder, drill library, staff HR 
 2. Should the coach see a child's **fee status**? (Plan says no.)
 3. Attendance marking: is a four-state tap (present / late / absent / excused) right, or simpler (present / absent)?
 4. Rating scale: 1-5 per pillar OK, or do you prefer descriptors (Developing / Secure / Strong)? Descriptors read gentler for children.
-5. Which pillar names should be Arabic-first in the UI?
+5. Which competitions (besides UAE FA) do you expect to need extra local-language fields?

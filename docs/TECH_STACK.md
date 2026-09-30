@@ -6,8 +6,8 @@ Supabase is the base (your choice). The rest is recommended, with the reason.
 |---|---|---|
 | Database, auth, files, jobs | **Supabase** (Postgres + row-level security, Auth, Storage, Edge Functions, Vault, `pg_cron`), **Frankfurt (eu-central-1)** | Tenant and child-safety rules live in the database. One project for all clubs. Frankfurt chosen so EU data-protection standards apply. |
 | Web app | **Next.js (App Router) + TypeScript**, hosted on **Vercel** with functions pinned to the Frankfurt region | Server rendering suits dashboards; next to the database for low latency. |
-| UI | **Tailwind + shadcn/ui** | Accessible components; easy RTL with logical CSS. |
-| Languages | **next-intl** (English + Arabic), Arabic-capable font, Asia/Dubai time zone, AED formatting, Sat-Sun weekend | RTL from day one. |
+| UI | **Tailwind + shadcn/ui** | Accessible components. |
+| Languages | English at launch; strings kept in one translation file (**next-intl**) so languages can be added later. Currency, time zone and weekend days come from club settings, using standard `Intl` formatting | Built for global clubs. Arabic only in optional name fields. |
 | Data access | **supabase-js + generated types**. No ORM for user-facing reads | ORMs usually bypass row-level security; going through the user's own session keeps it always applied. |
 | Mobile | **PWA only.** No App Store or Play Store apps | Your decision: updates ship instantly. Trade-off: iPhone push notifications need "Add to Home Screen". |
 | Payments | **Provider-neutral gateway layer**, each club's own keys in Supabase Vault, webhooks handled by Edge Functions | Matches "each club plugs in its own keys". Gateway choice deferred. |

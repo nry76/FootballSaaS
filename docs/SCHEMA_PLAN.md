@@ -11,8 +11,8 @@ Decisions this plan relies on are in [DECISIONS.md](DECISIONS.md).
 2. **Row-level security on every table.** No table is readable or writable "by default".
 3. **Children are a hard rule, not a feature.** For anyone under 18, *no personal data is processed until a guardian's consent is verified* (see section 4).
 4. **Small role set, many permissions.** A person holds a *set* of roles (a small-club owner can be Manager + Admin + Coach). Roles map to fine-grained permissions in a table, so Manager and Admin are separate permission levels, not one hardcoded role.
-5. **Money is whole numbers of fils** (1 AED = 100 fils). Never decimals or floats.
-6. **English + Arabic from the start.** User-facing names/titles get an Arabic counterpart. Times are stored in UTC and shown in Asia/Dubai.
+5. **Money is whole numbers of the currency's smallest unit** (e.g. fils for AED, cents for EUR). Never decimals or floats. Every money row also stores its **currency code**, so history stays correct if a club changes currency later.
+6. **Built for clubs worldwide.** Currency, country, time zone, tax label, weekend days and age-of-consent are **club settings** (defaults: AED, UAE, Asia/Dubai, 18). The app is English-only at launch; Arabic appears only in a few optional fields where a league asks for it (e.g. a player's name in Arabic for UAE FA registration). Times are stored in UTC and shown in the club's time zone.
 7. **Messages are append-only.** Nothing is edited or deleted in place, so reports keep their evidence. Moderators *hide*; they do not delete.
 8. **No leaderboards.** There is deliberately no table or view that ranks children against each other.
 9. **Secrets never live in tables.** Payment-gateway keys go in Supabase Vault; tables keep only a reference to them.
@@ -134,17 +134,29 @@ erDiagram
 ### A. Platform and tenancy
 | Table | Purpose | Who sees it |
 |---|---|---|
-| `clubs` | One row per tenant: name (EN/AR), emirate, timezone, VAT registration number, status | Own club; platform staff |
+| `clubs` | One row per tenant: name, country, region, **club settings** (currency, time zone, tax label and registration number, weekend days, age of consent, default language), status | Own club; platform staff |
 | `platform_plans`, `club_subscriptions`, `platform_invoices` | What each club pays *us* (SaaS fee) | M of that club; platform staff |
 | `platform_staff` | Platform owner / support users. **Not** club roles | Platform owner |
 | `support_access_grants` | A club-approved, time-limited window (max 7 days) letting support see a limited, **read-only** slice of that club. Revocable by the club | M grants/revokes; the support user sees their own grants |
 | `seasons` | e.g. 2026/27, with the age cut-off date used for age groups | Everyone in the club |
 | `venues` | Pitches and training grounds | Everyone in the club |
 
+**Club settings (all editable by the Manager, sensible defaults on sign-up)**
+
+| Setting | Default | Notes |
+|---|---|---|
+| Currency | AED | Any ISO currency. Changing it affects **new** bills only; existing bills keep their original currency |
+| Country / time zone | UAE / Asia/Dubai | Drives dates, weekend days and the tax label |
+| Tax label and rate | VAT, 5% | Could be GST, sales tax, none |
+| Weekend days | Sat, Sun | Used by the calendar |
+| Age of consent for data | 18 | Varies by country (counsel to confirm per launch country) |
+| Minimum age for own login | 13 | Same caveat |
+| Language | English | Arabic and others can be added later |
+
 ### B. Accounts and access
 | Table | Purpose | Who sees it |
 |---|---|---|
-| `profiles` | One account per person **per club** (name EN/AR, email, phone, language, approval status). Not approved means no access | Self; M/A; people they share a squad or conversation with |
+| `profiles` | One account per person **per club** (name, optional name in local script, email, phone, approval status). Not approved means no access | Self; M/A; people they share a squad or conversation with |
 | `role_permissions` | Fixed mapping: role to permissions (e.g. Admin has `fees.write`, Manager also has `roles.manage`) | Everyone (read-only reference) |
 | `profile_roles` | The set of roles each person holds | Self; M/A |
 | `invitations` | Single-use, expiring invite for staff, and for a second guardian | M/A; the invitee via emailed link |
@@ -152,7 +164,7 @@ erDiagram
 ### C. Players and family (the child-safety core)
 | Table | Purpose | Who sees it |
 |---|---|---|
-| `players` | The person being coached: name (EN/AR), date of birth, position group, status (`pending_consent`, `pending_verification`, `active`, `inactive`, `restricted`, `erased`). Under 13 never has a login | M/A; C of their squad; P; Pl (13+) |
+| `players` | The person being coached: name, **optional name in Arabic** (only needed where a league requires it), date of birth, position group, status (`pending_consent`, `pending_verification`, `active`, `inactive`, `restricted`, `erased`). Under 13 never has a login | M/A; C of their squad; P; Pl (13+) |
 | `player_guardians` | Parents/guardians of a player (name, email, phone, relationship, may-consent, may-pay) | M/A; C (contact only); P |
 | `consents` | Every consent given: who gave it (guardian, or the player themself after 18), what type (`data_processing`, `messaging`, `media`), status, policy version shown, when, from where. The emailed token is stored **hashed** | M/A (read); P. **Never writable from the browser** |
 | `player_medical` | Allergies, conditions, emergency contact. Own table, tightest rules | M/A with medical permission; P; club medical staff of that squad |
@@ -171,12 +183,12 @@ erDiagram
 ### E. Compliance and deadlines
 | Table | Purpose | Who sees it |
 |---|---|---|
-| `tpl_competitions`, `tpl_deadlines`, `tpl_fine_rules`, `tpl_checklist_items` | **Platform-maintained templates** for UAE FA competitions: deadlines, fine rules (AED 1,000 per missing player, etc.), checklist items | All signed-in users (read-only) |
+| `tpl_competitions`, `tpl_deadlines`, `tpl_fine_rules`, `tpl_checklist_items` | **Platform-maintained templates** for any league: deadlines, fine rules (e.g. UAE FA: 1,000 per missing player, in AED), checklist items. UAE FA is the first template; other countries' leagues are added the same way | All signed-in users (read-only) |
 | `competitions` | The club's own copy of a template, editable, remembering which template version it came from | M/A |
 | `squad_competitions` | Which squads play in which competition | M/A |
 | `competition_deadlines` | League deadlines with status and alert offsets (default 7, 3, 1 days) | M/A |
 | `fine_rules` | The club's copy of fine rules (amount, per player / per match / per occurrence) | M/A |
-| `checklist_items` | Pre-matchday checks: squad complete, medical staff listed, documents on file, staff certificates valid, manual items | M/A; C (read) |
+| `checklist_items` | Pre-matchday checks: squad complete, medical staff listed, documents on file, staff certificates valid, **required field filled (e.g. Arabic name for UAE FA)**, manual items | M/A; C (read) |
 | `matchday_checklists`, `checklist_results` | One checklist per match, with pass/fail/pending/waived per item and the detail ("9 of 11 players") | M/A; C of that squad |
 | `fines` | Predicted ("at risk") and actual fines, so the dashboard can show money at risk | M/A |
 | `notifications` | Outbox for alerts and reminders (deadline, overdue fee, RSVP) | The recipient |
@@ -209,7 +221,7 @@ erDiagram
 | Table | Purpose | Who sees it |
 |---|---|---|
 | `payment_gateways` | The club's own gateway account: provider, mode (test/live), public key, **references** to secrets in Vault | M only |
-| `fee_plans` | The club's price list: membership, academy, match fee, kit deposit; recurrence; VAT rate; refundable | M/A |
+| `fee_plans` | The club's price list: membership, academy, match fee, kit deposit; recurrence; tax rate; refundable; currency (defaults to the club's) | M/A |
 | `player_charges` | One bill line per player. Stored status: due, part-paid, paid, waived, void. **"Overdue" is worked out from the due date**, never stored, so it cannot go stale | M/A; P; adult Pl |
 | `payments` | Each payment attempt/result and refunds. Online payments are written only by the payment service; staff can record cash/bank transfer | Same as charges |
 | `payment_webhook_events` | Raw gateway notifications for safe de-duplication. Not readable from the browser | Nobody in the app |
@@ -370,4 +382,5 @@ Parents are responsible for what their children enter; this belongs in the Terms
 4. **Staff-invited children:** parent-driven registration is the main path. For clubs with an *existing* roster, do you want a "staff invites the parent" shortcut? The child record would hold only a name, date of birth and the parent's email until the parent completes consent.
 5. **One account per club** means a parent with children at two clubs needs a different email address for each club (the login system requires unique emails). Accepted?
 6. **Platform support grants:** the 7-day maximum and the read-only slice (compliance, fees, analytics summaries) OK?
-7. **Age groups:** does the UAE FA use single-birth-year groups (U11 = born 2015) for your leagues, or two-year bands? This affects how "playing up/down" is detected.
+7. **Age of consent by country:** the plan uses 18 as the default and makes it a club setting. Counsel should confirm the value for each country we launch in (many places use 13-16 for digital consent).
+8. **Age groups:** does the UAE FA use single-birth-year groups (U11 = born 2015) for your leagues, or two-year bands? This affects how "playing up/down" is detected.
