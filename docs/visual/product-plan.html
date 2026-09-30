@@ -137,12 +137,17 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .docrow .n{display:flex;flex-direction:column;gap:2px}
 .acts{display:flex;flex-wrap:wrap;gap:6px}
 .acts button:disabled{opacity:.35;cursor:not-allowed}
+.pass{border:2px solid var(--fg);border-radius:16px;padding:14px;background:var(--card);max-width:290px;display:flex;flex-direction:column;gap:8px}
+.pass .qr{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;width:132px;align-self:center}
+.pass .qr i{aspect-ratio:1;background:var(--fg);border-radius:1px}.pass .qr i.o{background:transparent}
+.sess{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--card);font-size:13.5px}
+select,input[type=date]{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--card);min-height:36px}
 footer{font-size:13px;color:var(--muted)}
 </style>
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v0.7 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v0.8 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
     <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
@@ -154,8 +159,8 @@ footer{font-size:13px;color:var(--muted)}
   <section class="panel" id="p-journey" role="tabpanel">
     <div class="card">
       <h2>The pilot, in one line</h2>
-      <p>Get families in (<b>lead management</b>), get them registered with UAE FA without mistakes (<b>FANet registration</b>), run the week (<b>scheduling</b>), and keep everyone informed (<b>status and WhatsApp / email</b>).</p>
-      <div class="row"><span class="tag a">Lead management</span><span class="tag a">FANet registration</span><span class="tag a">Scheduling</span><span class="tag a">Status + communication</span><span class="tag w">Later: online payments</span><span class="tag w">Later: Zoho Books</span><span class="tag w">Later: assisted upload into FANet</span></div>
+      <p>Get families in (<b>prospect management</b>), get them registered with UAE FA without mistakes (<b>FANet registration</b>), run the week (<b>scheduling</b>), and keep everyone informed (<b>status and WhatsApp / email</b>).</p>
+      <div class="row"><span class="tag a">Prospect management</span><span class="tag a">FANet registration</span><span class="tag a">Scheduling</span><span class="tag a">Status + communication</span><span class="tag w">Later: online payments</span><span class="tag w">Later: Zoho Books</span><span class="tag w">Later: assisted upload into FANet</span></div>
     </div>
     <div class="card">
       <h2>From first enquiry to registered player</h2>
@@ -232,6 +237,14 @@ footer{font-size:13px;color:var(--muted)}
       <div class="scroll"><div class="cal" id="cal"></div></div>
       <div class="msg" id="calmsg">Ready. Every group trains 3 times a week.</div>
     </div>
+    <div class="card">
+      <h2>Who coaches, and where: by period</h2>
+      <p class="note">Coaches and venues change. A group has a default venue; a period or a single session can override it. Pick a group and a date to see what the system would show parents.</p>
+      <div class="row"><select id="perG" aria-label="Group"><option>U10</option><option>U12</option></select><input type="date" id="perD" value="2026-09-10" aria-label="Date">
+        <button class="pill" data-d="2026-09-10">10 Sep</button><button class="pill" data-d="2026-09-28">28 Sep</button><button class="pill" data-d="2026-10-07">7 Oct</button></div>
+      <div class="msg" id="perOut"></div>
+      <div class="scroll"><table id="perTbl"></table></div>
+    </div>
     <div class="cols">
       <div class="card"><h3>Sessions per week</h3><div class="counts" id="counts"></div><p class="note">The manager plans by "3 of 3", so the builder counts it for them.</p></div>
       <div class="card">
@@ -280,6 +293,27 @@ footer{font-size:13px;color:var(--muted)}
       </div>
     </div>
     <div class="card">
+      <h2>Two layers of rules: the federation and the club</h2>
+      <p class="note">Four clubs, four different lists for the same federation. Some lines are UAE FA's; others are the club's own add-ons. We keep them apart, so clubs can switch add-ons on or off.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Item</th><th>What different clubs ask</th></tr></thead>
+        <tbody>
+          <tr><td>Birth certificate</td><td>Copy (Fursan) · Arabic original + English translation (G Reds) · certified translation (Golden Stars) · Arabic and English by a legal translator (another club)</td></tr>
+          <tr><td>Photo</td><td>Not listed (Fursan) · personal photo (Golden Stars) · white background, sports T-shirt (another club). You told me UAE FA requires one</td></tr>
+          <tr><td>Medical</td><td>Report from the assigned clinic (Fursan) · medical examination form (Golden Stars) · PCMA test (another club) · UAE FA form signed by an orthopaedic doctor (you)</td></tr>
+          <tr><td>Home proof</td><td>Rent contract or title deed (Fursan) · plus electricity or phone bill (G Reds, Golden Stars) · water and electricity bill (another club)</td></tr>
+          <tr><td>Club forms</td><td>Club registration form and minor-player form (Golden Stars) · minor-player approval form (Fursan)</td></tr>
+          <tr><td>Emirati player</td><td>Own ID, father's ID, photo and medical only (another club); 3 documents (Fursan)</td></tr>
+        </tbody></table></div>
+      <p class="note">I need the official UAE FA list to mark which lines are federation rules and which are club add-ons.</p>
+    </div>
+    <div class="card">
+      <h2>Which group can this child play in?</h2>
+      <p class="note">Your rule: registered in U(2027 minus birth year). Playing up is allowed. Playing down only for September to December births of the year just before the group's year.</p>
+      <div class="row"><label class="row" style="gap:6px">Born <select id="gcM"></select> <select id="gcY"></select></label><label class="row" style="gap:6px">Wants to play in <select id="gcG"></select></label></div>
+      <div class="msg" id="gcOut"></div>
+    </div>
+    <div class="card">
       <h2>Nobody in the dark, and no restarts</h2>
       <p class="note">The pain you described: parents do not know where they are, and one wrong upload restarts everything. Try it. Pick a document, then press a button. <b>A rejection touches only that document.</b> Everything already approved stays approved.</p>
       <div class="cols">
@@ -324,7 +358,7 @@ footer{font-size:13px;color:var(--muted)}
   <!-- LEADS -->
   <section class="panel" id="p-leads" role="tabpanel">
     <div class="card">
-      <h2>Leads pipeline</h2>
+      <h2>Prospects pipeline</h2>
       <p class="note">Tap a family to see its whole conversation in one place. Stages move by themselves when the parent books, attends or pays.</p>
       <div class="scroll"><div class="board" id="board"></div></div>
     </div>
@@ -338,12 +372,31 @@ footer{font-size:13px;color:var(--muted)}
         <div class="chk"><span class="bx" style="border-color:var(--bad);color:var(--bad)">!</span><span class="t"><b>Adam</b><span class="note">free trial 1 of 1 · not yet confirmed</span></span></div>
         <h4 style="margin-top:4px">Feed</h4>
         <span class="note">16:02 Yousef confirmed for tonight<br>15:40 Adam booked a free trial<br>12:10 Call task: Mr Ahmed about Omar</span>
-        <span class="tag a">Alerts: WhatsApp · digest 4 pm</span>
+        <span class="tag a">Scan wallet tickets to mark attendance</span><span class="tag">Alerts: WhatsApp · digest 4 pm</span>
       </div>
     </div>
     <div class="card">
-      <h3>Where leads come from (social, search, website)</h3>
-      <div class="pipe"><span class="s">Ad, post or search result</span><span class="note">&rarr;</span><span class="s">Club landing page (tagged with source)</span><span class="note">&rarr;</span><span class="s">Short enquiry form</span><span class="note">&rarr;</span><span class="s">Lead with its source</span><span class="note">&rarr;</span><span class="s on">Confirmed = counted for that source</span></div>
+      <h2>Trials: the allowance and the wallet ticket</h2>
+      <p class="note">Pick how a trial is counted. Sample child, limit of 3 trials. This is a club setting.</p>
+      <div class="cols">
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div class="row" id="trRules"></div>
+          <div id="trSess" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div class="msg" id="trOut"></div>
+        </div>
+        <div class="pass" aria-label="Wallet ticket example">
+          <span class="eyebrow">Wallet ticket · sample club</span>
+          <b style="font-family:var(--display);font-size:17px">Omar · U10 trial</b>
+          <span class="note">Thu 5:00 pm · International School of Choueifat</span>
+          <div class="qr" id="trQr" aria-hidden="true"></div>
+          <span class="tag a" id="trTag" style="align-self:flex-start"></span>
+          <span class="note">Apple Wallet or Google Wallet. The coach scans it to mark attendance. Updates itself after each session.</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Where prospects come from (social, search, website)</h3>
+      <div class="pipe"><span class="s">Ad, post or search result</span><span class="note">&rarr;</span><span class="s">Club landing page (tagged with source)</span><span class="note">&rarr;</span><span class="s">Short enquiry form</span><span class="note">&rarr;</span><span class="s">Prospect with its source</span><span class="note">&rarr;</span><span class="s on">Confirmed = counted for that source</span></div>
       <ul class="note" style="margin:0;padding-inline-start:18px;display:flex;flex-direction:column;gap:4px">
         <li><b>SEO:</b> each club gets a public page that search engines can read (club name, ages, trial times, location).</li>
         <li><b>SEM and social:</b> you run the ads elsewhere. We give each campaign its own tagged link and page, and show which sources bring confirmed families.</li>
@@ -381,7 +434,7 @@ footer{font-size:13px;color:var(--muted)}
       <p class="note">Ticks stay on this device only. Tell me your answers in the chat so they are recorded in the repository.</p>
       <ul class="qs" id="qs"></ul></div>
     <div class="card"><h2>Parked on purpose</h2>
-      <div class="row"><span class="tag w">Online payments, gateway, Zoho Books (later builds)</span><span class="tag w">Talks with Fursan (after the pilot)</span><span class="tag w">Which WhatsApp number</span><span class="tag w">AI photo and document reading</span><span class="tag w">Video</span><span class="tag w">Assisted upload into FANet</span><span class="tag w">Match day</span><span class="tag w">Legal review: consent age by country, UAE marketing rules, 1-year financial retention</span></div></div>
+      <div class="row"><span class="tag w">Online payments, gateway, Zoho Books (later builds)</span><span class="tag w">Talks with Fursan (after the pilot)</span><span class="tag w">Which WhatsApp number</span><span class="tag w">AI photo and document reading</span><span class="tag w">Video</span><span class="tag w">Assisted upload into FANet</span><span class="tag w">Match day</span><span class="tag w">Weekend fixtures import</span><span class="tag w">Legal review: consent age by country, UAE marketing rules, 1-year financial retention</span></div></div>
     <div class="card"><h2>Decided</h2><div class="dec" id="dec"></div></div>
   </section>
 
@@ -393,7 +446,7 @@ function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 /* ---------- tabs ---------- */
-var TABS=[['journey','Journey'],['foundation','Foundation'],['schedule','Schedule'],['reg','Registration'],['leads','Leads and coaches'],['settings','Settings'],['decide','Decisions and questions']];
+var TABS=[['journey','Journey'],['foundation','Foundation'],['schedule','Schedule'],['reg','Registration'],['leads','Prospects and coaches'],['settings','Settings'],['decide','Decisions and questions']];
 var tabsEl=$('tabs');
 tabsEl.innerHTML=TABS.map(function(t){return '<button class="tab" role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('');
 function show(t){
@@ -407,12 +460,12 @@ show(TABS.some(function(t){return t[0]===h})?h:'journey');
 
 /* ---------- journey ---------- */
 var STAGES=[
- {n:'Enquiry',s:'parent fills 7 fields',parent:'Name, phone, WhatsApp, email; child name, birth date, position wanted. Confirms email by link.',sys:'Instant confirmation with trial times. Starts the follow-up playbook. Records the source (Instagram, WhatsApp, website...).',club:'A new lead with an owner, chosen by the default assignment rule.',data:['Parent name and contacts','Child name and birth date','Position wanted'],lock:['Documents','Photo','ID numbers','Medical','Payments (later)']},
- {n:'Trials',s:'free, within allowance',parent:'Books trial sessions for the child\'s age group. Sees "1 of 5 used".',sys:'Reminders 24 h and 2 h before. Counts the allowance. When it is used up the parent sees "Ask the coach", and the coach can invite more.',club:'Coach sees the trialist on tonight\'s roster with paid/unpaid state. Coach can invite more trials.',data:['Same seven fields','Trial attendance'],lock:['Documents','Photo','ID numbers','Medical']},
- {n:'Committed',s:'accepts the place',parent:'Taps Join, accepts terms and the registration consent, sees the fee.',sys:'Tells the parent how to pay (at the club POS or by bank transfer for now). Reminds. Releases the place if nothing is received after N days (setting).',club:'Lead shows "committed, fee not yet received".',data:['Consent for membership and registration'],lock:['Documents until the fee is received']},
- {n:'Confirmed',s:'fee received',parent:'Pays at the club (POS) or by bank transfer. Online payment comes in a later build.',sys:'Moves the family out of the pipeline. Builds the personal registration checklist from the child\'s category.',club:'Staff record "fee received" with one click. Lead is won and counted for its source.',data:['Full profile','Emirates ID, passport, birth certificate, photo...'],lock:[]},
- {n:'Registering',s:'documents and medical',parent:'Uploads what the checklist asks. Books the medical with the assigned clinic.',sys:'Checks each file, nudges the parent, builds the pack, counts the 3-4 week lead time.',club:'Registrar queue: waiting on parents / ready to review / submitted.',data:['Parents\' documents too (mother, father)'],lock:[]},
- {n:'Registered',s:'UAE FA / FIFA done',parent:'Nothing more. Sees "Registered".',sys:'Tracks submission date and reference; reopens if UAE FA asks for an extra document.',club:'Player can be placed on match sheets.',data:['Registration record'],lock:[]}
+ {n:'Enquiry',s:'parent fills 7 fields',parent:'Name, phone, WhatsApp, email; child name, birth date, position wanted. Confirms email by link.',sys:'Instant confirmation with trial times. Starts the follow-up. Records the source (Instagram, WhatsApp, website, referral, walk-in).',club:'A new prospect with an owner, chosen by the default assignment rule (easy to transfer).',data:['Parent name and contacts','Child name and birth date','Position wanted'],lock:['Documents','Photo','ID numbers','Medical']},
+ {n:'Trials',s:'free, within allowance',parent:'Books a trial and gets a wallet ticket. Sees "2 of 3 used".',sys:'Reminders before each session. The coach scans the ticket, which counts the trial. No-shows are free when attendance is taken.',club:'Coach sees tonight\'s trialists. Beyond the maximum, the parent asks and a coach approves.',data:['Same seven fields','Trial attendance'],lock:['Documents','Photo','ID numbers','Medical']},
+ {n:'Offer accepted',s:'registration can start',parent:'Receives the club\'s offer, accepts the terms and the registration consent. Sees the fee options.',sys:'Unlocks the registration checklist and the season\'s forms. No payment is needed to begin.',club:'Prospect moves to "Accepted". The club made the offer; a person (admin or coach) chose to.',data:['Club terms and consents','Everything registration needs'],lock:[]},
+ {n:'Registering and paying',s:'in parallel',parent:'Uploads documents, completes and signs forms, books the medical. Separately chooses Term 1, Terms 1+2, or the full year and pays at the club or by bank transfer.',sys:'Checks each file, tells the parent what to fix, builds the pack, counts UAE FA\'s 3-4 weeks.',club:'Registrar queue. Staff record "fee received" with one click.',data:['Parents\' documents too','Signed forms'],lock:[]},
+ {n:'Confirmed',s:'first term paid',parent:'Nothing more to do for the club. Keeps finishing the registration checklist.',sys:'Moves the family out of the prospect pipeline. Counts it for the source.',club:'Confirmed member. Coach sees them on the session lists.',data:['Full profile'],lock:[]},
+ {n:'Registered',s:'UAE FA / FIFA done',parent:'Sees "Registered".',sys:'Tracks the submission date and FANet reference; reopens only the affected document if UAE FA asks.',club:'Player can be placed on match sheets (later).',data:['Registration record'],lock:[]}
 ];
 var stage=0;
 function drawStages(){
@@ -512,7 +565,7 @@ var DOCS=[
  ['Residence visa (valid page)','Player',[0,0,1,1,1],''],
  ['5-years proof','Player',[0,0,1,1,0],'Bundle: visas covering 5 years + school registration history (KHDA)'],
  ['Continuation studies certificate (this year)','Player',[0,0,1,1,1],'Renewed every year'],
- ['Father adoption form','Father',[0,0,1,1,1],'Club form: download, sign, upload'],
+ ['Minor-player approval form (UAE FA)','Parent + club',[0,0,1,1,1],'Season form: parent completes and signs, club adds its declaration and stamp'],
  ['Father work contract and validation','Father',[0,0,0,0,1],'One document'],
  ['Rent contract or title deed','Family',[0,0,0,0,1],'Either one']
 ];
@@ -548,7 +601,7 @@ var BLOCKS=[
  ['Settings engine','Club default, override per group or session',['Everything']],
  ['Consent and data stages','What may be stored, and when',['Registration','Trials and leads']],
  ['Rules engine','Requirements by the person\'s role and profile, versioned',['Registration','Staff registration','Match day (later)']],
- ['Documents and checks','Files, automatic checks, review, expiry',['Registration','Staff registration']],
+ ['Documents and checks','Files, season forms and signatures, automatic checks, review, expiry',['Registration','Staff registration']],
  ['Status engine','Steps with history, one truth for everyone',['Registration','Trials and leads','Payments (later)']],
  ['Messages and log','Email, WhatsApp, in-app; everything recorded',['Registration','Trials and leads','Coach feed','Schedule','Match day (later)']],
  ['Tasks','Assigned to-dos with due dates',['Registration','Trials and leads']],
@@ -651,21 +704,83 @@ drawTrk();
   $('fnName').addEventListener('input',fn); $('fnDoc').addEventListener('change',fn); fn();
 })();
 
+/* ---------- periods ---------- */
+var PERIODS={
+ 'U10':{venue:'International School of Choueifat',coach:[['2026-09-01','2026-09-21','Coach 3'],['2026-09-22','2026-12-18','Coach 1']],venueOv:[['2026-10-05','2026-10-09','Al Wasl Field']],sessOv:[['2026-10-07','Zayed Sports City']]},
+ 'U12':{venue:'International School of Choueifat',coach:[['2026-09-01','2026-12-18','Coach 2']],venueOv:[],sessOv:[]}
+};
+function resolve(g,d){
+  var x=PERIODS[g],coach='Unassigned',venue=x.venue,why='group default';
+  x.coach.forEach(function(c){if(d>=c[0]&&d<=c[1])coach=c[2]});
+  x.venueOv.forEach(function(v){if(d>=v[0]&&d<=v[1]){venue=v[2];why='period override ('+v[0]+' to '+v[1]+')'}});
+  x.sessOv.forEach(function(v){if(d===v[0]){venue=v[1];why='this session only'}});
+  return {coach:coach,venue:venue,why:why};
+}
+function drawPer(){
+  var g=$('perG').value,d=$('perD').value,r=resolve(g,d);
+  $('perOut').textContent=g+' on '+d+': '+r.coach+' at '+r.venue+'  ('+r.why+')';
+  var x=PERIODS[g];
+  $('perTbl').innerHTML='<thead><tr><th>Layer</th><th>Dates</th><th>Value</th></tr></thead><tbody><tr><td>Group default venue</td><td>always</td><td>'+esc(x.venue)+'</td></tr>'
+   +x.coach.map(function(c){return '<tr><td>Coach period</td><td>'+c[0]+' to '+c[1]+'</td><td>'+esc(c[2])+'</td></tr>'}).join('')
+   +x.venueOv.map(function(v){return '<tr><td>Venue override (period)</td><td>'+v[0]+' to '+v[1]+'</td><td>'+esc(v[2])+'</td></tr>'}).join('')
+   +x.sessOv.map(function(v){return '<tr><td>Venue override (one session)</td><td>'+v[0]+'</td><td>'+esc(v[1])+'</td></tr>'}).join('')+'</tbody>';
+}
+$('perG').addEventListener('change',drawPer);$('perD').addEventListener('input',drawPer);
+document.querySelectorAll('#p-schedule .pill[data-d]').forEach(function(b){b.addEventListener('click',function(){$('perD').value=b.dataset.d;drawPer()})});
+drawPer();
+
+/* ---------- group checker ---------- */
+var GY={'U5/6':[2021,2022],'U7':[2020,2020],'U8':[2019,2019],'U9':[2018,2018],'U10':[2017,2017],'U11':[2016,2016],'U12':[2015,2015],'U13':[2014,2014],'U14':[2013,2013],'U15':[2012,2012],'U16':[2011,2011],'U18':[2009,2010]};
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+(function(){
+  var y='';for(var i=2022;i>=2008;i--)y+='<option'+(i===2015?' selected':'')+'>'+i+'</option>';
+  $('gcY').innerHTML=y;$('gcM').innerHTML=MONTHS.map(function(m,i){return '<option value="'+(i+1)+'"'+(i===9?' selected':'')+'>'+m+'</option>'}).join('');
+  $('gcG').innerHTML=Object.keys(GY).map(function(k){return '<option'+(k==='U11'?' selected':'')+'>'+k+'</option>'}).join('');
+  function calc(){
+    var by=+$('gcY').value,m=+$('gcM').value,g=$('gcG').value,r=GY[g],own='',k;
+    for(k in GY){if(by>=GY[k][0]&&by<=GY[k][1])own=k}
+    var reg=own||('no group in this list (U'+(2027-by)+')'),txt='Registered in '+reg+' (2027 minus '+by+' = U'+(2027-by)+'). ';
+    if(by>=r[0]&&by<=r[1])txt+='Playing in '+g+': their own group.';
+    else if(by>r[1])txt+='Playing UP in '+g+': allowed.';
+    else if(by===r[0]-1&&m>=9)txt+='Playing DOWN in '+g+': allowed, because born in '+MONTHS[m-1]+' of the year just before the group\'s year.';
+    else txt+='Playing DOWN in '+g+': not allowed. Only September to December births of the year just before the group\'s year may play down.';
+    $('gcOut').textContent=txt;
+  }
+  ['gcY','gcM','gcG'].forEach(function(id){$(id).addEventListener('change',calc)});calc();
+})();
+
+/* ---------- trial allowance ---------- */
+var TS=[['Session 1','Attended (ticket scanned)','att'],['Session 2','Booked; attendance not taken that day','nt'],['Session 3','Booked; attendance taken, did not come','ns'],['Session 4','Cancelled in time','cx']];
+var TR=[['A','Attended only'],['B','Attendance if taken, otherwise the booking (recommended default)'],['C','Every booking counts unless cancelled in time']];
+var trule='B',TMAX=3;
+function counts(r,k){if(r==='A')return k==='att';if(r==='B')return k==='att'||k==='nt';return k!=='cx'}
+function drawTrial(){
+  $('trRules').innerHTML=TR.map(function(t){return '<button class="pill" data-r="'+t[0]+'" aria-pressed="'+(t[0]===trule)+'">'+esc(t[1])+'</button>'}).join('');
+  var n=0;$('trSess').innerHTML=TS.map(function(t){var c=counts(trule,t[2]);if(c)n++;return '<div class="sess"><span><b>'+t[0]+'</b> · '+esc(t[1])+'</span><span class="tag '+(c?'w':'a')+'">'+(c?'counts':'free')+'</span></div>'}).join('');
+  $('trOut').className='msg'+(n>=TMAX?' w':'');
+  $('trOut').textContent='Used '+n+' of '+TMAX+'.'+(n>=TMAX?' The parent can ask for more; a coach approves.':' '+(TMAX-n)+' left.');
+  $('trTag').textContent='Trial '+Math.min(n+1,TMAX)+' of '+TMAX;
+}
+$('trRules').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){trule=b.dataset.r;drawTrial()}});
+(function(){var h='',seed=7;for(var i=0;i<121;i++){seed=(seed*31+17)%97;var corner=(i%11<3&&Math.floor(i/11)<3)||(i%11>7&&Math.floor(i/11)<3)||(i%11<3&&Math.floor(i/11)>7);h+='<i class="'+((corner||seed%2)?'':'o')+'"></i>'}$('trQr').innerHTML=h})();
+drawTrial();
+
 /* ---------- leads ---------- */
-var LST=['New','Contacted','Trial booked','Trial attended','Committed','Confirmed'];
+var LST=['Enquiry','Trial booked','Trial done','Offer made','Accepted','Confirmed'];
 var LEADS=[
  {n:'Omar A.',a:'U10',p:'Forward',src:'Instagram',st:0,o:'Sara',x:'12 min old'},
  {n:'Layla S.',a:'U7',p:'Not sure',src:'WhatsApp',st:0,o:'Sara',x:'1 h old'},
- {n:'Yousef N.',a:'U11',p:'Midfielder',src:'WhatsApp',st:1,o:'Sara',x:'2 days'},
- {n:'Hamda R.',a:'U9',p:'Defender',src:'Website',st:1,o:'Khaled',x:'1 day'},
- {n:'Ali K.',a:'U12',p:'Goalkeeper',src:'Referral',st:1,o:'Khaled',x:'3 days'},
- {n:'Adam R.',a:'U9',p:'Forward',src:'Instagram',st:2,o:'Sara',x:'Thu 5:00, free 1 of 1'},
- {n:'Noor F.',a:'U6',p:'Not sure',src:'School event',st:2,o:'Khaled',x:'Fri 5:00'},
- {n:'Khalid F.',a:'U12',p:'Midfielder',src:'Instagram',st:3,o:'Sara',x:'trials used; call task'},
- {n:'Salem M.',a:'U8',p:'Forward',src:'Walk-in',st:3,o:'Khaled',x:'attended Tue'},
- {n:'Hamdan K.',a:'U13',p:'Defender',src:'WhatsApp',st:4,o:'Sara',x:'fee due, reminded'},
- {n:'Zayed T.',a:'U10',p:'Forward',src:'Instagram',st:5,o:'Sara',x:'fee received'},
- {n:'Rashid B.',a:'U14',p:'Defender',src:'Referral',st:5,o:'Khaled',x:'fee received at POS'}
+ {n:'Yousef N.',a:'U11',p:'Midfielder',src:'WhatsApp',st:0,o:'Sara',x:'2 days'},
+ {n:'Hamda R.',a:'U9',p:'Defender',src:'Website',st:0,o:'Khaled',x:'1 day'},
+ {n:'Ali K.',a:'U12',p:'Goalkeeper',src:'Referral',st:0,o:'Khaled',x:'3 days'},
+ {n:'Adam R.',a:'U9',p:'Forward',src:'Instagram',st:1,o:'Sara',x:'Thu 5:00, ticket sent'},
+ {n:'Noor F.',a:'U6',p:'Not sure',src:'Walk-in',st:1,o:'Khaled',x:'Fri 5:00'},
+ {n:'Khalid F.',a:'U12',p:'Midfielder',src:'Instagram',st:2,o:'Sara',x:'trials used: coach decides'},
+ {n:'Salem M.',a:'U8',p:'Forward',src:'Walk-in',st:2,o:'Khaled',x:'attended Tue'},
+ {n:'Hamdan K.',a:'U13',p:'Defender',src:'WhatsApp',st:3,o:'Sara',x:'offer sent, awaiting reply'},
+ {n:'Zayed T.',a:'U10',p:'Forward',src:'Instagram',st:4,o:'Sara',x:'registering 4 of 10 · Term 1 due'},
+ {n:'Rashid B.',a:'U14',p:'Defender',src:'Referral',st:5,o:'Khaled',x:'Term 1 received · 7 of 10'},
+ {n:'Mariam K.',a:'U8',p:'Not sure',src:'Website',st:5,o:'Khaled',x:'full year received'}
 ];
 var pickLead=7;
 function drawBoard(){
@@ -674,13 +789,13 @@ function drawBoard(){
     return '<div class="col"><h4><span>'+s+'</span><span class="note">'+items.length+'</span></h4>'+items.map(function(x){
       return '<button class="lead" data-i="'+x.i+'" aria-pressed="'+(x.i===pickLead)+'"><b>'+esc(x.l.n)+'</b><span>'+esc(x.l.a)+' · '+esc(x.l.src)+'</span><span class="note">'+esc(x.l.x)+'</span></button>'}).join('')+'</div>';
   }).join('');
-  var l=LEADS[pickLead], ev=[['Tue 09:12','Enquiry received from '+l.src+' link'],['Tue 09:12','Email sent: "Your trial request" (delivered)'],['Tue 09:13','WhatsApp sent: trial times (read)']];
-  if(l.st>=1) ev.push(['Tue 09:40','Staff replied to a question about age groups']);
-  if(l.st>=2) ev.push(['Tue 18:40','Parent booked a trial (free)'],['Wed 17:00','Reminder sent (delivered)']);
-  if(l.st>=3) ev.push(['Thu 5:00','Attended. Coach note: "great first touch"'],['Thu 7:00','Thank you + fee sent']);
-  if(l.st>=4) ev.push(['Sat 10:15','Parent tapped Join. Payment instructions sent']);
-  if(l.st>=5) ev.push(['Sat 10:22','Fee recorded by staff. Registration checklist created']);
-  var next=['Reply within 15 min','Follow up in 2 days','Send reminder Wed 5 pm','Call task for the coach','Chase the fee in 2 days','Registration checklist reminders'][l.st];
+  var l=LEADS[pickLead], ev=[['Tue 09:12','Enquiry received from '+l.src],['Tue 09:12','Email sent: "Your trial request" (delivered)'],['Tue 09:13','WhatsApp sent: trial times (read)']];
+  if(l.st>=1) ev.push(['Tue 18:40','Parent booked a free trial; wallet ticket sent'],['Wed 17:00','Reminder sent (delivered)']);
+  if(l.st>=2) ev.push(['Thu 5:00','Ticket scanned by the coach. Coach note: "great first touch"'],['Thu 7:00','Thank you sent']);
+  if(l.st>=3) ev.push(['Fri 10:00','Club made an offer; parent notified']);
+  if(l.st>=4) ev.push(['Sat 10:15','Parent accepted terms. Registration checklist opened (no payment needed to start)']);
+  if(l.st>=5) ev.push(['Sat 10:22','Term 1 fee recorded by staff. Now Confirmed']);
+  var next=['Reply within 15 min','Send the ticket reminder','Coach decides: offer a place or invite more trials','Follow up the offer in 2 days','Chase documents and the Term 1 fee','Registration reminders'][l.st];
   $('leadDetail').innerHTML='<h3>'+esc(l.n)+' <span class="tag a">'+LST[l.st]+'</span></h3><dl class="kv"><dt>Age group</dt><dd>'+esc(l.a)+'</dd><dt>Position</dt><dd>'+esc(l.p)+'</dd><dt>Source</dt><dd>'+esc(l.src)+'</dd><dt>Owner</dt><dd>'+esc(l.o)+' <button class="pill" style="min-height:28px;padding:2px 10px">Transfer</button></dd><dt>Next action</dt><dd>'+next+'</dd></dl><ul class="tl">'+ev.map(function(e){return '<li><time>'+e[0]+'</time><span>'+esc(e[1])+'</span></li>'}).join('')+'</ul>';
 }
 $('board').addEventListener('click',function(e){var b=e.target.closest('.lead');if(b){pickLead=+b.dataset.i;drawBoard()}});
@@ -690,46 +805,33 @@ drawBoard();
 var SET=[
  ['Club',[['Currency','AED'],['Time zone, weekend days','Asia/Dubai, Sat-Sun'],['Tax label and rate','VAT 5%'],['Opening hours','5 pm - 10 pm'],['Block grid','3 x 90 min'],['Club colours','2 colours'],['Language','English']]],
  ['Age groups',[['Name and birth years','U10 = 2017'],['Calendar colour','green'],['Default session length','90 min'],['Sessions per week target','3']]],
- ['Trials',[['Free trials allowed','1 or 5 (per group)'],['Counts by','booking / attendance'],['No-shows count','yes / no'],['Coach may invite more','on'],['Capacity and waiting list','per session'],['Delete non-converted after','90 days']]],
+ ['Schedule',[['Default venue per group','set per group'],['Coach by period','dates + coach'],['Override','per period or single session']]],
+ ['Trials',[['Free trials allowed','1 or 5 (per group)'],['Counts by','attendance (booking if not taken)'],['More trials','parent asks, coach approves'],['No-shows count','yes / no'],['Coach may invite more','on'],['Capacity and waiting list','per session'],['Delete non-converted after','club decides (default 90 days)']]],
  ['Paid extra classes (later)',[['Price','per class (per group)'],['Bundles, e.g. 5-class pass','optional'],['Cancellation cut-off','12 hours'],['Refund or credit','credit'],['Pay at venue (POS) allowed','on'],['Payment link expires after','48 hours']]],
  ['Payments (later)',[['Gateway and Zoho Books','later builds'],['Fee amounts (recorded by staff)','per age group'],['POS methods to record','card, cash'],['Receipts and VAT invoices','on']]],
- ['Leads',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Lead sources and landing pages','social, website, ads'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
+ ['Prospects',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Prospect sources and landing pages','Instagram, WhatsApp, website, referral, walk-in'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
  ['Messages',[['Channels on','email, WhatsApp'],['Quiet hours (marketing)','9 pm - 7 am'],['Templates and wording','editable'],['Sender names','club name']]],
  ['Coach alerts',[['Channel per coach','app / email / WhatsApp'],['Instant or digest','digest 4 pm'],['Call tasks per week','max 3'],['What WhatsApp shows','first name, class, paid']]],
- ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','upload template']]],
+ ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['Terms per season','3 (Term 1, Terms 1+2, year)'],['Photo rule','white background, club T-shirt']]],
  ['Privacy',[['Age of consent for data','18'],['Minimum age for own login','13'],['Deletion undo window','7 days'],['Financial records kept','1 year'],['Consent wording versions','tracked']]]
 ];
-var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Joining fee','Default owner rule','Capacity and waiting list','Default session length'];
+var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Fee amounts (recorded by staff)','Default owner rule','Capacity and waiting list','Default session length','Default venue per group','More trials'];
 $('sgrid').innerHTML=SET.map(function(g){return '<div class="card"><h3>'+g[0]+'</h3><ul>'+g[1].map(function(r){return '<li><span>'+esc(r[0])+(PER.indexOf(r[0])>-1?' <span class="tag a">per group</span>':'')+'</span><span>'+esc(r[1])+'</span></li>'}).join('')+'</ul></div>'}).join('');
 
 /* ---------- decisions ---------- */
 var QS=[
- 'Are "lead" (anyone who has not paid) and the six stages the right words for your world?',
- 'How is a child placed in Local Player, UAE Child, UAE Born, Resident > 5 or < 5? My guess: Local = UAE national; UAE Child = UAE-national mother; then birth place and years resident.',
- 'What is the "Father adoption form"? Please share the blank form.',
- 'Does UAE FA require a player photo (it is not on Fursan\'s list)? Any specification?',
- 'Trial allowance: count per booking or per attendance? Per child or per age group? Do no-shows count?',
- 'Who starts "Committed": the parent after trials, the club offering a place, or both?',
- 'In one block, do groups share a pitch or use separate pitches? Book individual pitches, or only the venue?',
- 'Are weekend matches part of the first schedule module?',
- 'Expiry rules: minimum validity for passport, Emirates ID, visa (for example 6 months)? Is the 5-years proof one file or several?',
- 'After approval, how does the club submit to UAE FA (email, portal)?',
- 'Delete non-converted prospects after 90 days?',
- 'Check photos without AI first, add AI later?',
- 'Grace period after a player turns 18 (30 days proposed). Do parents lose access at 18 unless the player links them?',
- 'Can Admin see medical records and staff documents, or Manager only?',
- 'Age-group rule: is "U-number = 2027 minus birth year" right for every league you will use?',
- 'Which lead sources on day one (Instagram, WhatsApp, website, referral, walk-in, school event, other)?',
- 'What is the product called? You wrote "SportPortal": is that the working name?',
- 'Does UAE FA allow a tool to help fill in FANet, or offer any official bulk upload? Ask the federation or the club before we design assisted upload.',
- 'SEM: should the platform capture and track leads from ads you run elsewhere (recommended), or also create and manage the ads?',
- 'Which social channels first for lead capture: Instagram, Facebook, WhatsApp, TikTok?',
- 'Who reviews documents by default: an Admin, or the coach? Can it differ by club?',
- 'Is there a fixed list of document names UAE FA or FANet expects, so file names can match exactly?',
- 'When FANet rejects an application, what does the club see (which fields, any email)?',
- 'Should coach and staff FANet registration be part of the pilot? If yes, please share the staff requirements list, like the player table.',
- 'The team medical professional: a person or a company? Does it change match to match? How is it told today?',
- 'Kits: how many sets does a club have (home, away, goalkeeper, third)? Who decides which is worn?'
+ 'Please upload the official UAE FA registration documents (player and staff) and the UAE FA medical form. They are on your computer; this cloud session cannot see them.',
+ '"UAE Child": confirm it means a child of a UAE-national mother. (Only "Local = UAE national" is confirmed.)',
+ 'What exactly is the PCMA test? Does the orthopaedic doctor sign on paper, or can the clinic upload the form?',
+ 'Photo: passport size, white background, club T-shirt. Does UAE FA publish an exact size?',
+ 'Do all clubs have exactly 3 terms a season? Who sets the dates?',
+ 'Is there a downloadable fixture list from UAE FA (file or calendar), or only the website?',
+ 'Wallet ticket: iPhone only at first, or Android too? (Apple needs a developer account.)',
+ 'Which club-specific forms exist besides the terms and conditions? Please share blanks.',
+ 'Product name: Athlon or Sportal? Trademark and domain need checking before you choose.',
+ 'Which programme types does a club have (for example Academy and Squad), and do fees differ?',
+ 'Medical company: how does the club check today that a professional is pre-registered?',
+ 'What does FANet show when it rejects an application?'
 ];
 var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
 function drawQs(){
@@ -737,7 +839,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the player','Parent-driven registration; coaches are not in the registration loop','Prospects give 7 fields; documents only after commit and payment','Two-step consent: trial, then membership and registration (incl. clinic and UAE FA/FIFA sharing)','Platform support sees a club only when the club approves: read-only, up to 7 days','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt (EU standards); PWA only; no app stores','Pilot = lead management + FANet registration + scheduling + status and WhatsApp / email. Online payments and Zoho Books come in later builds; staff record "fee received" for now','Campaigns only to people who contacted the club and opted in','Leads: default owner by rule, transferable singly or in bulk','Everything about paid classes is a setting','Deletion: everything removed except financial records, kept 1 year (Terms must say so)','No leaderboards or ranking of children','Age groups are birth-year ranges; a session can serve several groups','Registration rules are a table by category, not code','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Registration covers any person role: coaches and medical staff too (in the pilot or right after)','Match day (fixtures, authorisation checks, medical provider notice, home/away/goalkeeper kit) is designed now and built later','Assisted upload into FANet comes later, in the coach\'s own logged-in session, with a person pressing Send, and only if UAE FA allows it','Focus: make UAE football academies\' compliance easy; broader class management later','Foundation first: shared building blocks, then features on top, so nothing is demolished','Multi-sport-ready underneath (sport as data, a person is an athlete underneath, and a player, swimmer or fencer on screen); football built and completed first','A rejection affects only that document; nothing already approved restarts','Parents upload and the system checks instantly; AI screens, a person (admin by default, or a coach) decides; nobody retypes documents from WhatsApp; files are named automatically','Everyone sees the same live status: parent, coach (read-only), manager'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = first term paid: Term 1, Terms 1+2, or the full year','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','Registration group = 2027 minus birth year; play up allowed; play down only Sep-Dec births of the previous year','Rules: federation layer + club add-ons; forms versioned by season','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Kits: home and away for matches, practice separate, goalkeeper optional, manual override','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 

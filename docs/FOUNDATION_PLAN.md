@@ -62,6 +62,18 @@ Reported by the owner, **not yet checked against UAE FA regulations**: coaches a
 
 **Match day is designed now and built later** (owner's call). It will need: a check that every listed player and staff member is authorised; the medical provider assigned and confirmed; a notification list per fixture (parents of selected players, coaches, medical provider, ground contact) with the right message for each; and the kit instruction.
 
+## 3c. Further foundation changes from the owner's answers (v0.8)
+
+| # | Change | Why |
+|---|---|---|
+| S13 | **Forms and signatures** inside the documents block: season-versioned form templates, pre-filled from the profile, parent and club signatures, club stamp, output as a PDF | The UAE FA minor-player form, club registration forms, terms and conditions |
+| S14 | **Two rule layers**: federation rules (from UAE FA documents) and club add-ons. A requirement carries holder, alternatives, language, certified translation, colour, both sides, validity and issuer variants | Clubs differ for the same federation |
+| S15 | **Layered defaults for coach and venue**: group default, overridden by a period, overridden by a single session. Coach assignments are dated periods, not a field on the session | Coaches and venues change by week |
+| S16 | **Eligibility rules in the sport pack**: registration group by birth year; play up allowed; play down only for September to December births of the year before the group's year | Football's age rule |
+| S17 | **Attendance proof**: scannable ticket (Apple Wallet / Google Wallet) issued on booking, scanned by the coach; counts toward the trial allowance | Reliable attendance |
+| S18 | **Terms and fee options**: a season has terms (3 at most clubs); fee options are Term 1, Terms 1+2, or the year. Payment itself is a later build | "Confirmed = first term paid" |
+| S19 | **Consent purposes** grow: club terms and waiver, media, school engagement, clinic sharing, federation sharing, AI screening. Each versioned and signed | Seen in a real club's terms |
+
 ## 4. Registration: no one in the dark, no restarts
 
 Your pain: parents do not know where they are, cannot tell if documents are complete, and a wrong upload by a coach restarts the whole process.

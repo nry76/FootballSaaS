@@ -61,14 +61,29 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 * **Whether staff registration is part of the pilot is the owner's decision** (question 8).
 * Match day (fixtures, team sheet, authorisation checks, medical provider notice, kit instruction, notification lists) is not in the pilot.
 
-## 9. Open questions
-1. Working name: is "SportPortal" the product name?
-2. Does UAE FA allow a helper tool for FANet, or offer any official upload?
-3. Should we only capture and track leads from ads you run elsewhere (recommended), or also create and manage ads?
-4. Which social channels first?
-5. Default reviewer: Admin or coach?
-6. Is there a fixed list of document names UAE FA expects?
-7. What does FANet show when it rejects an application?
-8. Should coach and staff FANet registration be part of the pilot? (It reuses the same machinery.) If yes, please share the staff requirements list, like the player table.
-9. Medical professional: a person or a company? Does it change match to match? How is it told today?
-10. Kits: how many sets does a club have (home, away, goalkeeper, third)? Who decides which is worn?
+## 9. Changes from the owner's answers (v0.8)
+
+| Topic | Now |
+|---|---|
+| Word | **Prospect**, not lead. Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed |
+| Registration gate | Starts when the club has **offered a place and the parent has accepted**. **No fee needed first.** Confirmed = first term paid (Term 1, Terms 1+2, or all 3) |
+| Trial allowance | Counts **attendance**. No-shows do not count when attendance is taken; when it is not, the booking counts. Extra trials: parent asks, coach approves. A **wallet ticket** scanned at the session is the planned attendance method |
+| Coaches and venues | Assigned **by period** (for example 1st to 3rd week of September: Coach 3). Group default venue, override by period or session |
+| Weekend matches | Not in the first schedule module. UAE FA issues fixtures before the season; import comes later |
+| Age rule | Registration group = 2027 minus birth year. Play up: allowed. Play down: only September to December births of the year just before the group's year |
+| Forms | Season-versioned templates (for example the UAE FA minor-player approval form), pre-filled, signed, and stamped by the club |
+| Rules | Federation layer plus club add-on layer |
+| Staff | Coach and staff FANet registration **is in the pilot** |
+| Photos | Checked without AI first. AI changes later, as a club choice |
+| Access at 18 | Parents keep access, recorded in the athlete's fresh consent |
+
+## 10. Open questions
+1. **Please upload the official UAE FA registration documents (player and staff) and the UAE FA medical form.** They are on your computer; this cloud session cannot see them. Local Claude Code can, later.
+2. "UAE Child": confirm it means a child of a UAE-national mother. (Only "Local = UAE national" was confirmed.)
+3. Medical: what exactly is the **PCMA test**? Does the orthopaedic doctor sign on paper (parent uploads), or can the clinic upload?
+4. Photo specification: passport size, white background, club T-shirt. Does UAE FA publish an exact size?
+5. Do all clubs have exactly 3 terms a season? Who sets the dates?
+6. Is there a downloadable fixture list from UAE FA (file or calendar), or only on the website?
+7. Wallet ticket: iPhone only at first, or Android too?
+8. Which club-specific forms exist beyond the terms and conditions (registration form, minor-player form)? Please share blanks.
+9. Product name: Athlon or Sportal? (Check trademark and domain before choosing.)

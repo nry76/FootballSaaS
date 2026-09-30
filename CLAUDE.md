@@ -26,6 +26,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `docs/UI_UX_PLAN.md` | Earlier text wireframes (dashboard, coach view, parent home, compliance) |
 | `docs/TECH_STACK.md` | Supabase (Frankfurt), Next.js, PWA only, and why |
 | `docs/DECISIONS.md` | **Source of truth for what is decided and what is open** |
+| `docs/reference/CLUB_REGISTRATION_LISTS.md` | How four clubs list requirements, the UAE FA minor-player form, KHDA certificate, one club's T&Cs: the key finding is federation rules + club add-ons |
 | `docs/reference/` | Hand transcriptions of the club's UAE FA 2026/27 document list and weekly schedule (not official) |
 | `docs/visual/product-plan.html` | The visual plan (open in a browser). Kept in step with the docs |
 | `docs/visual/schema-plan-v0.2.html` | Older visual schema map (v0.2, out of date on MVP points) |
@@ -37,7 +38,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 ## Hard rules
 1. Never commit secrets. Environment variables and a `.env.example` only.
 2. Row-level security on every table. Every tenant-owned row has `club_id`, and child tables use composite keys `(club_id, id)` so cross-club links are impossible.
-3. Under-18 data and parental consent are enforced in the database, not the UI. Prospects give only 7 fields (parent name, phone, WhatsApp, email; child name, birth date, position). Documents, photo and IDs only after commit and payment.
+3. Under-18 data and parental consent are enforced in the database, not the UI. Prospects give only 7 fields (parent name, phone, WhatsApp, email; child name, birth date, position). Documents, photo and IDs only after the club has **offered a place and the parent has accepted** (payment is NOT needed first; Confirmed = first term paid). The word is **prospect**, not lead.
 4. Money is stored as whole numbers of the currency's smallest unit, with a currency code on every row. Currency is a club setting (default AED).
 5. Everything tunable is a **setting** with a club default, overridable per age group where it makes sense.
 6. Messages are two kinds: service and marketing, with separate recorded consent. Marketing only to people who contacted the club and opted in. UAE rules need a lawyer's confirmation.

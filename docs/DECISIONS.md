@@ -50,6 +50,23 @@
 | 54 | An **authorisation status with valid-until date** on people; coaches without it cannot enter the field or dressing room (owner-reported) | Feeds the later match-day check |
 | 55 | New foundation block 13: **Outside contacts** (clinic, medical provider, ground contact): messaged by WhatsApp/email with one-time links, no login | |
 | 56 | **Match day is designed now, built later**: fixtures, team sheet, authorisation checks, medical provider notice, home/away/goalkeeper kit, notification lists | Owner: "deal with this later" |
+| 57 | **Word: "Prospect"** (or Trial), not "lead". Pipeline: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed | Supersedes the word "lead" in earlier files |
+| 58 | **UAE FA registration can start before any fee is paid.** The gate for documents is: the club has **offered a place and the parent has accepted**. Confirmed = first term paid (Term 1, Terms 1+2, or the full year of 3 terms) | **Supersedes** decision 22 and hard rule 3 ("after payment") |
+| 59 | **Trial allowance counts attendance.** If attendance is taken for a session, no-shows do not count. If it is not taken, the booking counts. Beyond the maximum, the parent asks and a coach approves. All of this is a setting | Owner's idea, turned into a default |
+| 60 | **Wallet ticket** (Apple Wallet and Google Wallet) for trial bookings, scanned by the coach as attendance. Needs a developer account and signing certificate for Apple; designed, scheduled after the core pilot | Needs checking for cost and effort |
+| 61 | **Coaches and venues are assigned by period**, not fixed to a session. A group has a default venue; a period or a single session can override it. Resolution: session > period > group default | |
+| 62 | **Weekend matches are out of the first schedule module.** UAE FA issues fixtures before the season; importing them (file or website) comes later, and only if permitted | Scraping needs a permission check |
+| 63 | Registration group = **2027 minus birth year**. Playing **up** is allowed. Playing **down** only for players born September to December of the year just before the group's year. Registration stays with the birth-year group | Owner-reported rule, a rule-set item |
+| 64 | **Parents keep access after the athlete turns 18.** The athlete still gives fresh consent, and that consent records the parents' continued access | Keeps the athlete in control |
+| 65 | **Admin can see medical records and staff documents** | |
+| 66 | **Prospect deletion time is a club setting** (default 90 days). Both Admin and coach may review documents: a setting | |
+| 67 | **Coach and staff FANet registration is in the pilot.** Medical staff come through a contracted company and must be pre-registered; only registered professionals can be sent to matches | Staff requirements list still needed |
+| 68 | **Kits:** home and away for matches; practice kits separate; goalkeeper practice kit optional. Home kit for home matches, away kit for away, with manual override | Match day still later |
+| 69 | **Forms are versioned by season** (for example the UAE FA minor-player approval form, whose footer changes). The system stores each version, pre-fills from the profile, collects signatures, and supports the club stamp | New: forms and signatures |
+| 70 | **Two rule layers:** federation (from UAE FA documents) and club add-ons (club forms, utility bills, translations). Clubs differ for the same federation | See reference/CLUB_REGISTRATION_LISTS.md |
+| 71 | **Photos: check without AI first; AI clothing/background changes later**, as an explicit club choice. The owner reports some clubs do this and UAE FA has accepted it; that can change | Risk: an altered photo may be rejected and restart that item |
+| 72 | Lead sources on day one: Instagram, WhatsApp, website, referral, walk-in. Social channels in order: Instagram, WhatsApp, TikTok, Facebook. Ads: track only; agencies run them | |
+| 73 | Product name candidates: **Athlon** or **Sportal**. No decision | Trademark and domain checks needed |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |
