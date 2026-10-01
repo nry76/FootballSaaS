@@ -109,6 +109,13 @@
 | 113 | **A club may record FA-Net outcomes in its own software** (owner's answer). Still: never store FA-Net passwords; **assisted upload** (filling FA-Net for the user) still needs UAE FA's permission | Relaxes the caution in 98 for recording only |
 | 114 | **The code lives in this repository**, in `supabase/` (database, tests, seed) and `web/` (the app). Folders are created only after the step 1 plan is approved | Owner's answer: yes |
 | 115 | **Everything is built and tested with invented test data only.** The owner's instruction: do not worry about legal review for now; proceed with test data. Legal review is therefore not a gate for step 1 | Owner's answer. No real child's data is entered in this build |
+| 116 | **Step 1, P1 accepted:** a coach sees no child in step 1, only their own staff record, until step 3 attaches them to a group | Owner: "Ok" |
+| 117 | **Step 1, P3 accepted:** age of consent is a club setting; a club can raise it, only the platform owner can lower it; default 18 | Owner: "Whatever", so the proposal stands |
+| 118 | **Step 1, P4 accepted:** only the family or the athlete starts a deletion; a scheduled job completes it; the Manager cannot erase a family alone | |
+| 119 | **Step 1, P5 accepted:** a guardian cannot be erased while the only guardian of a child still on file. **A guardian and a child are two separate records** joined by a relationship; logins are separate again (a child under 13 has no login at all) | Owner asked whether guardian and child are different accounts: yes |
+| 120 | **Step 1, P7 accepted:** real email waits for step 2; step 1 shows emails in a test inbox | |
+| 121 | **The enquiry form asks the questions clubs already ask:** player first and last name, date of birth, guardian phone and email, **home address, previous club or academy**, field position (plus guardian name and WhatsApp). **Which optional fields appear, and which are required, is a club setting** | Owner input: "some clubs have asked these". Grows the "7 fields" of decision 22 and hard rule 3 to ten; CLAUDE.md is updated when P2 is confirmed |
+| 122 | **SocietyPortal is the reference for how email and WhatsApp are built.** Reviewed; the pattern (credentials in Vault, one send function per channel, one append-only log) is reused with changes: an outbox queue, official WhatsApp with templates, a consent check before queuing, and a log that holds no personal values | See reference/SOCIETYPORTAL_COMMS.md. Proposal M1 below awaits the owner |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |
@@ -144,11 +151,9 @@ Payment gateway, video, WhatsApp/SMS, ID-verification vendor, FANet.ae automatio
 
 ## Proposed, awaiting the owner's OK
 Step 1 plan ([STEP1_PLAN.md](STEP1_PLAN.md), section 11):
-* **P1** A coach sees no child in step 1 (until attached to a group in step 3)
-* **P2** Level A: before the emailed link is clicked, hold only four fields (parent name, parent email, child name, child birth date)
-* **P3** Age of consent: a club can raise it, only the platform owner can lower it; default 18
-* **P4** Only the family or the athlete starts a deletion; a scheduled job completes it
-* **P5** A guardian cannot be erased while the only guardian of a child still on file
-* **P6** Support access grants wait until after the pilot
-* **P7** Real email waits for step 2; step 1 uses a test inbox
+* **P2 (revised)** The enquiry form asks the clubs' questions in one go (ten fields, decision 121). Until the emailed link is clicked, the enquiry sits in **quarantine**: invisible to every club role, deleted after 7 days (a setting). Alternative: a short first form, with "tell us more" after the link, which asks the parent twice
+* **P6** Support access windows wait until after the pilot. Meaning: the club itself clicks "allow support for up to 7 days" (read-only, expires by itself) when the platform owner needs to look at its data. Not built in step 1; while testing, the builder uses the Supabase dashboard on invented data
 * The whole step 1 plan (22 tables, who sees what, 67 tests) awaits approval before any SQL or code
+
+Step 2 messaging ([reference/SOCIETYPORTAL_COMMS.md](reference/SOCIETYPORTAL_COMMS.md)):
+* **M1** Copy SocietyPortal's structure (per-club credentials in Vault, one send function per channel, one append-only log) but with an **outbox with retries and delivery status**, **official WhatsApp (templates), not the unofficial Baileys server**, a **consent check before anything is queued**, and a log that keeps **no personal values** and is cleared on erasure. Email through Resend or Postmark

@@ -20,6 +20,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `docs/START_HERE.md` | One-page summary, plus gaps not yet planned (import of existing students, club set-up, legal pack, WhatsApp set-up, pricing, support) |
 | `docs/PILOT_SCOPE.md` | **Current scope.** Pilot pillars, FANet registration flow, AI screening rules, lead sources, what changed |
 | `docs/STEP1_PLAN.md` | **Step 1 (safe foundation), drafted for approval:** 22 tables, who sees what, 67 tests, invented test data. Code will live in `supabase/` and `web/` (decision 114); not created until approved |
+| `docs/reference/SOCIETYPORTAL_COMMS.md` | How the owner's other product (SocietyPortal) builds email and WhatsApp, what carries over and what changes for step 2 |
 | `docs/MVP_PLAN.md` | Lifecycle, foundation changes F1-F15, registration rules, schedule builder, questions |
 | `docs/LEADS_PLAN.md` | Lead pipeline, channels (WhatsApp/Instagram/email), coach feed, paid classes, phases, foundation changes F16-F23 |
 | `docs/FOUNDATION_PLAN.md` | **Read this early.** The 13 shared foundation blocks, multi-sport approach, registration status design, build order |
