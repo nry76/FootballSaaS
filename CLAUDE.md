@@ -6,8 +6,8 @@ Read this first. It replaces the chat history, which does not travel with the re
 A multi-tenant SaaS for football clubs and academies, starting with UAE clubs. First customer type: an academy like Fursan Hispania (pilot target; **not yet approached**, so nothing here is promised to anyone).
 Core idea: a parent does the whole journey alone (enquiry, trial, commit and pay, documents, UAE FA registration, schedule), and coaches and managers stop answering one-to-one questions.
 
-## Current phase: PLANNING ONLY
-**Do not write SQL or application code until the product owner (the repository owner) explicitly approves the plan.** They want to review and iterate first so nothing is redone. Present plans visually (see below), not as long Markdown.
+## Current phase: BUILD STARTING (owner said "start the build" on 2026-10-01, decision 122)
+Step 1 is foundation blocks 1-4 and 12; **write no SQL or code until the owner confirms the details of step 1** (where the code lives, the Supabase project). Test data only until the legal pack is signed off. Present plans visually (see below), not as long Markdown.
 
 Pilot scope (see `docs/PILOT_SCOPE.md`): **lead management (social, search, website) + FANet.ae registration workflow + scheduling + robust status reporting and communication (WhatsApp, email)**, on a safe foundation (tenants, roles, consent, deletion). **Online payments, the gateway and Zoho Books are later builds**; the pilot records "fee received" by staff. Where PILOT_SCOPE.md and older plans differ, PILOT_SCOPE.md and DECISIONS.md win.
 
