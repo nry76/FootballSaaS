@@ -32,7 +32,7 @@ There is **no U18, U5 or U6 team** at UAE FA. A club's own training groups (for 
 
 **Registering up or down (4.3, 4.4).** Players born September to December of the previous year may be registered in the team for the ages U10 to U14 **if the club does not field the direct higher age**. If a club does not field a team, it may register players in the next higher team, up to two levels, except one level for U7 to U11. Guardian consent is required for minors (4.6). Residents and Born-in-UAE players under 10 can register without FIFA approval and must re-register at 10 (4.5). Minors over 10 registering for the first time need approval from the FIFA sub-committee.
 
-**Categories (4.1, 5).** Citizens, Sons of UAE Women, Passport Holders, Born in UAE, Residents, Foreigners. Player type within each: **minor amateur, adult amateur, professional** (foreigners: adult amateur and professional only). Residents must hold a valid UAE ID, be born in or after 2006 (first registration), and not have played for another country's national A team.
+**Categories (4.1, 5).** Citizens, Sons of UAE Women, Passport Holders, Born in UAE, Residents, Foreigners. **Passport Holder** (per the owner): holds a UAE passport but has fewer privileges than a native national, because the person lacks the Family Book (Khulasat Al Qaid), which records genealogy; the passport is more like a travel document. Player type within each: **minor amateur, adult amateur, professional** (foreigners: adult amateur and professional only). Residents must hold a valid UAE ID, be born in or after 2006 (first registration), and not have played for another country's national A team.
 
 ### Mandatory documents by category and type (page 14)
 Rows are UAE FA's own numbering. **C** compulsory, **I** "if any", **O** optional. Columns shown for the **minor amateur** player (the academy case); adult and professional differ as noted.
@@ -95,6 +95,7 @@ Rules under the table:
 ### Medical examinations (10)
 * "Pre-Competition Medical Assessment" (**PCMA**) is the medical form. **Form (1)**: first team, U23, U21, U19, U17. **Form (2)**: U16 down to U7. Forms must be complete and **in colour**; no card without them.
 * Valid **1 June 2026 to the end of the season**.
+* The extensive senior form is summarised in `PCMA_FORM_2026_27.md`. The owner calls it "Form 2"; the circular calls it Form (1). The youth form is still to be supplied.
 * Abnormal PCMA results: notify the Sports Medicine Committee on the Medical Notification Form within **7 days**.
 * Examinations outside the UAE need a request, an approved centre, English results, and repeating within 10 working days in the UAE (fee AED 5,000).
 

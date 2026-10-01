@@ -87,17 +87,13 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 
 **Photo:** the pilot includes a photo helper that runs in the browser (crop to 4 x 6 cm, size, white background, sharpness checks). Background fix and club-kit overlay are later, as club choices; outside links are off by default.
 
-## 11. Open questions
-1. **Please upload the UAE FA Licensing Regulations again** (the upload failed). It may hold the fine for a missing medical professional and staff licensing rules.
-2. Use UAE FA's own structure (6 categories x player type) for the rule set? (Recommended.)
-3. What is a **"Passport Holder"** player in UAE FA's categories?
-4. ~~DOFA and YFL documents~~ Not needed now: **UAE FA first**; DOFA and YFL are light and come later.
-5. **A and B across competitions:** answered (possible but rare). Still to check with UAE FA: does playing in DOFA or YFL ever count against UAE FA's A/B crossing rule (fine AED 10,000)?
-6. Please share blanks of the **medical Form (1) and Form (2)**, and the other UAE FA forms (registration form, guardian declaration).
-7. Which **UAE FA teams** does a typical academy field (for the "club lacks the team" rules)?
-8. Who holds the **FA-Net user** role at a club, and who is the authorised signatory?
-9. Wallet ticket: iPhone first, or Android too? (Apple needs a developer account.)
-10. Which club-specific forms exist besides terms and conditions? Blanks, please.
-11. Programme types (Academy and Squad) and whether fees differ.
-12. Medical company: how does the club check today that a professional is pre-registered?
-13. What does FANet show when it rejects an application?
+## 11. Open questions (answered ones removed; going through them one by one)
+1. **Who submits in FA-Net, and who is the authorised signatory** at a club? (Proposed: a "FA-Net submitter" permission that any staff member can hold, plus a recorded authorised signatory.)
+2. **Medical forms:** OK to store the signed PDF and only metadata, not clinical content? And please share the **youth form** (circular's Form 2, U16 and below).
+3. Which **UAE FA teams** does a typical academy field? (It drives the "club lacks the team" rules.)
+4. **Programme types** (Academy and Squad) and whether fees differ.
+5. Which **club-specific forms** exist besides terms and conditions? Blanks, please.
+6. **Medical company:** how does the club check today that a professional is pre-registered?
+7. What does **FANet** show when it rejects an application? (Someone with FANet access needs to look.)
+8. Ask **UAE FA** whether playing in DOFA or YFL ever counts against its A/B crossing rule.
+9. Order of steps for a new player's **UAE FA ID number**, which the medical form asks for.

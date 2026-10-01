@@ -83,6 +83,10 @@
 | 87 | **Photo helper in the pilot:** a built-in tool that crops and sizes to UAE FA's 4 x 6 cm (472 x 709 px at 300 dpi) and checks size, resolution, white background and sharpness, **running in the parent's browser** so the photo stays on their device until they submit. Face/shoulders framing next. Background fix and adding the club kit stay a later, explicit club choice. Links to outside photo services are off by default (the photo shows a child) and only to services the club has vetted | Answers the owner's photo request |
 | 88 | **A and B teams are two teams in one age group.** A large club enters both at UAE FA. A small club enters **A at UAE FA and B at DOFA or YFL**. So the competition entry belongs to each **team**, not to the club. UAE FA's rule that an A player cannot play for B applies inside UAE FA; how it works between UAE FA and DOFA or YFL is **not known yet** | Answers the A/B question; DOFA and YFL rules still needed |
 | 89 | **UAE FA first**, because its penalties are severe. **DOFA and YFL are light** (owner-reported: roughly an Emirates ID, no FIFA transfer system check) and come later as simple rule sets, without needing their documents now. A child registered with the A team at UAE FA **may also play for the B team in DOFA or YFL**, and the reverse: possible but rare. So a child can hold registrations in several competitions | Verify with UAE FA whether playing in DOFA or YFL affects its A/B rules, since that fine is AED 10,000 |
+| 90 | **"Passport Holder"** = holds a UAE passport but lacks the Family Book (Khulasat Al Qaid), so has fewer privileges than a native national | Owner's definition |
+| 91 | **The Licensing Regulations are not needed** (the owner checked) | Supersedes 86 |
+| 92 | The medical form (PCMA) supplied is the **extensive senior form** (24 pages, cardiology, orthopaedic, labs, club doctor). The **youth form is still missing** | See reference/PCMA_FORM_2026_27.md |
+| 93 | **Wallet ticket: both iPhone and Android**, if built. Timing to decide later. The photo helper stays in the plan at lower priority | |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |
@@ -115,3 +119,6 @@ Payment gateway, video, WhatsApp/SMS, ID-verification vendor, FANet.ae automatio
 * Which law(s) govern children's data for UAE clubs hosted in the EU
 * Adequacy of a 1-year financial-record retention against clubs' tax/accounting duties
 * Terms and Privacy Policy wording (kept vs deleted, backups, parental responsibility)
+
+## Proposed, awaiting the owner's OK
+* **Medical forms:** store the signed PDF in a restricted file store and keep only metadata (season, signatures present, eligibility tick, abnormal-result flag with the 7-day notice). No clinical content (ECG, echo, labs, history) in the database. See reference/PCMA_FORM_2026_27.md.
