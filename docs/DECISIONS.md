@@ -105,6 +105,8 @@
 | 109 | **Confirmed = any payment recorded.** A club may tighten this in Settings (for example Term 1, or a deposit) | **Supersedes** the "first term paid" wording in 58 and 101 |
 | 110 | **Sibling discount applies to the training fee only** (not kits or registration) | Fursan |
 | 111 | The Elite sheet is **only a sample**; its figures are not examined further. Programme types **Academy and League team** are accepted as a working split unless the owner says otherwise | |
+| 112 | **Playing in DOFA or YFL does not count against UAE FA's A/B crossing rule** (owner's answer; worth confirming in writing with UAE FA) | Closes the earlier question |
+| 113 | **A club may record FA-Net outcomes in its own software** (owner's answer). Still: never store FA-Net passwords; **assisted upload** (filling FA-Net for the user) still needs UAE FA's permission | Relaxes the caution in 98 for recording only |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |

@@ -9,6 +9,7 @@ A multi-tenant SaaS platform for UAE football clubs and academies: league compli
 | Document | What it is | Status |
 |---|---|---|
 | [docs/MVP_PLAN.md](docs/MVP_PLAN.md) | **Current focus:** trials, UAE FA registration and scheduling; lifecycle; real Fursan rules and calendar; foundation changes; open questions | Draft v0.4, awaiting review |
+| [docs/START_HERE.md](docs/START_HERE.md) | **One-page summary** and a list of what is not planned yet | Read first |
 | [docs/visual/product-plan.html](docs/visual/product-plan.html) | **Start here:** the plan as clickable pictures (download and open in a browser) | Draft v0.5 |
 | [CLAUDE.md](CLAUDE.md) | Project brief for Claude Code, so work can resume on any machine | Living |
 | [drafts/](drafts/db-v0.2-unapproved/README.md) | First SQL draft. Reference only, not approved, out of date | Parked |
