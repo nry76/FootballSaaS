@@ -28,6 +28,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | `docs/DECISIONS.md` | **Source of truth for what is decided and what is open** |
 | `docs/reference/UAEFA_OFFICIAL_2026_27.md` | **Authoritative UAE FA rules** (registration circular, competitions circular and regulations): categories, documents, photo, medical, staff, dates, fees, fines, kits, numbers, match list, A/B teams |
 | `docs/reference/FANET_UNDERTAKINGS.md` + `PCMA_FORM_2026_27.md` | FA-Net confidentiality and password rules (no third-party disclosure; we never hold credentials) and the medical form handling (clinic fills; one upload of the signed copy) |
+| `docs/reference/CLUB_PRICING_2026_27.md` | How Fursan, G Reds and an Elite league squad price: terms, installments, sibling discounts, programme types, place holds |
 | `docs/reference/CLUB_REGISTRATION_LISTS.md` | How four clubs list requirements, the UAE FA minor-player form, KHDA certificate, one club's T&Cs: the key finding is federation rules + club add-ons |
 | `docs/reference/` | Hand transcriptions of the club's UAE FA 2026/27 document list and weekly schedule (not official) |
 | `docs/visual/product-plan.html` | The visual plan (open in a browser). Kept in step with the docs |

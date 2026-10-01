@@ -88,10 +88,8 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 **Photo:** the pilot includes a photo helper that runs in the browser (crop to 4 x 6 cm, size, white background, sharpness checks). Background fix and club-kit overlay are later, as club choices; outside links are off by default.
 
 ## 11. Open questions (answered ones removed; going through them one by one)
-1. Which **UAE FA teams** does a typical academy field? (It drives the "club lacks the team" rules.)
-2. **Programme types** (Academy and Squad) and whether fees differ.
-3. Which **club-specific forms** exist besides terms and conditions? Blanks, please.
-4. **Youth medical form** (circular's Form 2, U16 and below): please share the blank.
-5. **Medical company:** how does the club check today that a professional is pre-registered?
-6. What does **FANet** show when it rejects an application? (Someone with FANet access needs to look.)
-7. Ask **UAE FA**: (a) can playing in DOFA or YFL count against its A/B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable.
+1. **Which payment makes a child Confirmed?** My reading: Fursan, Term 1 (or the first 60% of a full season); G Reds, Term 1 plus the registration fee; the Elite squad, the nomination form plus the AED 2,500 deposit.
+2. **Sibling discount** (Fursan: 15% second child, 20% third): on the training fee only, or on everything?
+3. **Programme types:** is "Academy" (training) versus "League team" (training plus league registration, kits, match costs) the right split?
+4. The Elite sheet lists AED 2,500 first and AED 13,000 second against a total of AED 14,500. Typo, or financing cost?
+5. Questions for **UAE FA** itself: (a) can playing in DOFA or YFL count against its A/B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?

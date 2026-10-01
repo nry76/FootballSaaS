@@ -147,7 +147,7 @@ footer{font-size:13px;color:var(--muted)}
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v1.1 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v1.2 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
     <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
@@ -214,6 +214,12 @@ footer{font-size:13px;color:var(--muted)}
       </div>
     </div>
     <div class="card">
+      <h2>Outside providers and the people they send</h2>
+      <p class="note">A medical company contracts with the club; its professionals must be registered with UAE FA. One generic design: the company, its people, and what each person holds. Only people with valid papers can be assigned to a match. Invented names. Change the date to see papers expire.</p>
+      <div class="row"><label class="row" style="gap:6px">Today <input type="date" id="pvDate" value="2026-10-01"></label><span class="tag">Provider: Al Noor Medical (sample)</span></div>
+      <div class="scroll"><table id="pvTbl"></table></div>
+    </div>
+    <div class="card">
       <h2>What a sport pack changes (illustration)</h2>
       <p class="note">Only football is planned. Swimming, tennis and fencing are illustrations of how a sport pack changes wording and rules, not a rebuild. Individual sports are simpler: no team to pick each weekend.</p>
       <div class="row" id="sportBtns"></div>
@@ -225,14 +231,15 @@ footer{font-size:13px;color:var(--muted)}
   <section class="panel" id="p-schedule" role="tabpanel">
     <div class="card">
       <h2>Weekly schedule builder</h2>
-      <p class="note">This is Fursan's real week. <b>Drag a group</b> to another cell, or <b>tap a group and then tap a cell</b>. Tap a name in the key to highlight that group. Nothing is saved.</p>
+      <p class="note">These are two real weeks (Fursan and G Reds), with different time blocks, A and B teams, and an Academy group. <b>Drag a group</b> to another cell, or <b>tap a group and then tap a cell</b>. Tap a name in the key to highlight that group. Nothing is saved.</p>
+      <div class="row" id="clubSw"></div>
       <div class="row">
         <span class="note">Key:</span><div class="legend" id="legend"></div>
       </div>
       <div class="row">
         <button class="pill" id="combine" aria-pressed="false">Pre-season: combine U10 + U11</button>
-        <button class="pill" id="reset">Reset to Fursan's week</button>
-        <span class="tag">Venue: International School of Choueifat</span>
+        <button class="pill" id="reset">Reset this club's week</button>
+        <span class="tag" id="venueTag">Venue: International School of Choueifat</span>
       </div>
       <div class="scroll"><div class="cal" id="cal"></div></div>
       <div class="msg" id="calmsg">Ready. Every group trains 3 times a week.</div>
@@ -371,8 +378,8 @@ footer{font-size:13px;color:var(--muted)}
         <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
           <h4>What the parent is told, and when</h4>
           <ul class="tl" id="trkLog"></ul>
-          <div class="row"><span class="tag a">Parent: full tracker + messages</span><span class="tag">Coach: read-only status, can nudge</span><span class="tag">Manager: one queue</span></div>
-          <p class="note">Coaches do not upload registration documents. The parent uploads, the system checks instantly, a person confirms, and every change is recorded with who did it.</p>
+          <div class="row"><span class="tag a">Parent: full tracker + messages</span><span class="tag">Coach: status for own players; submits their list if given the permission</span><span class="tag">Manager: one queue</span></div>
+          <p class="note">Coaches do not upload registration documents. The parent uploads, the system checks instantly, a person confirms, and every change is recorded with who did it. If UAE FA or FANet rejects later, the reviewer records the reason in plain text against the affected document, and only that document reopens.</p>
         </div>
       </div>
     </div>
@@ -470,6 +477,15 @@ footer{font-size:13px;color:var(--muted)}
       <h2>Everything that is a setting</h2>
       <p class="note">Your rule: make it configurable. Each setting has a club default; the ones marked <span class="tag a">per group</span> can be overridden for one age group. Values shown are only examples.</p>
     </div>
+    <div class="card">
+      <h2>How three real clubs price (pick one)</h2>
+      <p class="note">Terms, installments, discounts and kits differ a lot. The plan builds one fee model that covers all three. Payments themselves are a later build; the pilot records "fee received".</p>
+      <div class="row" id="feeClub"></div>
+      <div class="row" id="feeOpt"></div>
+      <div class="row"><label class="row" style="gap:6px">Children in the family <select id="feeKids"><option>1</option><option>2</option><option>3</option></select></label><span class="tag" id="feeTag"></span></div>
+      <div class="scroll"><table id="feeTbl"></table></div>
+      <div class="cols"><div class="msg" id="feeSched"></div><div class="msg w" id="feeConf"></div></div>
+    </div>
     <div class="sgrid" id="sgrid"></div>
   </section>
 
@@ -508,8 +524,8 @@ var STAGES=[
  {n:'Enquiry',s:'parent fills 7 fields',parent:'Name, phone, WhatsApp, email; child name, birth date, position wanted. Confirms email by link.',sys:'Instant confirmation with trial times. Starts the follow-up. Records the source (Instagram, WhatsApp, website, referral, walk-in).',club:'A new prospect with an owner, chosen by the default assignment rule (easy to transfer).',data:['Parent name and contacts','Child name and birth date','Position wanted'],lock:['Documents','Photo','ID numbers','Medical']},
  {n:'Trials',s:'free, within allowance',parent:'Books a trial and gets a wallet ticket. Sees "2 of 3 used".',sys:'Reminders before each session. The coach scans the ticket, which counts the trial. No-shows are free when attendance is taken.',club:'Coach sees tonight\'s trialists. Beyond the maximum, the parent asks and a coach approves.',data:['Same seven fields','Trial attendance'],lock:['Documents','Photo','ID numbers','Medical']},
  {n:'Offer accepted',s:'registration can start',parent:'Receives the club\'s offer, accepts the terms and the registration consent. Sees the fee options.',sys:'Unlocks the registration checklist and the season\'s forms. No payment is needed to begin.',club:'Prospect moves to "Accepted". The club made the offer; a person (admin or coach) chose to.',data:['Club terms and consents','Everything registration needs'],lock:[]},
- {n:'Registering and paying',s:'in parallel',parent:'Uploads documents, completes and signs forms, books the medical. Separately chooses Term 1, Terms 1+2, or the full year and pays at the club or by bank transfer.',sys:'Checks each file, tells the parent what to fix, builds the pack, counts UAE FA\'s 3-4 weeks.',club:'Registrar queue. Staff record "fee received" with one click.',data:['Parents\' documents too','Signed forms'],lock:[]},
- {n:'Confirmed',s:'first term paid',parent:'Nothing more to do for the club. Keeps finishing the registration checklist.',sys:'Moves the family out of the prospect pipeline. Counts it for the source.',club:'Confirmed member. Coach sees them on the session lists.',data:['Full profile'],lock:[]},
+ {n:'Registering and paying',s:'in parallel',parent:'Uploads documents, completes and signs forms, books the medical. Separately chooses a payment option from the club plan (a term, the full season, a deposit) and pays at the club or by bank transfer.',sys:'Checks each file, tells the parent what to fix, builds the pack, counts UAE FA\'s 3-4 weeks.',club:'Registrar queue. Staff record "fee received" with one click.',data:['Parents\' documents too','Signed forms'],lock:[]},
+ {n:'Confirmed',s:'first payment, set per plan',parent:'Nothing more to do for the club. Keeps finishing the registration checklist.',sys:'Moves the family out of the prospect pipeline. Counts it for the source.',club:'Confirmed member. Coach sees them on the session lists.',data:['Full profile'],lock:[]},
  {n:'Registered',s:'UAE FA / FIFA done',parent:'Sees "Registered".',sys:'Tracks the submission date and FANet reference; reopens only the affected document if UAE FA asks.',club:'Player can be placed on match sheets (later).',data:['Registration record'],lock:[]}
 ];
 var stage=0;
@@ -522,8 +538,8 @@ $('stepper').addEventListener('click',function(e){var b=e.target.closest('.st');
 drawStages();
 
 /* ---------- schedule ---------- */
-var G={ 'U5/6':{y:'2021-22',c:'#4C86D9'},'U7':{y:'2020',c:'#7BA3E6'},'U8':{y:'2019',c:'#7A8B3A'},'U9':{y:'2018',c:'#2FA84F'},'U10':{y:'2017',c:'#6CC24A'},'U11':{y:'2016',c:'#1E8F3E'},'U12':{y:'2015',c:'#F0A030'},'U13':{y:'2014',c:'#5B8FD6'},'U14':{y:'2013',c:'#C8452B'},'U15':{y:'2012',c:'#C98A7C'},'U16':{y:'2011',c:'#B87668'},'U18':{y:'2010-09',c:'#B45FC9'},'2nd Team':{y:'no birth year',c:'#3AA6B9'}};
-var DAYS=['Mon','Tue','Wed','Thu','Fri'], BLK=['5:00-6:30','6:30-8:00','8:00-9:30'];
+var FG={ 'U5/6':{y:'2021-22',c:'#4C86D9'},'U7':{y:'2020',c:'#7BA3E6'},'U8':{y:'2019',c:'#7A8B3A'},'U9':{y:'2018',c:'#2FA84F'},'U10':{y:'2017',c:'#6CC24A'},'U11':{y:'2016',c:'#1E8F3E'},'U12':{y:'2015',c:'#F0A030'},'U13':{y:'2014',c:'#5B8FD6'},'U14':{y:'2013',c:'#C8452B'},'U15':{y:'2012',c:'#C98A7C'},'U16':{y:'2011',c:'#B87668'},'U18':{y:'2010-09',c:'#B45FC9'},'2nd Team':{y:'no birth year',c:'#3AA6B9'}};
+var G=FG, DAYS=['Mon','Tue','Wed','Thu','Fri'], BLK=['5:00-6:30','6:30-8:00','8:00-9:30'], TG={}, clubKey='Fursan Hispania';
 var BASE=[
  [['U10','U11'],['U14','U13'],['2nd Team','U18']],
  [['U5/6','U7','U8','U9','U12'],['U15','U16'],['U18']],
@@ -531,15 +547,22 @@ var BASE=[
  [['U5/6','U7','U8','U9','U10','U11'],['U15','U16'],['U18','2nd Team']],
  [['U5/6','U7','U8','U9','U12'],['U13','U14'],[]]
 ];
+var CLUBS={
+ 'Fursan Hispania':{G:FG,BLK:['5:00-6:30','6:30-8:00','8:00-9:30'],BASE:BASE,TG:{},venue:'International School of Choueifat'},
+ 'G Reds':{G:{'U11':{y:'2016',c:'#2E3A8C'},'U12 A':{y:'2015',c:'#2F6B3A'},'U12 B':{y:'2015',c:'#7A3FB0'},'Academy':{y:'mixed',c:'#E8751A'},'U13':{y:'2014',c:'#B21E1E'},'U14':{y:'2013',c:'#1E8C8C'},'U15':{y:'2012',c:'#3F5FB0'},'U16':{y:'2011',c:'#8C5A1E'}},
+  BLK:['6:00-7:30','7:30-9:00'],
+  BASE:[[['U11','U13','U15'],[]],[['U12 A','U12 B','Academy'],['U14','U16']],[['U11','U13','U15'],[]],[['U12 A','U12 B','Academy'],['U14','U16']],[['U11','U12 A','U12 B','U15'],['U13','U14','U16']]],
+  TG:{'Academy':2},venue:'a campus in Dubai Academic City'}
+};
 var cells, sel=null, hi=null, combine=false;
 function clone(){return BASE.map(function(d){return d.map(function(b){return b.slice()})})}
-function resetCal(){cells=clone();sel=null;hi=null;$('calmsg').className='msg';$('calmsg').textContent='Ready. Every group trains 3 times a week.';drawCal()}
+function resetCal(){cells=clone();sel=null;hi=null;$('calmsg').className='msg';$('calmsg').textContent='Ready. '+clubKey+"'s week as the club planned it.";drawCal()}
 function drawLegend(){
   $('legend').innerHTML=Object.keys(G).map(function(k){return '<button class="lg" style="--gc:'+G[k].c+'" data-g="'+esc(k)+'" aria-pressed="'+(hi===k)+'">'+esc(k)+' <span class="note">'+G[k].y+'</span></button>'}).join('');
 }
 function drawCal(){
   var out='<div></div>'+DAYS.map(function(d){return '<div class="h">'+d+'</div>'}).join('');
-  for(var b=0;b<3;b++){
+  for(var b=0;b<BLK.length;b++){
     out+='<div class="b">'+BLK[b]+'</div>';
     for(var d=0;d<5;d++){
       var list=cells[d][b].slice(), showList=list;
@@ -558,7 +581,7 @@ function drawCal(){
 function perWeek(){var c={};Object.keys(G).forEach(function(k){c[k]=0});cells.forEach(function(d){d.forEach(function(b){b.forEach(function(g){c[g]++})})});return c}
 function drawCounts(){
   var c=perWeek();
-  $('counts').innerHTML=Object.keys(G).map(function(k){var ok=c[k]===3;return '<div class="cnt '+(ok?'ok':'no')+'"><span>'+esc(k)+'</span><b>'+c[k]+' of 3 '+(ok?'&#10003;':'!')+'</b></div>'}).join('');
+  $('counts').innerHTML=Object.keys(G).map(function(k){var t=(TG[k]||3),ok=c[k]===t;return '<div class="cnt '+(ok?'ok':'no')+'"><span>'+esc(k)+'</span><b>'+c[k]+' of '+t+' '+(ok?'&#10003;':'!')+'</b></div>'}).join('');
 }
 function move(g,d0,b0,d1,b1){
   if(d0===d1&&b0===b1) return;
@@ -594,7 +617,10 @@ cal.addEventListener('drop',function(e){
 $('legend').addEventListener('click',function(e){var b=e.target.closest('.lg');if(!b)return;hi=(hi===b.dataset.g)?null:b.dataset.g;drawCal()});
 $('combine').addEventListener('click',function(){combine=!combine;$('combine').setAttribute('aria-pressed',combine);sel=null;note('ok',combine?'Pre-season view: where U10 and U11 share a slot they show as one combined session. "Split from week 3" would end this rule and start two.':'Split view restored.');drawCal()});
 $('reset').addEventListener('click',function(){combine=false;$('combine').setAttribute('aria-pressed','false');resetCal()});
-resetCal();
+function useClub(k){var c=CLUBS[k];clubKey=k;G=c.G;BLK=c.BLK;BASE=c.BASE;TG=c.TG;combine=false;$('combine').setAttribute('aria-pressed','false');$('combine').style.display=(G['U10']&&G['U11'])?'':'none';$('venueTag').textContent='Venue: '+c.venue;
+  $('clubSw').innerHTML=Object.keys(CLUBS).map(function(n){return '<button class="pill" data-k="'+esc(n)+'" aria-pressed="'+(n===k)+'">'+esc(n)+"'s week</button>"}).join('');resetCal()}
+$('clubSw').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b)useClub(b.dataset.k)});
+useClub('Fursan Hispania');
 
 /* ---------- registration (UAE FA structure) ---------- */
 var CATS=['Citizen','Son of UAE Women','Passport Holder','Born in UAE','Resident','Foreigner'];
@@ -776,6 +802,60 @@ function drawMd(){
 })});
 drawMd();
 
+/* ---------- outside providers ---------- */
+var PROS=[['Dr Layla M.','Team Doctor','2027-06-30',[['Licence','2027-03-01'],['BLS','2027-02-15'],['ACLS','2027-02-15']]],['Omar S.','Physiotherapist','2027-06-30',[['Licence','2026-11-30'],['BLS','2026-10-20']]],['Hana R.','Nurse','',[['Licence','2027-01-10'],['BLS','2026-09-15']]]];
+function pvStatus(card,certs,today){
+  if(!card) return {s:'Not registered with UAE FA',k:'b',ok:false};
+  if(card<today) return {s:'UAE FA card expired',k:'b',ok:false};
+  var soon=false,bad='';
+  certs.forEach(function(c){if(c[1]<today)bad=bad||c[0]+' expired';else{var d=(new Date(c[1])-new Date(today))/864e5;if(d<=30)soon=true}});
+  if(bad) return {s:bad,k:'b',ok:false};
+  if(soon) return {s:'Valid, a paper expires within 30 days',k:'w',ok:true};
+  return {s:'Valid',k:'a',ok:true};
+}
+function drawPv(){
+  var today=$('pvDate').value||'2026-10-01';
+  $('pvTbl').innerHTML='<thead><tr><th>Person</th><th>Role</th><th>UAE FA card until</th><th>Papers</th><th>Status</th><th></th></tr></thead><tbody>'+PROS.map(function(r){var st=pvStatus(r[2],r[3],today);return '<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td>'+(r[2]||'none')+'</td><td>'+r[3].map(function(c){return esc(c[0])+' '+c[1]}).join('<br>')+'</td><td><span class="tag '+st.k+'">'+esc(st.s)+'</span></td><td><button class="pill" '+(st.ok?'':'disabled style="opacity:.35"')+'>Assign to Saturday match</button></td></tr>'}).join('')+'</tbody>';
+}
+$('pvDate').addEventListener('input',drawPv);drawPv();
+
+/* ---------- fee plans ---------- */
+var FEES={
+ 'Fursan Hispania':{opts:[
+  {n:'Full season, U10 to U12',lines:[['Training, full season, 3 a week',13900,1],['Match kit',600,0]],sched:'60% at registration, 40% in December.',conf:'Reading to confirm: the first 60% (or Term 1).'},
+  {n:'One term, U10 to U12',lines:[['Training, one term',8000,1],['Match kit',600,0]],sched:'Paid in full per term. Pro rata after 4 weeks of the term.',conf:'Reading to confirm: Term 1 paid.'},
+  {n:'Full season, U13 to U16',lines:[['Training, full season, 3 a week',14950,1],['Match kit',600,0]],sched:'60% at registration, 40% in December.',conf:'Reading to confirm: the first 60% (or Term 1).'},
+  {n:'One term, U13 to U16',lines:[['Training, one term',8500,1],['Match kit',600,0]],sched:'Paid in full per term. Pro rata after 4 weeks of the term.',conf:'Reading to confirm: Term 1 paid.'}],
+  sib:true,vat:'Prices include VAT',note:'No refunds or make-up sessions, also on public holidays. Two terms in the season.'},
+ 'G Reds':{opts:[
+  {n:'One term (14 weeks)',lines:[['Term fee',4300,0],['Registration fee, includes the kits',1350,0]],sched:'Term paid in full.',conf:'Reading to confirm: Term 1 plus the registration fee.'},
+  {n:'All three terms',lines:[['Terms 1 to 3',12900,0],['Registration fee, includes the kits',1350,0]],sched:'One-time payment in full.',conf:'Reading to confirm: the full payment.'}],
+  sib:false,vat:'VAT not stated',note:'Does not include matches, tournaments and league fees. Three terms of 14 weeks.'},
+ 'Elite league squad':{opts:[
+  {n:'Full season, with installments',lines:[['Training, 10 months (40 weeks)',10000,0],['League registration: kits, ambulance, match costs',4500,0]],sched:'AED 2,500 with the nomination form by the deadline (cash or bank transfer), then the balance, which may be split through Tabby or Tamara.',conf:'Reading to confirm: nomination form plus the AED 2,500 deposit. The nomination is void if missed.'}],
+  sib:false,vat:'VAT not stated',note:'One season, not terms. The sheet lists the balance as 13,000 although 14,500 less 2,500 is 12,000.'}
+};
+var feeClub='Fursan Hispania',feeOpt=0;
+function fmt(n){return 'AED '+Math.round(n).toLocaleString('en-US')}
+function drawFee(){
+  var f=FEES[feeClub];if(feeOpt>=f.opts.length)feeOpt=0;
+  $('feeClub').innerHTML=Object.keys(FEES).map(function(k){return '<button class="pill" data-k="'+esc(k)+'" aria-pressed="'+(k===feeClub)+'">'+esc(k)+'</button>'}).join('');
+  $('feeOpt').innerHTML=f.opts.map(function(o,i){return '<button class="pill" data-i="'+i+'" aria-pressed="'+(i===feeOpt)+'">'+esc(o.n)+'</button>'}).join('');
+  var o=f.opts[feeOpt],kids=+$('feeKids').value,total=0,rows=[];
+  for(var c=1;c<=kids;c++){
+    var pct=(f.sib&&c===2)?0.15:(f.sib&&c===3)?0.20:0;
+    o.lines.forEach(function(l){var base=l[1],disc=(l[2]&&pct)?base*pct:0;rows.push([(kids>1?'Child '+c+': ':'')+l[0],base,disc]);total+=base-disc});
+  }
+  $('feeTbl').innerHTML='<thead><tr><th>Line</th><th>Price</th><th>Sibling discount</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+fmt(r[1])+'</td><td>'+(r[2]?'-'+fmt(r[2]):'')+'</td></tr>'}).join('')+'<tr><td><b>Total for the family</b></td><td colspan="2"><b>'+fmt(total)+'</b></td></tr></tbody>';
+  $('feeSched').textContent='Payment: '+o.sched;
+  $('feeConf').textContent=o.conf;
+  $('feeTag').textContent=f.vat+(f.sib?' · discount assumed on the training fee only':'');
+}
+$('feeClub').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){feeClub=b.dataset.k;feeOpt=0;drawFee()}});
+$('feeOpt').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){feeOpt=+b.dataset.i;drawFee()}});
+$('feeKids').addEventListener('change',drawFee);
+drawFee();
+
 /* ---------- status tracker demo ---------- */
 var TD=[
  {n:'Omar\'s passport',s:'approved'},{n:'Omar\'s Emirates ID',s:'approved'},{n:'Birth certificate',s:'review'},
@@ -953,24 +1033,22 @@ var SET=[
  ['Schedule',[['Default venue per group','set per group'],['Coach by period','dates + coach'],['Override','per period or single session']]],
  ['Trials',[['Free trials allowed','1 or 5 (per group)'],['Counts by','attendance (booking if not taken)'],['More trials','parent asks, coach approves'],['No-shows count','yes / no'],['Coach may invite more','on'],['Capacity and waiting list','per session'],['Delete non-converted after','club decides (default 90 days)']]],
  ['Paid extra classes (later)',[['Price','per class (per group)'],['Bundles, e.g. 5-class pass','optional'],['Cancellation cut-off','12 hours'],['Refund or credit','credit'],['Pay at venue (POS) allowed','on'],['Payment link expires after','48 hours']]],
- ['Payments (later)',[['Gateway and Zoho Books','later builds'],['Fee amounts (recorded by staff)','per age group'],['POS methods to record','card, cash'],['Receipts and VAT invoices','on']]],
+ ['Payments (later)',[['Terms per season','1, 2 or 3 with dates (Fursan 2, G Reds 3)'],['Programme types','Academy, League team'],['Fee lines','training, registration, kit, league'],['Payment options','per term, full season, installments, deposit'],['What counts as Confirmed','named per plan'],['Sibling discount','15% / 20% by child order'],['Pro rata after','N weeks'],['Prices include VAT','yes / no'],['Place hold deadline','offer void if not completed'],['Gateway and Zoho Books','later builds'],['POS methods to record','card, cash'],['Receipts and VAT invoices','on']]],
  ['Prospects',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Prospect sources and landing pages','Instagram, WhatsApp, website, referral, walk-in'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
  ['Messages',[['Channels on','email, WhatsApp'],['Quiet hours (marketing)','9 pm - 7 am'],['Templates and wording','editable'],['Sender names','club name']]],
  ['Coach alerts',[['Channel per coach','app / email / WhatsApp'],['Instant or digest','digest 4 pm'],['Call tasks per week','max 3'],['What WhatsApp shows','first name, class, paid']]],
- ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['Terms per season','3 (Term 1, Terms 1+2, year)'],['Photo rule','4 x 6 cm, white background, club kit (UAE FA)'],['Photo helper','built-in crop and checks; outside links off by default'],['Rule set','UAE FA 2026/27: category x type x document'],['FA-Net users and signatories','roster: training, specimen signature, dates'],['Who submits','coach (own players) or admin (whole club)']]],
+ ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['UAE FA teams we field','tick per birth year, A and B'],['Photo rule','4 x 6 cm, white background, club kit (UAE FA)'],['Photo helper','built-in crop and checks; outside links off by default'],['Rule set','UAE FA 2026/27: category x type x document'],['FA-Net users and signatories','roster: training, specimen signature, dates'],['Who submits','coach (own players) or admin (whole club)']]],
  ['Privacy',[['Age of consent for data','18'],['Minimum age for own login','13'],['Deletion undo window','7 days'],['Financial records kept','1 year'],['Consent wording versions','tracked']]]
 ];
-var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Fee amounts (recorded by staff)','Default owner rule','Capacity and waiting list','Default session length','Default venue per group','More trials'];
+var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Fee amounts (recorded by staff)','Default owner rule','Capacity and waiting list','Default session length','Default venue per group','More trials','Sibling discount','Programme types','Payment options'];
 $('sgrid').innerHTML=SET.map(function(g){return '<div class="card"><h3>'+g[0]+'</h3><ul>'+g[1].map(function(r){return '<li><span>'+esc(r[0])+(PER.indexOf(r[0])>-1?' <span class="tag a">per group</span>':'')+'</span><span>'+esc(r[1])+'</span></li>'}).join('')+'</ul></div>'}).join('');
 
 /* ---------- decisions ---------- */
 var QS=[
- 'Which UAE FA teams does a typical academy field? It drives the "club lacks the team" rules.',
- 'Programme types (for example Academy and Squad): do fees differ?',
- 'Which club-specific forms exist besides terms and conditions? Please share blanks.',
- 'Please share the youth medical form (the circular\'s Form 2, U16 and below).',
- 'Medical company: how does the club check today that a professional is pre-registered?',
- 'What does FANet show when it rejects an application? Someone with FANet access needs to look.',
+ 'Which payment makes a child Confirmed? My reading: Fursan, Term 1 (or the first 60% of a full season); G Reds, Term 1 plus the registration fee; the Elite squad, the nomination form plus the AED 2,500 deposit. Is that right?',
+ 'Sibling discount (Fursan: 15% second child, 20% third): on the training fee only, or on everything?',
+ 'Programme types: is "Academy" (training) versus "League team" (training plus league registration, kits, match costs) the right split?',
+ 'The Elite sheet lists AED 2,500 first and AED 13,000 second against a total of AED 14,500. Typo, or does it include financing cost?',
  'Questions for UAE FA itself: (a) can playing in DOFA or YFL count against its A and B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?'
 ];
 var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
@@ -979,7 +1057,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = first term paid: Term 1, Terms 1+2, or the full year','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Product name: Sportal for now','The medical form is the clinic\'s job: one upload of the whole signed copy by the parent or the clinic; no content checks; UAE FA ID number optional','FA-Net submitter is a permission with a scope: a coach for their own players, or an admin for the club; the club keeps a roster of users and signatories','FA-Net information is confidential and passwords are never shared: we never hold FA-Net credentials, and assisted upload needs UAE FA\'s permission','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = the first payment that the club\'s plan names (for example Term 1, or a deposit)','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Terms per season is a setting: Fursan 2, G Reds 3, one league squad with installments','Clubs choose which UAE FA teams they field; smaller clubs skip some age groups','Fee plans have lines, payment options, discounts and a per-plan rule for what counts as Confirmed; payments themselves later','Medical company: a generic outside provider with a roster of registered professionals; only valid ones can be assigned','FANet rejections: a plain-text reason against the affected document; only that document reopens','Product name: Sportal for now','The medical form is the clinic\'s job: one upload of the whole signed copy by the parent or the clinic; no content checks; UAE FA ID number optional','FA-Net submitter is a permission with a scope: a coach for their own players, or an admin for the club; the club keeps a roster of users and signatories','FA-Net information is confidential and passwords are never shared: we never hold FA-Net credentials, and assisted upload needs UAE FA\'s permission','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 

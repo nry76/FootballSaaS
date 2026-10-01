@@ -86,6 +86,18 @@ Reported by the owner, **not yet checked against UAE FA regulations**: coaches a
 | S25 | **Staff rules** in the same engine: staff type x document, licences and certificates with expiry, at most two teams, age 21 or over | Same machinery as players |
 | S26 | **Match-day objects** (later): kit sets (official and reserve; outfield and goalkeeper), the match-list window (24 hours to 90 minutes), bench composition, host duties with their own fines | Official regulations |
 
+## 3e. Changes from the price lists and schedules (v1.2)
+
+| # | Change | Why |
+|---|---|---|
+| S27 | **Fee plans** with lines, payment options, installments, discounts by child order (this needs a **family link between children**), pro rata, VAT flag, inclusions, and a per-plan "what counts as Confirmed" rule | Three clubs, three structures |
+| S28 | **Terms per season** (1, 2 or 3) and their dates are club settings | Fursan 2, G Reds 3 |
+| S29 | **Programme types** (Academy, League team) on groups and plans | G Reds Academy; Elite squad |
+| S30 | **Teams fielded** per birth year and A or B, a club setting that the registration rules read | Smaller clubs skip age groups |
+| S31 | **Outside providers** (a medical company) with a roster of professionals who have registration and certificate expiry, assignable to a fixture only if valid | Generic design for the medical company check |
+| S32 | **Place hold with a deadline** on offers and nominations | Elite squad |
+| S33 | Training **blocks differ by club** (5:00 to 6:30 vs 6:00 to 7:30); the block grid is already a setting, now tested against two real weeks | G Reds schedule |
+
 ## 4. Registration: no one in the dark, no restarts
 
 Your pain: parents do not know where they are, cannot tell if documents are complete, and a wrong upload by a coach restarts the whole process.
