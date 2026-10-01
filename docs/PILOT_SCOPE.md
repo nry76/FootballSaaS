@@ -66,7 +66,7 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 | Topic | Now |
 |---|---|
 | Word | **Prospect**, not lead. Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed |
-| Registration gate | Starts when the club has **offered a place and the parent has accepted**. **No fee needed first.** Confirmed = first term paid (Term 1, Terms 1+2, or all 3) |
+| Registration gate | Starts when the club has **offered a place and the parent has accepted**. **No fee needed first.** Confirmed = **any payment recorded** (a club can tighten this in Settings) |
 | Trial allowance | Counts **attendance**. No-shows do not count when attendance is taken; when it is not, the booking counts. Extra trials: parent asks, coach approves. A **wallet ticket** scanned at the session is the planned attendance method |
 | Coaches and venues | Assigned **by period** (for example 1st to 3rd week of September: Coach 3). Group default venue, override by period or session |
 | Weekend matches | Not in the first schedule module. UAE FA issues fixtures before the season; import comes later |
@@ -87,9 +87,8 @@ Facts reported by the owner (to verify with UAE FA): coaches and on-field staff 
 
 **Photo:** the pilot includes a photo helper that runs in the browser (crop to 4 x 6 cm, size, white background, sharpness checks). Background fix and club-kit overlay are later, as club choices; outside links are off by default.
 
-## 11. Open questions (answered ones removed; going through them one by one)
-1. **Which payment makes a child Confirmed?** My reading: Fursan, Term 1 (or the first 60% of a full season); G Reds, Term 1 plus the registration fee; the Elite squad, the nomination form plus the AED 2,500 deposit.
-2. **Sibling discount** (Fursan: 15% second child, 20% third): on the training fee only, or on everything?
-3. **Programme types:** is "Academy" (training) versus "League team" (training plus league registration, kits, match costs) the right split?
-4. The Elite sheet lists AED 2,500 first and AED 13,000 second against a total of AED 14,500. Typo, or financing cost?
-5. Questions for **UAE FA** itself: (a) can playing in DOFA or YFL count against its A/B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?
+## 11. Open questions
+The structural questions are answered. What is left:
+1. Questions for **UAE FA itself** (for the owner to put to the federation): (a) can playing in DOFA or YFL count against its A/B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?
+2. **Programme types** (Academy and League team): accepted as a working split unless corrected.
+3. **Priorities, not questions:** photo helper, wallet ticket, AI document checks.

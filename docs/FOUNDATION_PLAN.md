@@ -71,7 +71,7 @@ Reported by the owner, **not yet checked against UAE FA regulations**: coaches a
 | S15 | **Layered defaults for coach and venue**: group default, overridden by a period, overridden by a single session. Coach assignments are dated periods, not a field on the session | Coaches and venues change by week |
 | S16 | **Eligibility rules in the sport pack**: registration group by birth year; play up allowed; play down only for September to December births of the year before the group's year | Football's age rule |
 | S17 | **Attendance proof**: scannable ticket (Apple Wallet / Google Wallet) issued on booking, scanned by the coach; counts toward the trial allowance | Reliable attendance |
-| S18 | **Terms and fee options**: a season has terms (3 at most clubs); fee options are Term 1, Terms 1+2, or the year. Payment itself is a later build | "Confirmed = first term paid" |
+| S18 | **Terms and fee options**: a season has 1 to 3 terms (a setting); fee options are a term, the year, or a deposit. Payment itself is a later build | "Confirmed = any payment recorded" |
 | S19 | **Consent purposes** grow: club terms and waiver, media, school engagement, clinic sharing, federation sharing, AI screening. Each versioned and signed | Seen in a real club's terms |
 
 ## 3d. Changes from the official UAE FA documents (v0.9)
@@ -97,6 +97,13 @@ Reported by the owner, **not yet checked against UAE FA regulations**: coaches a
 | S31 | **Outside providers** (a medical company) with a roster of professionals who have registration and certificate expiry, assignable to a fixture only if valid | Generic design for the medical company check |
 | S32 | **Place hold with a deadline** on offers and nominations | Elite squad |
 | S33 | Training **blocks differ by club** (5:00 to 6:30 vs 6:00 to 7:30); the block grid is already a setting, now tested against two real weeks | G Reds schedule |
+
+## 3f. Further changes (v1.3)
+
+| # | Change | Why |
+|---|---|---|
+| S34 | **Document checks are plug-ins**: rules attached to a document type, run in order, each producing pass, fail or unsure with a reason. Start with file basics and a reviewer's tick list; add automatic stamp and signature presence checks later | Owner: "plug in business rules later" |
+| S35 | **Adding a team prompts, never blocks**: a second team in an age group asks "Is this the B team?" | Owner's wish |
 
 ## 4. Registration: no one in the dark, no restarts
 

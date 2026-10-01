@@ -15,7 +15,7 @@ Rules on the form: **any erasure or amendment makes it invalid.** The circular a
 
 ## What this means for the system (decided by the owner)
 * **The clinic fills the form. The platform does not fill, split, or check it.** The parent (or the clinic directly, through a one-time link) uploads the **entire signed copy at once**.
-* **No checks on whether it is true or medically sound.** It is sensitive information. The system does only basic file checks (readable, PDF, colour) and a person confirms the file arrived.
+* **No checks on whether it is true or medically sound.** It is sensitive information. Today: basic file checks (readable, PDF, colour) and a reviewer's tick list (stamped, signed, orthopaedic section signed). **Later, as a plug-in rule:** an automatic check for the **presence** of stamps and signatures, only after the AI vendor and privacy are vetted. A signature alone cannot show that the signer is an orthopaedist.
 * Stored in a **restricted file store** with medical-level access (parent, Manager and Admin with medical permission).
 * The form asks for the **UAE FA ID number**, which is not published and whose first-time process is unknown. The field is **optional**.
 * The 7-day abnormal-result notice to UAE FA is the club doctor's duty. The platform may offer an optional reminder task.

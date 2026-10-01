@@ -147,7 +147,7 @@ footer{font-size:13px;color:var(--muted)}
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v1.2 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v1.3 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
     <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
@@ -332,6 +332,14 @@ footer{font-size:13px;color:var(--muted)}
       <div class="msg" id="gcOut"></div>
     </div>
     <div class="card">
+      <h2>Entering teams for UAE FA</h2>
+      <p class="note">The club ticks which teams it fields. Nothing is blocked, and nobody is asked up front about a B team. Only if an age group already has a team does the system ask. Try adding U11, then U7.</p>
+      <div class="row"><select id="tmAge" aria-label="Age group"></select><button class="pill" id="tmAdd">Add a team</button></div>
+      <div class="msg w" id="tmAsk" hidden></div>
+      <div class="msg" id="tmNote">Fielded teams are listed below.</div>
+      <div class="row" id="tmList"></div>
+    </div>
+    <div class="card">
       <h2>Staff registration: same engine, different table</h2>
       <p class="note">Coaches, managers and medical staff register with UAE FA too. Staff must be 21 or older, coaches need a licence, and technical and administrative staff can be on at most two teams.</p>
       <div class="row" id="stTypes"></div>
@@ -343,8 +351,8 @@ footer{font-size:13px;color:var(--muted)}
       <p class="note">The extensive senior form is 24 pages and several clinicians sign it: the player, a cardiologist, an examining physician, the labs, and the club doctor with the club stamp. The system does not fill it in, split it, or judge it. The youth form (U16 and below) has not arrived yet.</p>
       <div class="pipe"><span class="s">Clinic completes and signs</span><span class="note">&rarr;</span><span class="s">Parent (or the clinic by link) uploads the whole signed copy</span><span class="note">&rarr;</span><span class="s">A person confirms it arrived</span><span class="note">&rarr;</span><span class="s on">Stored privately</span></div>
       <div class="cols">
-        <div class="msg"><b>We check:</b> it is a readable PDF, in colour, for the right season. A person confirms it looks like the whole form.</div>
-        <div class="msg w"><b>We do not:</b> read the medical content, check whether it is true, or copy any result into the database. The UAE FA ID number field is optional.</div>
+        <div class="msg"><b>We check:</b> a readable colour PDF for the right season, plus a reviewer's tick list: stamped, signed, orthopaedic section signed. Later, an automatic check for the presence of stamps and signatures can plug in as a rule, once the vendor and privacy are vetted.</div>
+        <div class="msg w"><b>We do not:</b> read the medical content, judge whether it is true, or copy any result into the database. A signature cannot prove the signer is an orthopaedist. The UAE FA ID number field is optional.</div>
       </div>
     </div>
     <div class="card">
@@ -525,7 +533,7 @@ var STAGES=[
  {n:'Trials',s:'free, within allowance',parent:'Books a trial and gets a wallet ticket. Sees "2 of 3 used".',sys:'Reminders before each session. The coach scans the ticket, which counts the trial. No-shows are free when attendance is taken.',club:'Coach sees tonight\'s trialists. Beyond the maximum, the parent asks and a coach approves.',data:['Same seven fields','Trial attendance'],lock:['Documents','Photo','ID numbers','Medical']},
  {n:'Offer accepted',s:'registration can start',parent:'Receives the club\'s offer, accepts the terms and the registration consent. Sees the fee options.',sys:'Unlocks the registration checklist and the season\'s forms. No payment is needed to begin.',club:'Prospect moves to "Accepted". The club made the offer; a person (admin or coach) chose to.',data:['Club terms and consents','Everything registration needs'],lock:[]},
  {n:'Registering and paying',s:'in parallel',parent:'Uploads documents, completes and signs forms, books the medical. Separately chooses a payment option from the club plan (a term, the full season, a deposit) and pays at the club or by bank transfer.',sys:'Checks each file, tells the parent what to fix, builds the pack, counts UAE FA\'s 3-4 weeks.',club:'Registrar queue. Staff record "fee received" with one click.',data:['Parents\' documents too','Signed forms'],lock:[]},
- {n:'Confirmed',s:'first payment, set per plan',parent:'Nothing more to do for the club. Keeps finishing the registration checklist.',sys:'Moves the family out of the prospect pipeline. Counts it for the source.',club:'Confirmed member. Coach sees them on the session lists.',data:['Full profile'],lock:[]},
+ {n:'Confirmed',s:'any payment recorded',parent:'Nothing more to do for the club. Keeps finishing the registration checklist.',sys:'Moves the family out of the prospect pipeline. Counts it for the source.',club:'Confirmed member. Coach sees them on the session lists.',data:['Full profile'],lock:[]},
  {n:'Registered',s:'UAE FA / FIFA done',parent:'Sees "Registered".',sys:'Tracks the submission date and FANet reference; reopens only the affected document if UAE FA asks.',club:'Player can be placed on match sheets (later).',data:['Registration record'],lock:[]}
 ];
 var stage=0;
@@ -749,7 +757,7 @@ var BLOCKS=[
  ['Settings engine','Club default, override per group or session',['Everything']],
  ['Consent and data stages','What may be stored, and when',['Registration','Trials and leads']],
  ['Rules engine','Requirements by the person\'s role and profile, versioned',['Registration','Staff registration','Match day (later)']],
- ['Documents and checks','Files, season forms and signatures, automatic checks, review, expiry',['Registration','Staff registration']],
+ ['Documents and checks','Files, season forms and signatures, checks that plug in as rules, review, expiry',['Registration','Staff registration']],
  ['Status engine','Steps with history, one truth for everyone',['Registration','Trials and leads','Payments (later)']],
  ['Messages and log','Email, WhatsApp, in-app; everything recorded',['Registration','Trials and leads','Coach feed','Schedule','Match day (later)']],
  ['Tasks','Assigned to-dos with due dates',['Registration','Trials and leads']],
@@ -822,18 +830,18 @@ $('pvDate').addEventListener('input',drawPv);drawPv();
 /* ---------- fee plans ---------- */
 var FEES={
  'Fursan Hispania':{opts:[
-  {n:'Full season, U10 to U12',lines:[['Training, full season, 3 a week',13900,1],['Match kit',600,0]],sched:'60% at registration, 40% in December.',conf:'Reading to confirm: the first 60% (or Term 1).'},
-  {n:'One term, U10 to U12',lines:[['Training, one term',8000,1],['Match kit',600,0]],sched:'Paid in full per term. Pro rata after 4 weeks of the term.',conf:'Reading to confirm: Term 1 paid.'},
-  {n:'Full season, U13 to U16',lines:[['Training, full season, 3 a week',14950,1],['Match kit',600,0]],sched:'60% at registration, 40% in December.',conf:'Reading to confirm: the first 60% (or Term 1).'},
-  {n:'One term, U13 to U16',lines:[['Training, one term',8500,1],['Match kit',600,0]],sched:'Paid in full per term. Pro rata after 4 weeks of the term.',conf:'Reading to confirm: Term 1 paid.'}],
+  {n:'Full season, U10 to U12',lines:[['Training, full season, 3 a week',13900,1],['Match kit',600,0]],sched:'60% at registration, 40% in December.',conf:'Any payment received makes the child Confirmed (the club can tighten this in Settings).'},
+  {n:'One term, U10 to U12',lines:[['Training, one term',8000,1],['Match kit',600,0]],sched:'Paid in full per term. Pro rata after 4 weeks of the term.',conf:'Any payment received makes the child Confirmed (the club can tighten this in Settings).'},
+  {n:'Full season, U13 to U16',lines:[['Training, full season, 3 a week',14950,1],['Match kit',600,0]],sched:'60% at registration, 40% in December.',conf:'Any payment received makes the child Confirmed (the club can tighten this in Settings).'},
+  {n:'One term, U13 to U16',lines:[['Training, one term',8500,1],['Match kit',600,0]],sched:'Paid in full per term. Pro rata after 4 weeks of the term.',conf:'Any payment received makes the child Confirmed (the club can tighten this in Settings).'}],
   sib:true,vat:'Prices include VAT',note:'No refunds or make-up sessions, also on public holidays. Two terms in the season.'},
  'G Reds':{opts:[
-  {n:'One term (14 weeks)',lines:[['Term fee',4300,0],['Registration fee, includes the kits',1350,0]],sched:'Term paid in full.',conf:'Reading to confirm: Term 1 plus the registration fee.'},
-  {n:'All three terms',lines:[['Terms 1 to 3',12900,0],['Registration fee, includes the kits',1350,0]],sched:'One-time payment in full.',conf:'Reading to confirm: the full payment.'}],
+  {n:'One term (14 weeks)',lines:[['Term fee',4300,0],['Registration fee, includes the kits',1350,0]],sched:'Term paid in full.',conf:'Any payment received makes the child Confirmed (the club can tighten this in Settings).'},
+  {n:'All three terms',lines:[['Terms 1 to 3',12900,0],['Registration fee, includes the kits',1350,0]],sched:'One-time payment in full.',conf:'Any payment received makes the child Confirmed (the club can tighten this in Settings).'}],
   sib:false,vat:'VAT not stated',note:'Does not include matches, tournaments and league fees. Three terms of 14 weeks.'},
  'Elite league squad':{opts:[
-  {n:'Full season, with installments',lines:[['Training, 10 months (40 weeks)',10000,0],['League registration: kits, ambulance, match costs',4500,0]],sched:'AED 2,500 with the nomination form by the deadline (cash or bank transfer), then the balance, which may be split through Tabby or Tamara.',conf:'Reading to confirm: nomination form plus the AED 2,500 deposit. The nomination is void if missed.'}],
-  sib:false,vat:'VAT not stated',note:'One season, not terms. The sheet lists the balance as 13,000 although 14,500 less 2,500 is 12,000.'}
+  {n:'Full season, with installments',lines:[['Training, 10 months (40 weeks)',10000,0],['League registration: kits, ambulance, match costs',4500,0]],sched:'AED 2,500 with the nomination form by the deadline (cash or bank transfer), then the balance, which may be split through Tabby or Tamara.',conf:'Any payment received makes the child Confirmed. A nomination is void if the form and deposit miss the deadline (a place-hold setting).'}],
+  sib:false,vat:'VAT not stated',note:'One season, not terms. A sample only.'}
 };
 var feeClub='Fursan Hispania',feeOpt=0;
 function fmt(n){return 'AED '+Math.round(n).toLocaleString('en-US')}
@@ -849,7 +857,7 @@ function drawFee(){
   $('feeTbl').innerHTML='<thead><tr><th>Line</th><th>Price</th><th>Sibling discount</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+fmt(r[1])+'</td><td>'+(r[2]?'-'+fmt(r[2]):'')+'</td></tr>'}).join('')+'<tr><td><b>Total for the family</b></td><td colspan="2"><b>'+fmt(total)+'</b></td></tr></tbody>';
   $('feeSched').textContent='Payment: '+o.sched;
   $('feeConf').textContent=o.conf;
-  $('feeTag').textContent=f.vat+(f.sib?' · discount assumed on the training fee only':'');
+  $('feeTag').textContent=f.vat+(f.sib?' · sibling discount on the training fee only':'');
 }
 $('feeClub').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){feeClub=b.dataset.k;feeOpt=0;drawFee()}});
 $('feeOpt').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){feeOpt=+b.dataset.i;drawFee()}});
@@ -974,6 +982,25 @@ function checkTeam(by,m,tn,hasOwn){
   ['gcY','gcM','gcG'].forEach(function(id){$(id).addEventListener('change',calc)});$('gcOwn').addEventListener('change',calc);calc();
 })();
 
+/* ---------- entering teams ---------- */
+var FIELDED={U10:['A'],U11:['A'],U12:['A'],U13:['A'],U14:['A'],U16:['A']},pendAge=null;
+function drawTm(){
+  $('tmAge').innerHTML=TEAMS.map(function(t){return '<option'+(t[0]==='U11'?' selected':'')+'>'+t[0]+'</option>'}).join('');
+  $('tmList').innerHTML=TEAMS.filter(function(t){return FIELDED[t[0]]&&FIELDED[t[0]].length}).map(function(t){return FIELDED[t[0]].map(function(x){return '<span class="tag a">'+t[0]+' '+x+'</span>'}).join('')}).join('')||'<span class="note">No teams yet</span>';
+  if(pendAge){$('tmAsk').hidden=false;$('tmAsk').innerHTML=esc(pendAge)+' already has a team. Is this the B team? <span class="row" style="margin-top:6px"><button class="pill" data-a="y">Yes, it is the B team</button><button class="pill" data-a="n">No, cancel</button></span>'}else{$('tmAsk').hidden=true;$('tmAsk').innerHTML=''}
+}
+$('tmAdd').addEventListener('click',function(){
+  var a=$('tmAge').value;
+  if(!FIELDED[a]||!FIELDED[a].length){FIELDED[a]=['A'];$('tmNote').textContent=a+' team added.';pendAge=null}
+  else if(FIELDED[a].indexOf('B')>-1){$('tmNote').textContent=a+' already has A and B.';pendAge=null}
+  else{pendAge=a;$('tmNote').textContent='Waiting for your answer.'}
+  var keep=$('tmAge').value;drawTm();$('tmAge').value=keep;
+});
+$('tmAsk').addEventListener('click',function(e){var b=e.target.closest('.pill');if(!b)return;
+  if(b.dataset.a==='y'){FIELDED[pendAge].push('B');$('tmNote').textContent=pendAge+' B team added. The existing team is now '+pendAge+' A.'}else{$('tmNote').textContent='Nothing added.'}
+  pendAge=null;drawTm()});
+drawTm();
+
 /* ---------- trial allowance ---------- */
 var TS=[['Session 1','Attended (ticket scanned)','att'],['Session 2','Booked; attendance not taken that day','nt'],['Session 3','Booked; attendance taken, did not come','ns'],['Session 4','Cancelled in time','cx']];
 var TR=[['A','Attended only'],['B','Attendance if taken, otherwise the booking (recommended default)'],['C','Every booking counts unless cancelled in time']];
@@ -1003,8 +1030,8 @@ var LEADS=[
  {n:'Khalid F.',a:'U12',p:'Midfielder',src:'Instagram',st:2,o:'Sara',x:'trials used: coach decides'},
  {n:'Salem M.',a:'U8',p:'Forward',src:'Walk-in',st:2,o:'Khaled',x:'attended Tue'},
  {n:'Hamdan K.',a:'U13',p:'Defender',src:'WhatsApp',st:3,o:'Sara',x:'offer sent, awaiting reply'},
- {n:'Zayed T.',a:'U10',p:'Forward',src:'Instagram',st:4,o:'Sara',x:'registering 4 of 10 · Term 1 due'},
- {n:'Rashid B.',a:'U14',p:'Defender',src:'Referral',st:5,o:'Khaled',x:'Term 1 received · 7 of 10'},
+ {n:'Zayed T.',a:'U10',p:'Forward',src:'Instagram',st:4,o:'Sara',x:'registering 4 of 10 · no payment yet'},
+ {n:'Rashid B.',a:'U14',p:'Defender',src:'Referral',st:5,o:'Khaled',x:'payment received · 7 of 10'},
  {n:'Mariam K.',a:'U8',p:'Not sure',src:'Website',st:5,o:'Khaled',x:'full year received'}
 ];
 var pickLead=7;
@@ -1019,8 +1046,8 @@ function drawBoard(){
   if(l.st>=2) ev.push(['Thu 5:00','Ticket scanned by the coach. Coach note: "great first touch"'],['Thu 7:00','Thank you sent']);
   if(l.st>=3) ev.push(['Fri 10:00','Club made an offer; parent notified']);
   if(l.st>=4) ev.push(['Sat 10:15','Parent accepted terms. Registration checklist opened (no payment needed to start)']);
-  if(l.st>=5) ev.push(['Sat 10:22','Term 1 fee recorded by staff. Now Confirmed']);
-  var next=['Reply within 15 min','Send the ticket reminder','Coach decides: offer a place or invite more trials','Follow up the offer in 2 days','Chase documents and the Term 1 fee','Registration reminders'][l.st];
+  if(l.st>=5) ev.push(['Sat 10:22','A payment recorded by staff. Now Confirmed']);
+  var next=['Reply within 15 min','Send the ticket reminder','Coach decides: offer a place or invite more trials','Follow up the offer in 2 days','Chase documents and the first payment','Registration reminders'][l.st];
   $('leadDetail').innerHTML='<h3>'+esc(l.n)+' <span class="tag a">'+LST[l.st]+'</span></h3><dl class="kv"><dt>Age group</dt><dd>'+esc(l.a)+'</dd><dt>Position</dt><dd>'+esc(l.p)+'</dd><dt>Source</dt><dd>'+esc(l.src)+'</dd><dt>Owner</dt><dd>'+esc(l.o)+' <button class="pill" style="min-height:28px;padding:2px 10px">Transfer</button></dd><dt>Next action</dt><dd>'+next+'</dd></dl><ul class="tl">'+ev.map(function(e){return '<li><time>'+e[0]+'</time><span>'+esc(e[1])+'</span></li>'}).join('')+'</ul>';
 }
 $('board').addEventListener('click',function(e){var b=e.target.closest('.lead');if(b){pickLead=+b.dataset.i;drawBoard()}});
@@ -1033,7 +1060,7 @@ var SET=[
  ['Schedule',[['Default venue per group','set per group'],['Coach by period','dates + coach'],['Override','per period or single session']]],
  ['Trials',[['Free trials allowed','1 or 5 (per group)'],['Counts by','attendance (booking if not taken)'],['More trials','parent asks, coach approves'],['No-shows count','yes / no'],['Coach may invite more','on'],['Capacity and waiting list','per session'],['Delete non-converted after','club decides (default 90 days)']]],
  ['Paid extra classes (later)',[['Price','per class (per group)'],['Bundles, e.g. 5-class pass','optional'],['Cancellation cut-off','12 hours'],['Refund or credit','credit'],['Pay at venue (POS) allowed','on'],['Payment link expires after','48 hours']]],
- ['Payments (later)',[['Terms per season','1, 2 or 3 with dates (Fursan 2, G Reds 3)'],['Programme types','Academy, League team'],['Fee lines','training, registration, kit, league'],['Payment options','per term, full season, installments, deposit'],['What counts as Confirmed','named per plan'],['Sibling discount','15% / 20% by child order'],['Pro rata after','N weeks'],['Prices include VAT','yes / no'],['Place hold deadline','offer void if not completed'],['Gateway and Zoho Books','later builds'],['POS methods to record','card, cash'],['Receipts and VAT invoices','on']]],
+ ['Payments (later)',[['Terms per season','1, 2 or 3 with dates (Fursan 2, G Reds 3)'],['Programme types','Academy, League team'],['Fee lines','training, registration, kit, league'],['Payment options','per term, full season, installments, deposit'],['What counts as Confirmed','any payment (default)'],['Sibling discount','15% / 20% by child order'],['Pro rata after','N weeks'],['Prices include VAT','yes / no'],['Place hold deadline','offer void if not completed'],['Gateway and Zoho Books','later builds'],['POS methods to record','card, cash'],['Receipts and VAT invoices','on']]],
  ['Prospects',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Prospect sources and landing pages','Instagram, WhatsApp, website, referral, walk-in'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
  ['Messages',[['Channels on','email, WhatsApp'],['Quiet hours (marketing)','9 pm - 7 am'],['Templates and wording','editable'],['Sender names','club name']]],
  ['Coach alerts',[['Channel per coach','app / email / WhatsApp'],['Instant or digest','digest 4 pm'],['Call tasks per week','max 3'],['What WhatsApp shows','first name, class, paid']]],
@@ -1045,11 +1072,9 @@ $('sgrid').innerHTML=SET.map(function(g){return '<div class="card"><h3>'+g[0]+'<
 
 /* ---------- decisions ---------- */
 var QS=[
- 'Which payment makes a child Confirmed? My reading: Fursan, Term 1 (or the first 60% of a full season); G Reds, Term 1 plus the registration fee; the Elite squad, the nomination form plus the AED 2,500 deposit. Is that right?',
- 'Sibling discount (Fursan: 15% second child, 20% third): on the training fee only, or on everything?',
- 'Programme types: is "Academy" (training) versus "League team" (training plus league registration, kits, match costs) the right split?',
- 'The Elite sheet lists AED 2,500 first and AED 13,000 second against a total of AED 14,500. Typo, or does it include financing cost?',
- 'Questions for UAE FA itself: (a) can playing in DOFA or YFL count against its A and B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?'
+ 'Questions for UAE FA itself, for you to put to the federation: (a) can playing in DOFA or YFL count against its A and B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?',
+ 'Programme types: I will use "Academy" (training) and "League team" (training plus league registration, kits, match costs) unless you correct me.',
+ 'Priorities to decide later, not questions: the photo helper, the wallet ticket, and automatic stamp and signature checks on documents.'
 ];
 var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
 function drawQs(){
@@ -1057,7 +1082,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = the first payment that the club\'s plan names (for example Term 1, or a deposit)','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Terms per season is a setting: Fursan 2, G Reds 3, one league squad with installments','Clubs choose which UAE FA teams they field; smaller clubs skip some age groups','Fee plans have lines, payment options, discounts and a per-plan rule for what counts as Confirmed; payments themselves later','Medical company: a generic outside provider with a roster of registered professionals; only valid ones can be assigned','FANet rejections: a plain-text reason against the affected document; only that document reopens','Product name: Sportal for now','The medical form is the clinic\'s job: one upload of the whole signed copy by the parent or the clinic; no content checks; UAE FA ID number optional','FA-Net submitter is a permission with a scope: a coach for their own players, or an admin for the club; the club keeps a roster of users and signatories','FA-Net information is confidential and passwords are never shared: we never hold FA-Net credentials, and assisted upload needs UAE FA\'s permission','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = any payment recorded (a club can tighten this in Settings)','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Terms per season is a setting: Fursan 2, G Reds 3, one league squad with installments','Clubs choose which UAE FA teams they field; smaller clubs skip some age groups','Fee plans have lines, payment options and discounts; any payment makes a child Confirmed unless the club tightens it; the sibling discount covers the training fee only; payments themselves later','Medical company: a generic outside provider with a roster of registered professionals; only valid ones can be assigned','FANet rejections: a plain-text reason against the affected document; only that document reopens','Adding a team never blocks: a second team in an age group just asks "Is this the B team?"','Document checks plug in as rules; the medical form gets a reviewer tick list now and automatic stamp and signature presence checks later','Product name: Sportal for now','The medical form is the clinic\'s job: one upload of the whole signed copy by the parent or the clinic; no content checks; UAE FA ID number optional','FA-Net submitter is a permission with a scope: a coach for their own players, or an admin for the club; the club keeps a roster of users and signatories','FA-Net information is confidential and passwords are never shared: we never hold FA-Net credentials, and assisted upload needs UAE FA\'s permission','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 
