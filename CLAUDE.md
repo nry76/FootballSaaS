@@ -18,6 +18,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 | Path | What |
 |---|---|
 | `docs/START_HERE.md` | One-page summary, plus gaps not yet planned (import of existing students, club set-up, legal pack, WhatsApp set-up, pricing, support) |
+| `docs/LEGAL_REVIEW_LIST.md` | Questions and documents for the lawyer and UAE FA (draft by Claude, unverified) |
 | `docs/PILOT_SCOPE.md` | **Current scope.** Pilot pillars, FANet registration flow, AI screening rules, lead sources, what changed |
 | `docs/MVP_PLAN.md` | Lifecycle, foundation changes F1-F15, registration rules, schedule builder, questions |
 | `docs/LEADS_PLAN.md` | Lead pipeline, channels (WhatsApp/Instagram/email), coach feed, paid classes, phases, foundation changes F16-F23 |

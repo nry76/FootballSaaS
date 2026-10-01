@@ -36,11 +36,11 @@ Online payments and gateway, Zoho Books, match-day tools (kits, match list, medi
 ## "Am I missing something?" Things we have not planned yet
 | Gap | Why it matters |
 |---|---|
-| **Importing existing students** (from spreadsheets or WhatsApp lists) | Every club already has a roster. Without an import, starting is painful. |
-| **Setting up a new club** (teams fielded, terms, fees, venues, staff roster, FA-Net users) | The first ten minutes decide whether a club stays. Mostly settings already. |
-| **Legal pack**: Terms, Privacy Policy, consent wording, agreements with the tools we use, a lawyer's review (UAE and EU) | Needs a lawyer, not code. Start early. |
-| **WhatsApp Business set-up**: number, approval of message templates | External wait time. Start early. |
-| **Pricing of Sportal itself** (per player, per club, per staff seat) | Undecided. ClassCard's pricing evidence conflicted. |
+| **Importing existing students** (from spreadsheets or WhatsApp lists) | **Not planned for now** (decision 115): each season everyone is entered new. |
+| **Setting up a new club** (teams fielded, terms, fees, venues, staff roster, FA-Net users) | **Later build** (decision 116): a club onboarding portal. |
+| **Legal pack**: Terms, Privacy Policy, consent wording, agreements with the tools we use, a lawyer's review (UAE and EU) | **Question list ready:** [LEGAL_REVIEW_LIST.md](LEGAL_REVIEW_LIST.md). Needs a lawyer, not code. Start early. |
+| **WhatsApp set-up**: number, approval of message templates | **On hold** (decision 114): may use an unofficial route (Baileys); risks flagged, not decided. |
+| **Pricing of Sportal itself** (per player, per club, per staff seat) | **Later** (decision 117). ClassCard's pricing evidence conflicted. |
 | **Pilot success measures** | You said no KPIs yet. Two or three plain ones (for example, registrations finished without a rejected upload) help when you speak to Fursan. |
 | **Support and training**: who answers parents, who trains FA-Net users | Not yet discussed. |
 | **Who builds it, the timeline and the budget** | Not yet discussed. |

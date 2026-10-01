@@ -107,6 +107,11 @@
 | 111 | The Elite sheet is **only a sample**; its figures are not examined further. Programme types **Academy and League team** are accepted as a working split unless the owner says otherwise | |
 | 112 | **Playing in DOFA or YFL does not count against UAE FA's A/B crossing rule** (owner's answer; worth confirming in writing with UAE FA) | Closes the earlier question |
 | 113 | **A club may record FA-Net outcomes in its own software** (owner's answer). Still: never store FA-Net passwords; **assisted upload** (filling FA-Net for the user) still needs UAE FA's permission | Relaxes the caution in 98 for recording only |
+| 114 | **Official WhatsApp Business set-up is on hold.** The owner may use **Baileys** (an unofficial WhatsApp library) instead. **Not decided.** Claude's plain warning, unverified: unofficial routes can break WhatsApp's terms, risk the number being banned, and may change the lawyer's marketing-consent answers. Plan should keep WhatsApp a swappable channel behind the messages block (to confirm when we revisit) | Owner, 2026-10-01 |
+| 115 | **Import of existing students: not planned for now.** Owner's view: each new season everyone is entered brand new, so an import may not be needed. May be revisited | Owner, 2026-10-01 |
+| 116 | **Club set-up / onboarding portal is a later build.** The planned "Round 2" (club set-up, support and training) is deferred | Owner, 2026-10-01 |
+| 117 | **Sportal's own pricing: later** | Owner, 2026-10-01 |
+| 118 | **Lawyer list prepared:** [LEGAL_REVIEW_LIST.md](LEGAL_REVIEW_LIST.md) (17 legal questions, 3 for UAE FA, 8 documents to write). Written by Claude, not a lawyer: all legal statements unverified. **No Supabase or database is needed yet** (planning only). The Supabase project connected to this session, "EmissionsSQL" in Singapore, is unrelated and not to be used; the real project would be new, in Frankfurt, after plan approval | Owner asked, 2026-10-01 |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |
@@ -136,6 +141,7 @@ See section 8 of [SCHEMA_PLAN.md](SCHEMA_PLAN.md) (7 questions) and section 9 of
 Payment gateway, video, WhatsApp/SMS, ID-verification vendor, FANet.ae automation.
 
 ## For legal review
+Full list: [LEGAL_REVIEW_LIST.md](LEGAL_REVIEW_LIST.md). Headlines:
 * Which law(s) govern children's data for UAE clubs hosted in the EU
 * Adequacy of a 1-year financial-record retention against clubs' tax/accounting duties
 * Terms and Privacy Policy wording (kept vs deleted, backups, parental responsibility)
