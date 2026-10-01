@@ -143,13 +143,34 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 .sess{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--card);font-size:13.5px}
 select,input[type=date]{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--card);min-height:36px}
 footer{font-size:13px;color:var(--muted)}
+/* step 1 */
+.mx{min-width:760px}
+.mx td,.mx th{text-align:center;padding:6px 8px;font-size:13px}
+.mx td:first-child,.mx th:first-child{text-align:start}
+.mx td.hl,.mx th.hl{background:var(--accent-soft)}
+.mx .c{display:inline-block;min-width:34px;border-radius:5px;padding:1px 6px;font-weight:600;font-size:12px;background:var(--chip);color:var(--muted)}
+.mx .c.W,.mx .c.OW{background:var(--accent);color:var(--accent-fg)}
+.mx .c.R,.mx .c.O{background:var(--accent-soft);color:var(--accent)}
+.mx .c.F,.mx .c.OF{background:var(--warn-soft);color:var(--warn)}
+.mx .c.N{background:transparent;color:var(--line)}
+.mx tr.gated td:first-child b::after{content:" gated";font-size:11px;color:var(--warn);font-weight:600;margin-inline-start:6px}
+.res{border-radius:8px;padding:12px 14px;font-size:14px;display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);background:var(--card)}
+.res.ok{border-color:var(--ok);background:var(--accent-soft)}
+.res.no{border-color:var(--bad);background:var(--bad-soft)}
+.res b{font-family:var(--display)}
+.fld{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13.5px;background:var(--card)}
+.fld.hid{opacity:.6}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:6px}
+.testrow{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:start;border-bottom:1px solid var(--line);padding:8px 2px;font-size:13.5px}
+.testrow b{font-family:var(--mono);font-size:12.5px}
+.dd{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 10px;font-size:14px}
 </style>
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v1.3 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v1.4 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
-    <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
+    <p class="lede">Eight tabs: the parent's journey, the foundation everything stands on, <b>step 1 (the safe foundation: tables, who sees what, tests)</b>, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
   </header>
 
@@ -224,6 +245,97 @@ footer{font-size:13px;color:var(--muted)}
       <p class="note">Only football is planned. Swimming, tennis and fencing are illustrations of how a sport pack changes wording and rules, not a rebuild. Individual sports are simpler: no team to pick each weekend.</p>
       <div class="row" id="sportBtns"></div>
       <div class="scroll"><table class="sport" id="sportTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="panel" id="p-step1" role="tabpanel">
+    <div class="card">
+      <h2>Step 1: the safe foundation</h2>
+      <div class="row"><span class="tag a">22 tables</span><span class="tag a">67 tests</span><span class="tag a">invented test data only</span><span class="tag w">plan only: no SQL or code yet</span></div>
+      <p>A club exists, with staff, parents and children in it, and <b>the database refuses everything it must refuse</b>. A parent sends a short enquiry, confirms by an emailed link, accepts a place and gives consent. Each role sees only what it should. Settings come from a club default. Every change is audited. A family can ask to be deleted. No documents, schedule, messages or money yet: those sit on top later, through the same walls.</p>
+      <p class="note">Written up in docs/STEP1_PLAN.md. Everything below is clickable; the outcomes shown are what the tests will prove, not a running system.</p>
+    </div>
+
+    <div class="card">
+      <h2>1. The tables</h2>
+      <p class="note">Tap a block. Every club-owned table carries a club label and links only to rows of the same club (composite keys), so a cross-club link cannot exist. Reference tables are the same for all clubs and read-only to the app.</p>
+      <div class="row" id="s1Blocks"></div>
+      <div class="scroll"><table id="s1Tbl"></table></div>
+      <p class="note">Policies never hold rules themselves. They call four small functions: <b>my_club()</b> (which club, and is the account active), <b>has_permission()</b>, <b>can_see_person()</b> and <b>data_level()</b> (A, B or C, worked out and never stored, so it cannot go stale). Later steps change a function, not every policy.</p>
+    </div>
+
+    <div class="card">
+      <h2>2. Who sees what</h2>
+      <p class="note">Pick a role to light up its column. Orange cells mean <b>only through a function</b>: the app cannot touch that table directly.</p>
+      <div class="row" id="s1Roles"></div>
+      <div class="msg" id="s1RoleNote"></div>
+      <div class="scroll"><table class="mx" id="s1Mx"></table></div>
+      <div class="row note"><span class="c" style="background:var(--accent);color:var(--accent-fg);padding:1px 6px;border-radius:5px">W</span> read and change <span class="tag a">R</span> read <span class="tag a">O</span> own or own children <span class="tag a">OW</span> own, change <span class="tag w">OF</span> own, act through a function <span class="tag w">F</span> function only <span class="tag">N</span> nothing</div>
+    </div>
+
+    <div class="card">
+      <h2>3. Try to break in</h2>
+      <p class="note">Pick who you are and what you try. Each result names the lock that stops you and the test that proves it. Four locks, each independent: <b>Wall</b> (your club), <b>Permission</b> (your role), <b>Relationship</b> (your own child or yourself), <b>Child gate</b> (consent and stage).</p>
+      <div class="row"><label class="row" style="gap:6px">I am <select class="dd" id="s1Who"></select></label></div>
+      <div class="row" id="s1Acts"></div>
+      <div class="res" id="s1Res"></div>
+    </div>
+
+    <div class="card">
+      <h2>4. The child gate: three data levels</h2>
+      <p class="note">Press the events in any order. The gate sits inside the tables, so it holds for a Manager and even for the database's owner. Payment is <b>not</b> needed to reach level C.</p>
+      <div class="row" id="s1GateBtns"></div>
+      <div class="cols">
+        <div class="card" style="background:var(--bg)"><h4 id="s1Lvl"></h4><p class="note" id="s1LvlNote"></p><div class="fgrid" id="s1Fields"></div></div>
+        <div class="card" style="background:var(--bg)"><h4>What each role sees right now</h4><div id="s1Seen" style="display:flex;flex-direction:column;gap:6px"></div><div class="msg w" id="s1Age"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>5. The 67 tests</h2>
+      <p class="note">Most are database tests, because that is where the rules live. Tests marked <span class="tag">DB</span> run against a real Postgres, <span class="tag">Unit</span> are small code checks, <span class="tag">Browser</span> click through the real screens at phone width, <span class="tag">CI</span> run on every push. Step 1 is done only when all are green on an empty database.</p>
+      <div class="row" id="s1TestGroups"></div>
+      <div id="s1Tests"></div>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Test cast (all invented)</h3>
+        <p class="note">Two fake clubs, <b>Test Club Alpha</b> and <b>Test Club Beta</b>, so isolation is tried both ways. Emails end in @example.test. No real child is ever entered.</p>
+        <table id="s1Cast"></table>
+      </div>
+      <div class="card">
+        <h3>How it is built, in six pieces</h3>
+        <p class="note">Sizes of work, not time estimates. Each piece ends with its tests green.</p>
+        <table id="s1Pieces"></table>
+        <p class="note"><b>Done when</b> all 67 tests are green on an empty database in CI, the sabotage check passes, and you have clicked through the four journeys on a phone-width browser.</p>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Not in step 1</h3>
+        <ul id="s1Out" style="margin:0;padding-inline-start:18px;display:flex;flex-direction:column;gap:5px;font-size:13.5px"></ul>
+      </div>
+      <div class="card">
+        <h3>Where the code will live</h3>
+        <p class="note">Decided (114). Folders are created only after you approve.</p>
+        <pre style="margin:0;font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;background:var(--bg);border-radius:8px;padding:10px">supabase/migrations/   the database, in order
+supabase/tests/        database tests (W R G S A D)
+supabase/seed.sql      the invented cast
+web/                   the app and its thin screens
+web/tests/             unit tests
+web/e2e/               browser tests
+.github/workflows/     checks on every push
+.env.example           names only, never values</pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Seven proposals for you to confirm</h2>
+      <p class="note">Ticks stay on this device only. Tell me your answers in the chat so they are recorded in the repository.</p>
+      <ul class="qs" id="s1Props"></ul>
     </div>
   </section>
 
@@ -515,7 +627,7 @@ function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 /* ---------- tabs ---------- */
-var TABS=[['journey','Journey'],['foundation','Foundation'],['schedule','Schedule'],['reg','Registration'],['leads','Prospects and coaches'],['settings','Settings'],['decide','Decisions and questions']];
+var TABS=[['journey','Journey'],['foundation','Foundation'],['step1','Step 1'],['schedule','Schedule'],['reg','Registration'],['leads','Prospects and coaches'],['settings','Settings'],['decide','Decisions and questions']];
 var tabsEl=$('tabs');
 tabsEl.innerHTML=TABS.map(function(t){return '<button class="tab" role="tab" data-t="'+t[0]+'" aria-selected="false">'+t[1]+'</button>'}).join('');
 function show(t){
@@ -1084,6 +1196,221 @@ $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=
 drawQs();
 var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = any payment recorded (a club can tighten this in Settings)','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Terms per season is a setting: Fursan 2, G Reds 3, one league squad with installments','Clubs choose which UAE FA teams they field; smaller clubs skip some age groups','Fee plans have lines, payment options and discounts; any payment makes a child Confirmed unless the club tightens it; the sibling discount covers the training fee only; payments themselves later','Medical company: a generic outside provider with a roster of registered professionals; only valid ones can be assigned','FANet rejections: a plain-text reason against the affected document; only that document reopens','Adding a team never blocks: a second team in an age group just asks "Is this the B team?"','Document checks plug in as rules; the medical form gets a reviewer tick list now and automatic stamp and signature presence checks later','Product name: Sportal for now','The medical form is the clinic\'s job: one upload of the whole signed copy by the parent or the clinic; no content checks; UAE FA ID number optional','FA-Net submitter is a permission with a scope: a coach for their own players, or an admin for the club; the club keeps a roster of users and signatories','FA-Net information is confidential and passwords are never shared: we never hold FA-Net credentials, and assisted upload needs UAE FA\'s permission','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
+
+/* ---------- step 1 ---------- */
+var S1ROLES=['Platform owner','Manager','Admin','Coach','Parent','Athlete','Visitor'];
+var S1ROLENOTE=[
+ 'Creates clubs and keeps the shared reference data. Has no default access to any club\'s people, consents, settings or audit. Support windows are not in step 1.',
+ 'Runs the club: settings, roles, people, offers. Reads the audit log and deletion status. Cannot touch another club, and cannot override the child gate.',
+ 'The registrar: sees and edits people and private details, makes offers. Cannot change settings or roles, and cannot read the audit log.',
+ 'In step 1 a coach sees only their own staff record and the club basics. No child records until step 3 attaches them to a group (proposal P1).',
+ 'Sees and edits their own family. Accepts offers and gives consent only through functions. Can ask for deletion.',
+ 'Sees only themselves. Under 13 there is no login; 13 to 17 needs a guardian\'s consent first; at 18 their own consent takes over.',
+ 'Can send the enquiry and click an emailed link, nothing else. Reads only public club page fields and the consent wording.'];
+var S1BLK=[['all','All 22'],['b1','1 Clubs and access'],['b2','2 People and families'],['b3','3 Settings'],['b4','4 Consent and stages'],['b12','12 Audit and deletion']];
+/* block, table, what, kind, access for [Platform,Manager,Admin,Coach,Parent,Athlete,Visitor] */
+var S1T=[
+ ['b1','clubs','The tenant: name, slug, country, status','Root',['W','W','R','R','R','R','F']],
+ ['b1','platform_staff','Platform owner and support logins (not club roles)','Platform',['O','N','N','N','N','N','N']],
+ ['b1','accounts','A login inside one club (one login = one club). Status','Club',['N','W','R','O','O','O','N']],
+ ['b1','account_roles','The set of roles each account holds','Club',['N','W','R','O','O','O','N']],
+ ['b1','invitations','Single-use, expiring invite; token stored hashed','Club',['N','W','R','N','F','N','F']],
+ ['b1','role_permissions','Fixed role to permission map','Reference',['R','R','R','R','R','R','N']],
+ ['b2','people','Staff, guardians, athletes: name, birth date, adult or child','Club',['N','W','W','O','OW','O','F']],
+ ['b2','athletes','Athlete layer on a person: sport, position wanted','Club',['N','W','W','N','OW','O','F']],
+ ['b2','contact_points','Phone, WhatsApp, email, verified date','Club',['N','W','W','N','OW','O','F']],
+ ['b2','relationships','Guardian to child; may consent; access after 18','Club',['N','W','W','N','O','O','N']],
+ ['b2','person_private_details','ID numbers, nationality, residency, school','Club',['N','W','W','N','OW','O','N'],1],
+ ['b2','sport_packs','Football: screen word, positions, age naming','Reference',['W','R','R','R','R','R','N']],
+ ['b2','club_sports','Which sports a club offers','Club',['N','W','R','R','R','R','N']],
+ ['b3','setting_definitions','Every setting: type, range, default, override levels','Reference',['W','R','R','R','R','R','N']],
+ ['b3','setting_values','A club\'s value at club level (group and session reserved)','Club',['N','W','R','R','F','F','N']],
+ ['b4','consent_purposes','Versioned purposes and wording; service vs marketing','Reference',['W','R','R','R','R','R','R']],
+ ['b4','consents','Append-only proof: who, purpose, wording version, when','Club',['N','R','R','N','OF','OF','F']],
+ ['b4','consent_links','One-time emailed links; hashed; expiry','Club',['N','F','F','N','N','N','F']],
+ ['b4','place_offers','The club\'s offer and the guardian\'s acceptance','Club',['N','W','W','N','OF','N','N']],
+ ['b12','audit_log','Who did what: ids and field names, never personal values','Club',['N','R','N','N','N','N','N']],
+ ['b12','deletion_requests','A request, its cooling-off window, its status','Club',['N','R','N','N','OF','OF','N']],
+ ['b12','erasure_ledger','What was deleted, what was kept, purge date','Club',['N','R','N','N','O','O','N']]];
+var s1Blk='all',s1Role=1;
+function drawS1Tables(){
+  $('s1Blocks').innerHTML=S1BLK.map(function(b){var n=b[0]==='all'?S1T.length:S1T.filter(function(t){return t[0]===b[0]}).length;return '<button class="pill" data-b="'+b[0]+'" aria-pressed="'+(b[0]===s1Blk)+'">'+esc(b[1].replace('All 22','All'))+' ('+n+')</button>'}).join('');
+  var rows=S1T.filter(function(t){return s1Blk==='all'||t[0]===s1Blk});
+  $('s1Tbl').innerHTML='<thead><tr><th>Table</th><th>What it holds</th><th>Kind</th></tr></thead><tbody>'+rows.map(function(t){return '<tr><td><b style="font-family:var(--mono);font-size:13px">'+esc(t[1])+'</b></td><td>'+esc(t[2])+'</td><td><span class="tag '+(t[3]==='Club'?'a':(t[3]==='Reference'?'':'w'))+'">'+esc(t[3])+'</span></td></tr>'}).join('')+'</tbody>';
+}
+$('s1Blocks').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){s1Blk=b.dataset.b;drawS1Tables()}});
+function drawS1Mx(){
+  $('s1Roles').innerHTML=S1ROLES.map(function(r,i){return '<button class="pill" data-i="'+i+'" aria-pressed="'+(i===s1Role)+'">'+esc(r)+'</button>'}).join('');
+  $('s1RoleNote').textContent=S1ROLES[s1Role]+': '+S1ROLENOTE[s1Role];
+  $('s1Mx').innerHTML='<thead><tr><th>Table</th>'+S1ROLES.map(function(r,i){return '<th class="'+(i===s1Role?'hl':'')+'">'+esc(r)+'</th>'}).join('')+'</tr></thead><tbody>'+S1T.map(function(t){return '<tr class="'+(t[5]?'gated':'')+'"><td><b style="font-family:var(--mono);font-size:12.5px">'+esc(t[1])+'</b></td>'+t[4].map(function(c,i){return '<td class="'+(i===s1Role?'hl':'')+'"><span class="c '+c+'">'+c+'</span></td>'}).join('')+'</tr>'}).join('')+'</tbody>';
+}
+$('s1Roles').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){s1Role=+b.dataset.i;drawS1Mx()}});
+
+/* try to break in. role index: 0 Platform,1 Manager,2 Admin,3 Coach,4 Parent,5 Athlete,6 Visitor */
+var S1ACTS=[
+ {t:'Open the other club\'s child record',tests:'W1 W4 W7',all:['Wall','No rows come back. Asking for the exact record id says "nothing found", so even its existence does not leak.']},
+ {t:'Open a child in my own club who is not mine',tests:'W5 W7 R4 R5 R7',def:['Relationship','Not found. A coach sees no child in step 1, a parent only their own children, an athlete only themselves.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access to any club\'s people.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed: a Manager sees every person in their own club.',2:'Allowed: an Admin sees every person in their own club.'}},
+ {t:'Type a phone number into a child\'s record before the parent confirmed the email',tests:'G1',def:['Child gate','Refused by the table itself: at level A only four fields are accepted. The same answer for a Manager and for the database\'s owner.'],lk:{0:'Wall',6:'Wall'},msg:{0:'Stopped earlier: no access to the club at all.',6:'Stopped earlier: a visitor cannot write to the table. Only the enquiry function runs.'}},
+ {t:'Write a consent as "granted" directly',tests:'G5 G10',all:['Child gate','Refused for every role, Manager included. Consent is written only by the function that checks the one-time emailed link, and rows are never edited afterwards.']},
+ {t:'Change the club\'s settings',tests:'R1 S2 S4',def:['Permission','Refused: only a Manager changes settings.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access to a club\'s values (the platform only sets definitions and defaults).',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed, if the value is the right type and in range. The change is audited.'}},
+ {t:'Make someone a Manager',tests:'R2 R3',def:['Permission','Refused: only a Manager grants roles, and nobody can give themselves one.'],lk:{0:'Wall',6:'Wall'},msg:{0:'No access to the club\'s accounts.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed. The change is audited, and the last Manager can never be removed.'}},
+ {t:'Read the audit log',tests:'A4',def:['Permission','Refused: only that club\'s Manager reads the audit log.'],lk:{0:'Wall',6:'Wall'},ok:{1:'Allowed: ids and field names only, never names or emails.'}},
+ {t:'Edit or delete an audit row',tests:'A3',all:['Append-only','Refused for every role, Manager included. Audit rows can only be added.']},
+ {t:'Read a child\'s ID number after the place was accepted',tests:'G3 G4 G9',def:['Relationship','Not found. A coach sees no child in step 1.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed at level C: place offered, accepted by a guardian, membership consent on file. No payment needed.',2:'Allowed at level C. If consent is withdrawn it closes again at once.',4:'Allowed for their own child at level C.',5:'Allowed for themselves at level C.'}},
+ {t:'Delete a family\'s data on my own initiative',tests:'D8 D1',def:['Permission','Refused: only the family or the athlete starts a deletion (proposal P4).'],lk:{0:'Wall',6:'Wall'},ok:{4:'Allowed for their own family: starts a 7-day cooling-off window (a setting) that can be cancelled.',5:'Allowed for themselves (an athlete of 18 or over): same cooling-off window.'}}];
+var s1Act=0;
+function drawS1Acts(){
+  var who=+$('s1Who').value;var a=S1ACTS[s1Act];
+  $('s1Acts').innerHTML=S1ACTS.map(function(x,i){return '<button class="pill" data-i="'+i+'" aria-pressed="'+(i===s1Act)+'">'+esc(x.t)+'</button>'}).join('');
+  var ok=a.ok&&a.ok[who],lock,msg;
+  if(a.all){lock=a.all[0];msg=a.all[1]}
+  else if(ok){msg=ok}
+  else{lock=(a.lk&&a.lk[who])||a.def[0];msg=(a.msg&&a.msg[who])||a.def[1]}
+  var r=$('s1Res');
+  r.className='res '+(ok?'ok':'no');
+  r.innerHTML=ok?'<b>Allowed</b><span>'+esc(msg)+'</span><span class="note">Proved by tests '+esc(a.tests)+'</span>':'<b>Stopped by the '+esc(lock)+' lock</b><span>'+esc(msg)+'</span><span class="note">Proved by tests '+esc(a.tests)+'</span>';
+}
+$('s1Who').innerHTML=S1ROLES.map(function(r,i){return '<option value="'+i+'"'+(i===4?' selected':'')+'>'+(i===6?'a signed-out visitor':'the '+esc(r.toLowerCase()))+'</option>'}).join('');
+$('s1Who').addEventListener('change',drawS1Acts);
+$('s1Acts').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){s1Act=+b.dataset.i;drawS1Acts()}});
+
+/* child gate */
+var G={trial:false,offer:0,member:false,everC:false,over18:false,own:false,grace:false,started:false};
+function s1Level(){
+  if(!G.started)return 'none';
+  if(G.over18&&!G.own&&G.grace)return 'R';
+  var trial=G.trial,mem=G.member&&G.offer===2;
+  if(G.over18&&!G.own){mem=false}
+  if(!trial)return 'A';
+  return mem?'C':'B';
+}
+function drawS1Gate(){
+  var L=s1Level();
+  var btns=[
+   ['start','Parent sends the enquiry',!G.started],
+   ['trial',G.trial?'Parent withdraws trial consent':'Parent clicks the emailed link',G.started],
+   ['offer','Club offers a place',G.started&&G.offer===0],
+   ['accept','Guardian accepts and gives membership consent',G.started&&G.offer===1],
+   ['withdraw','Guardian withdraws membership consent',G.started&&G.offer===2&&G.member],
+   ['age','The athlete turns 18',G.started&&!G.over18],
+   ['own','Athlete gives their own consent',G.over18&&!G.own],
+   ['grace','30 days pass (grace over)',G.over18&&!G.own&&!G.grace],
+   ['reset','Start again',true]];
+  $('s1GateBtns').innerHTML=btns.map(function(b){return '<button class="pill" data-k="'+b[0]+'"'+(b[2]?'':' disabled style="opacity:.4;cursor:not-allowed"')+'>'+esc(b[1])+'</button>'}).join('');
+  var names={none:'Nothing yet',A:'Level A: contact only',B:'Level B: prospect',C:'Level C: registration',R:'Restricted: hidden until the athlete consents'};
+  var notes={none:'Nobody has sent anything. The club holds no data about this family.',A:'Only what is needed to send the confirmation link. Everything else is refused by the table.',B:'The parent confirmed the email. The seven fields of a prospect are allowed.',C:'A place was offered and a guardian accepted with the membership consent. Registration data is allowed. No payment was needed.',R:'The athlete is 18 or over, the guardian\'s consent no longer counts, the grace period ended. Data is hidden for everyone; the athlete can still sign in and consent.'};
+  if(L==='C')G.everC=true;
+  $('s1Lvl').textContent=names[L];$('s1LvlNote').textContent=notes[L];
+  var rank={none:-1,A:0,B:1,C:2,R:-1};
+  var F=[['Parent name',0],['Parent email',0],['Child name',0],['Child birth date',0],['Parent phone',1],['Parent WhatsApp',1],['Position wanted',1],['Emirates ID number',2],['Nationality and residency',2],['School',2],['Documents, photo, medical (step 2)',2]];
+  $('s1Fields').innerHTML=F.map(function(f){
+    var state,cls='';
+    if(L==='R'||L==='none'){state=L==='none'?'not held':'hidden';cls=L==='R'?' hid':''}
+    else if(rank[L]>=f[1]){state='stored';}
+    else if(f[1]===2&&G.everC){state='hidden again';cls=' hid'}
+    else{state='refused';cls=' hid'}
+    var tg=state==='stored'?'a':(state==='refused'?'b':'w');
+    return '<div class="fld'+cls+'"><span>'+esc(f[0])+'</span><span class="tag '+tg+'">'+state+'</span></div>'}).join('');
+  var mgr=(L==='A'?'4 fields':L==='B'?'7 fields':L==='C'?'7 fields + private details':'nothing'),par=mgr,coach='nothing (step 1)',ath=G.over18?(L==='R'?'only to sign in and consent':'own record'):'no login before 13; own record after consent';
+  $('s1Seen').innerHTML=[['Manager and Admin',mgr],['Parent',G.over18&&!G.own?'access pending the athlete\'s consent':par],['Coach',coach],['Athlete',ath],['Other club',L==='none'?'nothing':'nothing, ever']].map(function(r){return '<div class="fld"><span>'+esc(r[0])+'</span><span class="note">'+esc(r[1])+'</span></div>'}).join('');
+  $('s1Age').textContent=G.over18?(G.own?'The athlete\'s own consent is on file. Parents keep access only if that consent says so (decision 64).':(G.grace?'Grace period over: Restricted until the athlete consents.':'Renewal due: the guardian\'s consent no longer counts. The athlete has the grace period (a setting, default 30 days).')):'Under 18: the guardian\'s consent is what counts. Tests G12 to G14 cover the birthday arithmetic and this hand-over.';
+}
+$('s1GateBtns').addEventListener('click',function(e){var b=e.target.closest('.pill');if(!b||b.disabled)return;var k=b.dataset.k;
+  if(k==='start'){G.started=true}
+  else if(k==='trial'){G.trial=!G.trial;if(!G.trial){G.member=false}}
+  else if(k==='offer'){G.offer=1}
+  else if(k==='accept'){G.offer=2;G.member=true;if(!G.trial)G.trial=true}
+  else if(k==='withdraw'){G.member=false}
+  else if(k==='age'){G.over18=true}
+  else if(k==='own'){G.own=true}
+  else if(k==='grace'){G.grace=true}
+  else if(k==='reset'){G={trial:false,offer:0,member:false,everC:false,over18:false,own:false,grace:false,started:false}}
+  drawS1Gate()});
+
+/* tests */
+var S1G=[['W','The club wall'],['R','Roles and accounts'],['G','Child gate and consent'],['S','Settings'],['A','Audit'],['D','Deletion'],['B','Real screens'],['M','Test machinery']];
+var S1TESTS=[
+ ['W1','W','For every club-owned table, a Club A user reads zero rows of Club B. The test loops over all tables, so a new table is covered automatically','DB'],
+ ['W2','W','A Club A user cannot insert a row labelled Club B, nor move a row to Club B','DB'],
+ ['W3','W','A row cannot point at another club\'s row, even with the service key','DB'],
+ ['W4','W','Asking for a Club B record by its exact id says "nothing found"; even its existence does not leak','DB'],
+ ['W5','W','A signed-out visitor sees only the public club page fields and the consent wording','DB'],
+ ['W6','W','An invited-not-accepted or switched-off account sees nothing, and switching off acts on the next request','DB'],
+ ['W7','W','The platform owner, with no grant, reads zero rows of any club\'s people, consents, settings or audit','DB'],
+ ['W8','W','The same login cannot hold accounts in two clubs','DB'],
+ ['W9','W','Every table has row-level security on. A new table without it fails the build','DB'],
+ ['W10','W','The service key never appears in browser code; secret scanning passes','CI'],
+ ['R1','R','Manager changes settings and roles; Admin cannot','DB'],
+ ['R2','R','Nobody gives themselves a role; Admin cannot grant Manager','DB'],
+ ['R3','R','The last Manager of a club cannot be removed or demoted','DB'],
+ ['R4','R','A coach sees no child record in step 1, only their own staff record','DB'],
+ ['R5','R','A parent sees their own children and nobody else\'s, including a lookalike name or email','DB'],
+ ['R6','R','A second guardian invited by link sees the same child; an expired or used invitation shows nothing','DB'],
+ ['R7','R','An athlete aged 13 to 17 with a login sees only themselves','DB'],
+ ['R8','R','Under 13: creating a login is refused. 13 to 17: refused until a guardian\'s consent exists','DB'],
+ ['R9','R','A person with two roles gets the combined rights','DB'],
+ ['R10','R','An invitation is single-use, expires, is stored hashed, and a wrong email is refused','DB'],
+ ['R11','R','The permission map cannot be edited from the app','DB'],
+ ['G1','G','At level A, phone, WhatsApp and position are refused, even for a Manager and even with the service key','DB'],
+ ['G2','G','After the email link, all seven fields are accepted','DB'],
+ ['G3','G','ID number, nationality and residency are refused until a place is offered, accepted by a guardian, and the membership consent is on file','DB'],
+ ['G4','G','Level C opens at acceptance with no payment recorded','DB'],
+ ['G5','G','Consent is written only by the function that checks a one-time link; direct insert, update or delete is refused for every role','DB'],
+ ['G6','G','A link works once, not after expiry, is stored hashed, and Club B\'s link does nothing in Club A','DB'],
+ ['G7','G','A guardian cannot confirm using the child\'s own email address','DB'],
+ ['G8','G','Only a guardian marked "may consent" can accept an offer; an Admin cannot accept for a parent','DB'],
+ ['G9','G','Withdrawing the membership consent hides the private details at once, for everyone','DB'],
+ ['G10','G','Consent rows are append-only: withdrawal adds a row; nothing is edited or deleted','DB'],
+ ['G11','G','Service and marketing consent are separate; marketing is false unless a marketing consent exists','DB'],
+ ['G12','G','Age arithmetic in Dubai time: the day before the 13th and 18th birthday, on the day, and leap-day births','Unit'],
+ ['G13','G','At 18 the guardian\'s consent stops counting; the athlete\'s own is needed; after the grace period data is hidden but the athlete can still sign in and consent','DB'],
+ ['G14','G','Parents keep access after 18 only if the athlete\'s own consent says so','DB'],
+ ['G15','G','Only Manager or Admin can make an offer; it cannot be accepted twice; a withdrawn or expired offer cannot be accepted','DB'],
+ ['S1','S','The value comes from the most specific level: session, group, club, platform default (tested with stand-in levels)','DB'],
+ ['S2','S','An unknown key, a wrong type or an out-of-range value is refused','DB'],
+ ['S3','S','One club\'s setting never changes another\'s','DB'],
+ ['S4','S','Only a Manager changes a setting, and each change is audited with key and value','DB'],
+ ['S5','S','A club cannot lower the age of consent below the platform floor (proposal P3)','DB'],
+ ['S6','S','Creating a club creates its default settings in one step; if any part fails, nothing is created','DB'],
+ ['A1','A','Every insert, update and delete on a club-owned table writes an audit row (loops over all tables)','DB'],
+ ['A2','A','Audit rows hold ids and field names, never names, emails or birth dates (planted strings are searched for)','DB'],
+ ['A3','A','Audit rows cannot be edited or deleted by anyone','DB'],
+ ['A4','A','Only that club\'s Manager reads the audit log','DB'],
+ ['A5','A','Each row says which account acted; scheduled jobs are marked as the system','DB'],
+ ['D1','D','A request starts a cooling-off window (default 7 days); cancelling inside it works','DB'],
+ ['D2','D','At completion the name, birth date, contacts, private details and relationships are gone (the whole database is searched for planted strings)','DB'],
+ ['D3','D','Consent history shrinks to type, date and status: no email, no network address','DB'],
+ ['D4','D','The erasure ledger lists what was deleted, what was kept, and when anything kept is purged','DB'],
+ ['D5','D','A guardian cannot be erased while still the only guardian of a child on file','DB'],
+ ['D6','D','Deleting one family leaves another family untouched','DB'],
+ ['D7','D','Prospects who never converted are deleted after the club\'s set time (default 90 days); accepted ones never','DB'],
+ ['D8','D','Only the family or the athlete can start a deletion; completion is by the scheduled job','DB'],
+ ['B1','B','Parent journey: four-field enquiry, test inbox shows the email, link clicked, phone and position added, child visible','Browser'],
+ ['B2','B','Manager makes an offer; parent accepts and consents; the private details form opens','Browser'],
+ ['B3','B','Parent withdraws consent; the form closes','Browser'],
+ ['B4','B','A Club A parent opening a Club B address, even a copied one, gets "not found"','Browser'],
+ ['B5','B','A coach signs in and sees an empty child list','Browser'],
+ ['B6','B','Deletion request end to end, with the test clock moved past the cooling-off window','Browser'],
+ ['B7','B','Platform owner creates a club and invites its first Manager; the default settings exist','Browser'],
+ ['B8','B','The three parent screens work at phone width and by keyboard alone','Browser'],
+ ['M1','M','Sabotage check: each wall and gate rule is removed in a scratch copy and at least one test must then fail','CI'],
+ ['M2','M','Every push runs everything on an empty database; red blocks the merge; generated types match the schema','CI'],
+ ['M3','M','A seed of invented people covers the edge cases (twins, leap day, turns 18 tomorrow, a guardian of two children)','DB'],
+ ['M4','M','A test inbox: emails show on screen and never leave the system in test mode','Browser']];
+var s1Grp='all';
+function drawS1Tests(){
+  $('s1TestGroups').innerHTML=[['all','All']].concat(S1G).map(function(g){var n=g[0]==='all'?S1TESTS.length:S1TESTS.filter(function(t){return t[1]===g[0]}).length;return '<button class="pill" data-g="'+g[0]+'" aria-pressed="'+(g[0]===s1Grp)+'">'+esc(g[1])+' ('+n+')</button>'}).join('');
+  $('s1Tests').innerHTML=S1TESTS.filter(function(t){return s1Grp==='all'||t[1]===s1Grp}).map(function(t){return '<div class="testrow"><b>'+t[0]+'</b><span>'+esc(t[2])+'</span><span class="tag">'+t[3]+'</span></div>'}).join('');
+}
+$('s1TestGroups').addEventListener('click',function(e){var b=e.target.closest('.pill');if(b){s1Grp=b.dataset.g;drawS1Tests()}});
+
+/* cast, pieces, left out, proposals */
+$('s1Cast').innerHTML='<thead><tr><th>Person (invented)</th><th>Why they exist</th></tr></thead><tbody>'+[['Mona, Manager, Alpha','Settings, roles, offers'],['Adam, Admin, Alpha','Registrar rights without Manager rights'],['Carlos, Coach, Alpha','Proves coaches see no children yet'],['Priya, Parent, Alpha','Two children: own children only; sibling case'],['Pedro, Parent, Alpha','Must never see Priya\'s children'],['Aya, Athlete, 17','Own record only'],['Ali, Athlete, turns 18 tomorrow','Consent hand-over'],['Lina, child, 11','Under-13: no login'],['Leap, child born 29 February','Age arithmetic'],['Twin A and Twin B','Two children, one family'],['Brenda, Manager, Beta','Cross-club attacks'],['Platform owner','No default access']].map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+'</tbody>';
+$('s1Pieces').innerHTML='<tbody>'+[['1a','Clubs, accounts, roles, invitations, the four helper functions, audit, the seed','W1-W9, R1-R3, R9-R11, A1-A5'],['1b','People, athletes, contacts, relationships','R4-R8'],['1c','Settings engine and club creation','S1-S6'],['1d','Consent, links, offers, the three-level gate, the age hand-over','G1-G15'],['1e','Deletion and the 90-day prospect clean-up','D1-D8'],['1f','The thin screens and the browser tests','B1-B8, M1-M4']].map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td>'+esc(r[1])+'</td><td class="note">'+esc(r[2])+'</td></tr>'}).join('')+'</tbody>';
+$('s1Out').innerHTML=['Documents, photos, forms, the rules engine: step 2 (the gated private-details table proves the gate now)','Status timeline, messages, tasks, real email and WhatsApp: step 2 (step 1 uses a test inbox)','Groups, sessions, scheduling: step 3 (coaches see no children until then)','Ledger, fees, payments, the prospect pipeline and trials: step 4 (the gate needs no payment)','Support access windows: after the pilot','Club-specific terms text and forms: step 2','Real clubs, real children, real email: not in this build'].map(function(x){return '<li>'+esc(x)+'</li>'}).join('');
+$('s1Props').innerHTML=[['P1','A coach sees no child in step 1, only their own staff record, until step 3 attaches them to a group.'],['P2','Level A: before the emailed link is clicked, hold only four fields (parent name, parent email, child name, child birth date).'],['P3','Age of consent: a club can raise it, only the platform owner can lower it. Default 18.'],['P4','Only the family or the athlete starts a deletion. A scheduled job completes it; the Manager cannot erase a family alone.'],['P5','A guardian cannot be erased while the only guardian of a child still on file: add another guardian or delete the child too.'],['P6','Support access windows wait until after the pilot. During testing the platform owner uses the database dashboard.'],['P7','Real email waits for step 2. Step 1 shows emails in a test inbox.']].map(function(p,i){return '<li><label><input type="checkbox" data-i="'+i+'"><span><b>'+p[0]+'</b> '+esc(p[1])+'</span></label></li>'}).join('');
+$('s1Props').addEventListener('change',function(e){var li=e.target.closest('li');if(li)li.classList.toggle('done',e.target.checked)});
+drawS1Tables();drawS1Mx();drawS1Acts();drawS1Gate();drawS1Tests();
 </script>
 
 </body></html>

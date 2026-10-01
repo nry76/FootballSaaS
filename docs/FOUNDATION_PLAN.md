@@ -122,7 +122,7 @@ Your pain: parents do not know where they are, cannot tell if documents are comp
 
 ## 5. Build order (layers, not shortcuts)
 
-1. **Foundation blocks 1-4, 12** (clubs, people, settings, consent, audit), with tests that one club can never see another's data and that a child's data is blocked until consent.
+1. **Foundation blocks 1-4, 12** (clubs, people, settings, consent, audit), with tests that one club can never see another's data and that a child's data is blocked until consent. **Detailed in [STEP1_PLAN.md](STEP1_PLAN.md)** (22 tables, who sees what, 67 tests).
 2. **Blocks 5-9** (rules, documents, status, messages, tasks) proven end to end by **registration**.
 3. **Block 10** (scheduling engine) proven by the **schedule builder**.
 4. **Block 11** (ledger and payments), then **trials and leads** on top.

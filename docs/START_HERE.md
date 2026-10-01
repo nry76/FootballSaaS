@@ -47,5 +47,8 @@ Online payments and gateway, Zoho Books, match-day tools (kits, match list, medi
 | **Platform owner screens** (create clubs, support access) | Designed in the foundation, never sketched. |
 | **Backups, security testing, uptime** | Build-phase tasks. |
 
+## Next: step 1, the safe foundation
+Drafted in `docs/STEP1_PLAN.md` (the "Step 1" tab of the visual plan): 22 tables, who sees what, 67 tests, all with invented test data. Awaiting your approval before any code.
+
 ## Where the detail lives
 `docs/visual/product-plan.html` (open in a browser) is the picture. `docs/DECISIONS.md` is the full list of decisions. `CLAUDE.md` is the brief for a new Claude Code session.

@@ -107,6 +107,8 @@
 | 111 | The Elite sheet is **only a sample**; its figures are not examined further. Programme types **Academy and League team** are accepted as a working split unless the owner says otherwise | |
 | 112 | **Playing in DOFA or YFL does not count against UAE FA's A/B crossing rule** (owner's answer; worth confirming in writing with UAE FA) | Closes the earlier question |
 | 113 | **A club may record FA-Net outcomes in its own software** (owner's answer). Still: never store FA-Net passwords; **assisted upload** (filling FA-Net for the user) still needs UAE FA's permission | Relaxes the caution in 98 for recording only |
+| 114 | **The code lives in this repository**, in `supabase/` (database, tests, seed) and `web/` (the app). Folders are created only after the step 1 plan is approved | Owner's answer: yes |
+| 115 | **Everything is built and tested with invented test data only.** The owner's instruction: do not worry about legal review for now; proceed with test data. Legal review is therefore not a gate for step 1 | Owner's answer. No real child's data is entered in this build |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |
@@ -141,4 +143,12 @@ Payment gateway, video, WhatsApp/SMS, ID-verification vendor, FANet.ae automatio
 * Terms and Privacy Policy wording (kept vs deleted, backups, parental responsibility)
 
 ## Proposed, awaiting the owner's OK
-* None at the moment.
+Step 1 plan ([STEP1_PLAN.md](STEP1_PLAN.md), section 11):
+* **P1** A coach sees no child in step 1 (until attached to a group in step 3)
+* **P2** Level A: before the emailed link is clicked, hold only four fields (parent name, parent email, child name, child birth date)
+* **P3** Age of consent: a club can raise it, only the platform owner can lower it; default 18
+* **P4** Only the family or the athlete starts a deletion; a scheduled job completes it
+* **P5** A guardian cannot be erased while the only guardian of a child still on file
+* **P6** Support access grants wait until after the pilot
+* **P7** Real email waits for step 2; step 1 uses a test inbox
+* The whole step 1 plan (22 tables, who sees what, 67 tests) awaits approval before any SQL or code
