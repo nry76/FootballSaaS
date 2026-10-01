@@ -1,6 +1,6 @@
 # Step 1 plan v0.1: the safe foundation (for review, no SQL yet)
 
-Status: **PLAN ONLY. No SQL or application code has been written.** The owner has answered all seven proposals (section 11) and the messaging proposal M1. Remaining open: approval of the whole step 1 plan.
+Status: **PLAN ONLY. No SQL or application code has been written.** The owner has answered all seven proposals (section 11) and the messaging proposal M1. Remaining open: approval of the whole step 1 plan, now with a field map ([STEP1_FIELDS.md](STEP1_FIELDS.md)).
 
 Step 1 is the first item of the build order in [FOUNDATION_PLAN.md](FOUNDATION_PLAN.md) section 5: **blocks 1 to 4 and 12** (clubs and access, people and families, settings, consent and data stages, audit and deletion), proven by tests that one club can never see another's data and that a child's data stays blocked until consent.
 
@@ -41,7 +41,7 @@ A club exists, with staff, parents and children in it, and **the database refuse
 | | `deletion_requests` | A request, its cooling-off window, its status | Club |
 | | `erasure_ledger` | What was deleted, what was kept, and the date any kept item is purged | Club |
 
-Counts: 1 root, 1 platform, 4 reference, 16 club-owned.
+Counts: 1 root, 1 platform, 4 reference, 16 club-owned. **Every field of every table is listed in [STEP1_FIELDS.md](STEP1_FIELDS.md)** (also clickable in the visual plan). One extra **temporary** `test_inbox` table holds the on-screen test emails; it is not counted and is removed in step 2.
 
 ### How the rules are kept in one place
 Policies never contain rules of their own; they call four small functions, so later steps change a function, not every policy:
@@ -304,6 +304,6 @@ Defaults that are settings and need no answer: cooling-off for deletion 7 days, 
 When a club asks the platform owner for help, the **club** opens a time-limited, read-only window. Planned table `support_access_grants` (not in step 1): who, which club, opened by, starts, expires, scope.
 
 * **Length is the club's choice, from 5 minutes to 7 days.** The platform sets the outer limits as settings (minimum 5 minutes, maximum 7 days).
-* **The picker has two rows** (my reading of the owner's note; to confirm): a **Minutes** row (5, 10, 15, 30, 45) and an **Hours** row (1, 2, 4, 8, 12, 24, 48, 72, 168 = 7 days). The visual plan shows it.
+* **The picker has two rows** (confirmed by the owner): a **Minutes** row (5, 10, 15, 30, 45) and an **Hours** row (1, 2, 4, 8, 12, 24, 48, 72, 168 = 7 days). The visual plan shows it.
 * The window ends by itself; the club can close it earlier; every use is audited. It never opens children's medical records or documents unless the club allows that scope.
 * The one choke-point function `my_club()` is where it plugs in, so step 1 needs no rework later.
