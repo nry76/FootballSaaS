@@ -44,7 +44,7 @@ Non-technical product owner. Prefer plain words, pictures and short answers. Ask
 ## Hard rules
 1. Never commit secrets. Environment variables and a `.env.example` only.
 2. Row-level security on every table. Every tenant-owned row has `club_id`, and child tables use composite keys `(club_id, id)` so cross-club links are impossible.
-3. Under-18 data and parental consent are enforced in the database, not the UI. Prospects give only 7 fields (parent name, phone, WhatsApp, email; child name, birth date, position). Documents, photo and IDs only after the club has **offered a place and the parent has accepted** (payment is NOT needed first; Confirmed = any payment recorded; a club can tighten this in Settings). The word is **prospect**, not lead.
+3. Under-18 data and parental consent are enforced in the database, not the UI. Prospects give only the enquiry-form fields (ten: guardian name, phone, WhatsApp, email, home address; child first and last name, birth date, position, previous club; a club chooses which optional ones it asks; decision 123). Documents, photo and IDs only after the club has **offered a place and the parent has accepted** (payment is NOT needed first; Confirmed = any payment recorded; a club can tighten this in Settings). The word is **prospect**, not lead.
 4. Money is stored as whole numbers of the currency's smallest unit, with a currency code on every row. Currency is a club setting (default AED).
 5. Everything tunable is a **setting** with a club default, overridable per age group where it makes sense.
 6. Messages are two kinds: service and marketing, with separate recorded consent. Marketing only to people who contacted the club and opted in. UAE rules need a lawyer's confirmation.

@@ -46,6 +46,18 @@ Source: the owner's private repository `nry76/SocietyPortal` (read on 2026-10-01
 * **Step 2 (messages block):** the outbox, templates, the two single doors, Vault-held credentials per club, the log with erasure-safe references, delivery webhooks, suppression list. Email through Resend; WhatsApp through the official API behind the same door.
 * **Later:** the shared-pool-with-approval idea and per-message billing, if Sportal ever offers a platform number.
 
-## 5. Not checked
+## 5. Sending from a club's own address (parked)
+
+The owner's example: `football@fursanhispania.com`. Decision: **parked**; the options are written down so nothing is lost. A club's own address can work in three ways, from simplest to hardest:
+
+| Way | What the club does | What the parent sees | Notes |
+|---|---|---|---|
+| **1. Our sender, their name** | Nothing | "Fursan Hispania" from a Sportal address, with **Reply-To: football@fursanhispania.com** so replies reach the club | Works on day one; no setup. Best for the pilot |
+| **2. Their domain, sent by us** | Their IT person adds a few DNS records (SPF, DKIM, a return path) that we show them, and we verify them | The email really comes from football@fursanhispania.com, sent through Resend or Amazon SES. Their mailbox is untouched | The usual professional setup. Needs access to the club's domain settings. The club's existing SPF record must include our provider |
+| **3. Their actual mailbox** | Connects Google Workspace or Microsoft 365 (a login approval) or gives a mail server login | Sent through their own server, so it appears in their Sent folder | Most work and most risk: tokens to protect, provider limits, breaks when they change a password. SocietyPortal does this for Gmail |
+
+Not decided: which of 1 to 3 the pilot uses (1 is the safe start), and whether Fursan has its own mail server at all (unknown; nothing has been discussed with them). The email provider itself (Resend, Amazon SES or Postmark) stays behind an adapter, so choosing later costs little; SocietyPortal already has working Resend and SES code to borrow.
+
+## 6. Not checked
 
 I read the code and migration comments only. I did not run SocietyPortal, did not read `SECRETS.md`, and did not check whether its dev project has live credentials. Behaviour described is what the code says it does.

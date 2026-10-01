@@ -1,6 +1,6 @@
 # Step 1 plan v0.1: the safe foundation (for review, no SQL yet)
 
-Status: **PLAN ONLY. No SQL or application code has been written.** The owner has answered the seven proposals (section 11): P1, P3, P4, P5 and P7 are accepted; **P2 is revised below and P6 has been explained; both await a yes**. Visual version: the "Step 1" tab of `docs/visual/product-plan.html` (open in a browser; it has a role matrix, a "try to break in" box and a child-data gate you can click).
+Status: **PLAN ONLY. No SQL or application code has been written.** The owner has answered all seven proposals (section 11) and the messaging proposal M1. Remaining open: approval of the whole step 1 plan.
 
 Step 1 is the first item of the build order in [FOUNDATION_PLAN.md](FOUNDATION_PLAN.md) section 5: **blocks 1 to 4 and 12** (clubs and access, people and families, settings, consent and data stages, audit and deletion), proven by tests that one club can never see another's data and that a child's data stays blocked until consent.
 
@@ -51,7 +51,7 @@ Policies never contain rules of their own; they call four small functions, so la
 | `my_club()` | Which club is this login in, and is the account active? |
 | `has_permission(permission)` | Does one of my roles carry this permission? |
 | `can_see_person(person)` | Is this person me, my child, or someone my role may see? (Step 3 adds "in my group" for coaches here) |
-| `data_level(person)` | A, B or C (section 4), worked out from consents and the offer, **never stored**, so it cannot go stale |
+| `data_level(person)` | 1 (prospect) or 2 (registration) (section 4), worked out from consents and the offer, **never stored**, so it cannot go stale |
 
 ## 3. Who sees what
 
@@ -90,25 +90,26 @@ Four rules sit above the table, each independent of the others:
 
 The platform owner has **no default access** to any club's people, consents, settings or audit. The "club approves a time-limited support window" feature (decision 8) is **not in step 1**; the single choke-point function `my_club()` is where it will plug in.
 
-## 4. The child gate: three data levels
+## 4. The child gate: two data levels
 
 | Level | Reached when | The database accepts | Still refused |
 |---|---|---|---|
-| **A. Unconfirmed enquiry** | A parent submits the enquiry form | **Everything the club's form asks** (section 4a) is accepted, so the club never has to ask twice, but it is held **in quarantine**: readable by **no club role** (Manager included), used only by the function that sends the confirmation link, and deleted automatically if the link is not clicked within a few days (a setting, default 7) | Anything beyond the enquiry form: ID numbers, nationality, residency, documents, photo, medical |
-| **B. Prospect** | The parent clicks the emailed link (trial consent) | The same enquiry fields now become **visible to the club** (by role, section 3) | ID numbers, nationality, residency, documents, photo, medical |
-| **C. Registration** | The club has **offered a place**, a guardian marked "may consent" has **accepted**, and the membership and registration consent is on file. **No payment needed** (decisions 58, 109) | Everything registration needs (step 1 holds the private details; documents and forms arrive in step 2) | Nothing further |
+| **1. Prospect** | A parent submits the club's enquiry form | The enquiry fields (section 4a), visible to the club by role from the first moment. The email stays marked **"not confirmed"** until the parent clicks the link, and until then the only message the system may send is the confirmation link | ID numbers, nationality, residency, documents, photo, medical |
+| **2. Registration** | The club has **offered a place**, a guardian marked "may consent" has **accepted**, and the membership and registration consent is on file. **No payment needed** (decisions 58, 109) | Everything registration needs: Emirates ID, passport, photo, other documents (step 1 holds the private details; documents and forms arrive in step 2) | Nothing further |
 
-Moves back: withdrawing consent drops the person to the level their remaining consent supports, **immediately and for every role**. When an athlete turns 18 the guardian's consent stops counting; the athlete's own consent is needed, with a grace period (a setting, default 30 days) after which the data is hidden ("Restricted") but the athlete can still sign in and consent. Parents keep access after 18 only if the athlete's own consent says so (decision 64).
+The owner's point (P2): collecting the enquiry's questions at once does not clash with "hold very little". The things that must stay locked are **identity papers, photo and medical**, and those wait for level 2.
 
-Where the guard sits: **inside the tables** (triggers and policies), not in the screens and not in the app code. A test connects as the owner of the database and still cannot read a level A enquiry as a club role, nor store an ID number before level C.
+Moves back: withdrawing the membership consent drops the person to level 1, **immediately and for every role**. When an athlete turns 18 the guardian's consent stops counting; the athlete's own consent is needed, with a grace period (a setting, default 30 days) after which the data is hidden ("Restricted") but the athlete can still sign in and consent. Parents keep access after 18 only if the athlete's own consent says so (decision 64).
 
-### 4a. The enquiry form (P2, revised after the owner's note)
+Where the guard sits: **inside the tables** (triggers and policies), not in the screens and not in the app code. A test connects as the owner of the database and still cannot store an ID number before level 2.
 
-Several clubs already ask these questions, so the form asks them in one go: **player first name, player last name, date of birth, guardian phone, guardian email, home address, previous club or academy, field position.** We add **guardian name** (someone to address) and **WhatsApp** ("same as phone" ticked by default), which the earlier plan already had. That is **ten fields**; they replace the earlier "seven fields".
+### 4a. The enquiry form (P2, decided)
+
+Several clubs already ask these questions, so the form asks them in one go: **player first name, player last name, date of birth, guardian phone, guardian email, home address, previous club or academy, field position.** We add **guardian name** (someone to address) and **WhatsApp** ("same as phone" ticked by default). That is **ten fields**; they replace the earlier "seven fields".
 
 * **Which optional fields a club asks, and which are required, is a club setting** (`enquiry_form_fields`): address, previous club and position can each be hidden, optional or required. Name, date of birth, guardian email and guardian phone are always asked.
 * Address is held as a contact point of the guardian; previous club sits on the athlete layer.
-* The quarantine at level A is my proposal for keeping the child-data promise while collecting everything at once. The alternative is a short first form (four fields) and a "tell us more" page after the link is clicked; it holds less but asks the parent twice. **Needs the owner's yes** (section 11).
+* The emailed link confirms the address and records the trial consent. Until it is clicked the club sees "email not confirmed".
 
 ## 5. Tests (67)
 
@@ -146,10 +147,10 @@ Types: **DB** = database test (pgTAP), run against a real Postgres; **Unit** = V
 ### G. The child gate and consent (15)
 | # | Proves | Type |
 |---|---|---|
-| G1 | A level A enquiry (link not yet clicked) is invisible to every club role, Manager included; only the link-sending function sees it | DB |
-| G2 | After the email link, the ten enquiry fields become visible by role; fields the club switched off are not shown; required ones are enforced | DB |
+| G1 | At level 1 only the enquiry fields are accepted; an ID number, nationality or residency is refused, even for a Manager and even with the service key | DB |
+| G2 | Before the link is clicked the prospect shows "email not confirmed" and the only message allowed is the confirmation link; clicking it records the trial consent. Fields the club switched off are not stored; required ones are enforced | DB |
 | G3 | ID number, nationality and residency are refused until a place is offered, accepted by a guardian, and the membership consent is on file | DB |
-| G4 | Access at level C opens at acceptance with **no payment recorded** (decision 58) | DB |
+| G4 | Access at level 2 opens at acceptance with **no payment recorded** (decision 58) | DB |
 | G5 | Consent can be written only by the function that checks a one-time link. Direct insert, update or delete is refused for every role, Manager included | DB |
 | G6 | A link works once, not after expiry, is stored hashed, and Club B's link does nothing in Club A | DB |
 | G7 | A guardian cannot confirm using the child's own email address | DB |
@@ -190,13 +191,13 @@ Types: **DB** = database test (pgTAP), run against a real Postgres; **Unit** = V
 | D4 | The erasure ledger lists what was deleted, what was kept, and when anything kept is purged | DB |
 | D5 | A guardian cannot be erased while still the only guardian of a child on file | DB |
 | D6 | Deleting one family leaves another family untouched | DB |
-| D7 | Unconfirmed enquiries are deleted after the set days (default 7); prospects who never converted after the club's set time (default 90 days); accepted ones never | DB |
+| D7 | Prospects who never converted are deleted after the club's set time (default 90 days); accepted ones never | DB |
 | D8 | Only the family (or the athlete) can start a deletion; completion is by the scheduled job | DB |
 
 ### B. Real screens (8)
 | # | Proves | Type |
 |---|---|---|
-| B1 | Parent journey: full enquiry form, test inbox shows the email, link clicked, the club now sees the prospect | Browser |
+| B1 | Parent journey: full enquiry form, the club sees the prospect marked "email not confirmed", test inbox shows the email, link clicked, the mark clears | Browser |
 | B2 | Manager makes an offer; parent accepts and consents; the private details form opens | Browser |
 | B3 | Parent withdraws consent; the form closes | Browser |
 | B4 | A Club A parent opening a Club B address, even a copied one, gets "not found" | Browser |
@@ -289,11 +290,20 @@ web/e2e/                browser tests (Playwright)
 | # | Proposal | Owner's answer |
 |---|---|---|
 | P1 | **A coach sees no child in step 1**, only their own staff record, until step 3 attaches them to a group | **Accepted** (decision 116) |
-| P2 | **Revised:** the form asks the club's questions in one go (ten fields, section 4a). Until the link is clicked the enquiry sits in quarantine, invisible to the club, deleted after 7 days. Alternative: a short form first, "tell us more" after the link | **Open.** The owner gave the clubs' questions; the quarantine idea needs a yes |
+| P2 | The form asks the club's questions in one go (ten fields, section 4a), visible to the club at once. Identity papers, photo and medical stay locked until level 2 | **Accepted, quarantine dropped** (decision 123). "Collecting everything" in the owner's sense means documents, which stay gated |
 | P3 | **Age of consent** is a club setting that a club can raise and only the platform owner can lower, default 18 | **Accepted** ("whatever", decision 117) |
 | P4 | **Only the family or the athlete starts a deletion.** A scheduled job completes it; the Manager cannot erase a family alone | **Accepted** (decision 118) |
 | P5 | **A guardian cannot be erased while the only guardian of a child still on file.** Add another guardian or delete the child as well | **Accepted** (decision 119). A guardian and a child are **two separate records** joined by a link; logins are separate again (a child under 13 has no login at all) |
-| P6 | **Support access windows wait until after the pilot.** Sometimes a club has a problem and the platform owner would need to look at that club's data. The planned way: the **club clicks "allow support for up to 7 days"**, read-only, and it expires by itself. That button is not built in step 1. While testing there is only invented data, so the builder looks at it in the Supabase dashboard (the database's own admin website) | **Explained, awaiting a yes** |
+| P6 | **Support access windows wait until after the pilot.** The club itself clicks "allow support" and chooses how long, **from 5 minutes to 7 days** (two rows to pick from: minutes, then hours; section 12). Read-only, and it expires by itself. Not built in step 1; while testing, the builder looks at invented data in the Supabase dashboard | **Accepted** (decision 124) |
 | P7 | **Real email waits for step 2.** Step 1 shows emails in a test inbox | **Accepted** (decision 120) |
 
 Defaults that are settings and need no answer: cooling-off for deletion 7 days, grace after 18 is 30 days, prospect deletion 90 days, financial records kept 12 months.
+
+## 12. Designed now, built later: the support window
+
+When a club asks the platform owner for help, the **club** opens a time-limited, read-only window. Planned table `support_access_grants` (not in step 1): who, which club, opened by, starts, expires, scope.
+
+* **Length is the club's choice, from 5 minutes to 7 days.** The platform sets the outer limits as settings (minimum 5 minutes, maximum 7 days).
+* **The picker has two rows** (my reading of the owner's note; to confirm): a **Minutes** row (5, 10, 15, 30, 45) and an **Hours** row (1, 2, 4, 8, 12, 24, 48, 72, 168 = 7 days). The visual plan shows it.
+* The window ends by itself; the club can close it earlier; every use is audited. It never opens children's medical records or documents unless the club allows that scope.
+* The one choke-point function `my_club()` is where it plugs in, so step 1 needs no rework later.

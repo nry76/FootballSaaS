@@ -283,8 +283,8 @@ footer{font-size:13px;color:var(--muted)}
     </div>
 
     <div class="card">
-      <h2>4. The child gate: three data levels</h2>
-      <p class="note">Press the events in any order. The gate sits inside the tables, so it holds for a Manager and even for the database's owner. Payment is <b>not</b> needed to reach level C.</p>
+      <h2>4. The child gate: two data levels</h2>
+      <p class="note">Press the events in any order. The gate sits inside the tables, so it holds for a Manager and even for the database's owner. The enquiry's questions are collected at once; what stays locked is <b>identity papers, photo and medical</b>, until a place is offered and accepted. Payment is <b>not</b> needed to reach level 2.</p>
       <div class="row" id="s1GateBtns"></div>
       <div class="cols">
         <div class="card" style="background:var(--bg)"><h4 id="s1Lvl"></h4><p class="note" id="s1LvlNote"></p><div class="fgrid" id="s1Fields"></div></div>
@@ -333,8 +333,16 @@ web/e2e/               browser tests
     </div>
 
     <div class="card">
-      <h2>Your answers to the seven proposals</h2>
-      <p class="note">Five are accepted (ticked). Two need a yes: P2 (the form and the quarantine) and P6 (support windows). Ticks stay on this device only; tell me in the chat so it is recorded in the repository.</p>
+      <h2>Designed now, built later: the support window</h2>
+      <p class="note">When a club needs help, the <b>club</b> opens a read-only window for the platform owner and chooses how long: 5 minutes to 7 days. It closes by itself. Two rows, minutes then hours (my reading of your note; tell me if you meant something else). Not built in step 1.</p>
+      <div class="row" id="s1SwMin"></div>
+      <div class="row" id="s1SwHr"></div>
+      <div class="msg" id="s1SwOut"></div>
+    </div>
+
+    <div class="card">
+      <h2>Your answers to the seven proposals: all accepted</h2>
+      <p class="note">Ticked = accepted. Next: step 2 messaging proposal M1 is also accepted, with the club's own email address parked (see docs/reference/SOCIETYPORTAL_COMMS.md). What remains is your approval of the whole step 1 plan.</p>
       <ul class="qs" id="s1Props"></ul>
     </div>
   </section>
@@ -1250,13 +1258,13 @@ $('s1Roles').addEventListener('click',function(e){var b=e.target.closest('.pill'
 var S1ACTS=[
  {t:'Open the other club\'s child record',tests:'W1 W4 W7',all:['Wall','No rows come back. Asking for the exact record id says "nothing found", so even its existence does not leak.']},
  {t:'Open a child in my own club who is not mine',tests:'W5 W7 R4 R5 R7',def:['Relationship','Not found. A coach sees no child in step 1, a parent only their own children, an athlete only themselves.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access to any club\'s people.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed: a Manager sees every person in their own club.',2:'Allowed: an Admin sees every person in their own club.'}},
- {t:'Read an enquiry whose emailed link has not been clicked yet',tests:'G1',def:['Child gate','Not visible. Until the parent confirms, the enquiry sits in quarantine: no club role can read it, a Manager included. Only the function that sends the link sees it, and it is deleted after 7 days if unconfirmed.'],lk:{0:'Wall',6:'Wall'},msg:{0:'Stopped earlier: no access to the club at all.',6:'Stopped earlier: a visitor cannot read the table; only the enquiry function runs.'}},
+ {t:'Store an Emirates ID number for a prospect whose place was not accepted',tests:'G1 G3',def:['Child gate','Refused by the table itself: identity papers are accepted only after a place is offered and a guardian accepts with the membership consent. The same answer for a Manager and for the database\'s owner.'],lk:{0:'Wall',6:'Wall'},msg:{0:'Stopped earlier: no access to the club at all.',6:'Stopped earlier: a visitor cannot write to the table. Only the enquiry function runs.'}},
  {t:'Write a consent as "granted" directly',tests:'G5 G10',all:['Child gate','Refused for every role, Manager included. Consent is written only by the function that checks the one-time emailed link, and rows are never edited afterwards.']},
  {t:'Change the club\'s settings',tests:'R1 S2 S4',def:['Permission','Refused: only a Manager changes settings.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access to a club\'s values (the platform only sets definitions and defaults).',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed, if the value is the right type and in range. The change is audited.'}},
  {t:'Make someone a Manager',tests:'R2 R3',def:['Permission','Refused: only a Manager grants roles, and nobody can give themselves one.'],lk:{0:'Wall',6:'Wall'},msg:{0:'No access to the club\'s accounts.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed. The change is audited, and the last Manager can never be removed.'}},
  {t:'Read the audit log',tests:'A4',def:['Permission','Refused: only that club\'s Manager reads the audit log.'],lk:{0:'Wall',6:'Wall'},ok:{1:'Allowed: ids and field names only, never names or emails.'}},
  {t:'Edit or delete an audit row',tests:'A3',all:['Append-only','Refused for every role, Manager included. Audit rows can only be added.']},
- {t:'Read a child\'s ID number after the place was accepted',tests:'G3 G4 G9',def:['Relationship','Not found. A coach sees no child in step 1.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed at level C: place offered, accepted by a guardian, membership consent on file. No payment needed.',2:'Allowed at level C. If consent is withdrawn it closes again at once.',4:'Allowed for their own child at level C.',5:'Allowed for themselves at level C.'}},
+ {t:'Read a child\'s ID number after the place was accepted',tests:'G3 G4 G9',def:['Relationship','Not found. A coach sees no child in step 1.'],lk:{0:'Wall',6:'Wall'},msg:{0:'The platform owner has no default access.',6:'A signed-out visitor reads nothing.'},ok:{1:'Allowed at level 2: place offered, accepted by a guardian, membership consent on file. No payment needed.',2:'Allowed at level 2. If consent is withdrawn it closes again at once.',4:'Allowed for their own child at level 2.',5:'Allowed for themselves at level 2.'}},
  {t:'Delete a family\'s data on my own initiative',tests:'D8 D1',def:['Permission','Refused: only the family or the athlete starts a deletion (proposal P4).'],lk:{0:'Wall',6:'Wall'},ok:{4:'Allowed for their own family: starts a 7-day cooling-off window (a setting) that can be cancelled.',5:'Allowed for themselves (an athlete of 18 or over): same cooling-off window.'}}];
 var s1Act=0;
 function drawS1Acts(){
@@ -1281,14 +1289,13 @@ function s1Level(){
   if(G.over18&&!G.own&&G.grace)return 'R';
   var trial=G.trial,mem=G.member&&G.offer===2;
   if(G.over18&&!G.own){mem=false}
-  if(!trial)return 'A';
   return mem?'C':'B';
 }
 function drawS1Gate(){
   var L=s1Level();
   var btns=[
    ['start','Parent sends the enquiry',!G.started],
-   ['trial',G.trial?'Parent withdraws trial consent':'Parent clicks the emailed link',G.started],
+   ['trial','Parent clicks the emailed link',G.started&&!G.trial],
    ['offer','Club offers a place',G.started&&G.offer===0],
    ['accept','Guardian accepts and gives membership consent',G.started&&G.offer===1],
    ['withdraw','Guardian withdraws membership consent',G.started&&G.offer===2&&G.member],
@@ -1297,30 +1304,29 @@ function drawS1Gate(){
    ['grace','30 days pass (grace over)',G.over18&&!G.own&&!G.grace],
    ['reset','Start again',true]];
   $('s1GateBtns').innerHTML=btns.map(function(b){return '<button class="pill" data-k="'+b[0]+'"'+(b[2]?'':' disabled style="opacity:.4;cursor:not-allowed"')+'>'+esc(b[1])+'</button>'}).join('');
-  var names={none:'Nothing yet',A:'Level A: unconfirmed enquiry (quarantine)',B:'Level B: prospect',C:'Level C: registration',R:'Restricted: hidden until the athlete consents'};
-  var notes={none:'Nobody has sent anything. The club holds no data about this family.',A:'The whole enquiry form is held, but invisible to every club role until the parent clicks the link. Only the link-sending function sees it. Deleted after 7 days if unconfirmed.',B:'The parent confirmed the email. The enquiry is now visible to the club, by role.',C:'A place was offered and a guardian accepted with the membership consent. Registration data is allowed. No payment was needed.',R:'The athlete is 18 or over, the guardian\'s consent no longer counts, the grace period ended. Data is hidden for everyone; the athlete can still sign in and consent.'};
+  var names={none:'Nothing yet',B:'Level 1: prospect',C:'Level 2: registration',R:'Restricted: hidden until the athlete consents'};
+  var notes={none:'Nobody has sent anything. The club holds no data about this family.',B:'The enquiry fields are held and visible to the club by role. The email shows as not confirmed until the parent clicks the link; until then only the confirmation link may be sent. Identity papers, photo and medical are refused.',C:'A place was offered and a guardian accepted with the membership consent. Emirates ID, passport, photo and other registration data are allowed. No payment was needed.',R:'The athlete is 18 or over, the guardian\'s consent no longer counts, the grace period ended. Data is hidden for everyone; the athlete can still sign in and consent.'};
   if(L==='C')G.everC=true;
   $('s1Lvl').textContent=names[L];$('s1LvlNote').textContent=notes[L];
-  var rank={none:-1,A:0,B:1,C:2,R:-1};
+  var rank={none:-1,B:1,C:2,R:-1};
   var F=[['Guardian name',0],['Guardian email',0],['Guardian phone',0],['Guardian WhatsApp',0],['Home address',0],['Child first and last name',0],['Child birth date',0],['Position wanted',0],['Previous club or academy',0],['Emirates ID number',2],['Nationality and residency',2],['School',2],['Documents, photo, medical (step 2)',2]];
   $('s1Fields').innerHTML=F.map(function(f){
     var state,cls='';
     if(L==='R'||L==='none'){state=L==='none'?'not held':'hidden';cls=L==='R'?' hid':''}
-    else if(L==='A'&&f[1]===0){state='held, invisible';cls=' hid'}
-    else if(rank[L]>=f[1]){state='visible';}
+    else if(rank[L]>=f[1]){state=(f[0]==='Guardian email'&&!G.trial)?'visible, not confirmed':'visible';}
     else if(f[1]===2&&G.everC){state='hidden again';cls=' hid'}
     else{state='refused';cls=' hid'}
     var tg=state==='visible'?'a':(state==='refused'?'b':'w');
     return '<div class="fld'+cls+'"><span>'+esc(f[0])+'</span><span class="tag '+tg+'">'+state+'</span></div>'}).join('');
-  var mgr=(L==='A'?'nothing (quarantine)':L==='B'?'the enquiry fields':L==='C'?'enquiry fields + private details':'nothing'),par=(L==='A'?'no account yet':mgr),coach='nothing (step 1)',ath=G.over18?(L==='R'?'only to sign in and consent':'own record'):'no login before 13; own record after consent';
+  var mgr=(L==='B'?'the enquiry fields':L==='C'?'enquiry fields + private details':'nothing'),par=mgr,coach='nothing (step 1)',ath=G.over18?(L==='R'?'only to sign in and consent':'own record'):'no login before 13; own record after consent';
   $('s1Seen').innerHTML=[['Manager and Admin',mgr],['Parent',G.over18&&!G.own?'access pending the athlete\'s consent':par],['Coach',coach],['Athlete',ath],['Other club',L==='none'?'nothing':'nothing, ever']].map(function(r){return '<div class="fld"><span>'+esc(r[0])+'</span><span class="note">'+esc(r[1])+'</span></div>'}).join('');
   $('s1Age').textContent=G.over18?(G.own?'The athlete\'s own consent is on file. Parents keep access only if that consent says so (decision 64).':(G.grace?'Grace period over: Restricted until the athlete consents.':'Renewal due: the guardian\'s consent no longer counts. The athlete has the grace period (a setting, default 30 days).')):'Under 18: the guardian\'s consent is what counts. Tests G12 to G14 cover the birthday arithmetic and this hand-over.';
 }
 $('s1GateBtns').addEventListener('click',function(e){var b=e.target.closest('.pill');if(!b||b.disabled)return;var k=b.dataset.k;
   if(k==='start'){G.started=true}
-  else if(k==='trial'){G.trial=!G.trial;if(!G.trial){G.member=false}}
+  else if(k==='trial'){G.trial=true}
   else if(k==='offer'){G.offer=1}
-  else if(k==='accept'){G.offer=2;G.member=true;if(!G.trial)G.trial=true}
+  else if(k==='accept'){G.offer=2;G.member=true}
   else if(k==='withdraw'){G.member=false}
   else if(k==='age'){G.over18=true}
   else if(k==='own'){G.own=true}
@@ -1352,10 +1358,10 @@ var S1TESTS=[
  ['R9','R','A person with two roles gets the combined rights','DB'],
  ['R10','R','An invitation is single-use, expires, is stored hashed, and a wrong email is refused','DB'],
  ['R11','R','The permission map cannot be edited from the app','DB'],
- ['G1','G','A level A enquiry (link not yet clicked) is invisible to every club role, Manager included; only the link-sending function sees it','DB'],
- ['G2','G','After the email link, the ten enquiry fields become visible by role; fields the club switched off are not shown; required ones are enforced','DB'],
+ ['G1','G','At level 1 only the enquiry fields are accepted; an ID number, nationality or residency is refused, even for a Manager and even with the service key','DB'],
+ ['G2','G','Before the link is clicked the prospect shows "email not confirmed" and the only message allowed is the confirmation link; clicking it records the trial consent. Fields the club switched off are not stored; required ones are enforced','DB'],
  ['G3','G','ID number, nationality and residency are refused until a place is offered, accepted by a guardian, and the membership consent is on file','DB'],
- ['G4','G','Level C opens at acceptance with no payment recorded','DB'],
+ ['G4','G','Level 2 opens at acceptance with no payment recorded','DB'],
  ['G5','G','Consent is written only by the function that checks a one-time link; direct insert, update or delete is refused for every role','DB'],
  ['G6','G','A link works once, not after expiry, is stored hashed, and Club B\'s link does nothing in Club A','DB'],
  ['G7','G','A guardian cannot confirm using the child\'s own email address','DB'],
@@ -1384,9 +1390,9 @@ var S1TESTS=[
  ['D4','D','The erasure ledger lists what was deleted, what was kept, and when anything kept is purged','DB'],
  ['D5','D','A guardian cannot be erased while still the only guardian of a child on file','DB'],
  ['D6','D','Deleting one family leaves another family untouched','DB'],
- ['D7','D','Unconfirmed enquiries are deleted after the set days (default 7); prospects who never converted after the club\'s set time (default 90 days); accepted ones never','DB'],
+ ['D7','D','Prospects who never converted are deleted after the club\'s set time (default 90 days); accepted ones never','DB'],
  ['D8','D','Only the family or the athlete can start a deletion; completion is by the scheduled job','DB'],
- ['B1','B','Parent journey: full enquiry form, test inbox shows the email, link clicked, the club now sees the prospect','Browser'],
+ ['B1','B','Parent journey: full enquiry form, the club sees the prospect marked "email not confirmed", test inbox shows the email, link clicked, the mark clears','Browser'],
  ['B2','B','Manager makes an offer; parent accepts and consents; the private details form opens','Browser'],
  ['B3','B','Parent withdraws consent; the form closes','Browser'],
  ['B4','B','A Club A parent opening a Club B address, even a copied one, gets "not found"','Browser'],
@@ -1409,9 +1415,21 @@ $('s1TestGroups').addEventListener('click',function(e){var b=e.target.closest('.
 $('s1Cast').innerHTML='<thead><tr><th>Person (invented)</th><th>Why they exist</th></tr></thead><tbody>'+[['Mona, Manager, Alpha','Settings, roles, offers'],['Adam, Admin, Alpha','Registrar rights without Manager rights'],['Carlos, Coach, Alpha','Proves coaches see no children yet'],['Priya, Parent, Alpha','Two children: own children only; sibling case'],['Pedro, Parent, Alpha','Must never see Priya\'s children'],['Aya, Athlete, 17','Own record only'],['Ali, Athlete, turns 18 tomorrow','Consent hand-over'],['Lina, child, 11','Under-13: no login'],['Leap, child born 29 February','Age arithmetic'],['Twin A and Twin B','Two children, one family'],['Brenda, Manager, Beta','Cross-club attacks'],['Platform owner','No default access']].map(function(r){return '<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+'</tbody>';
 $('s1Pieces').innerHTML='<tbody>'+[['1a','Clubs, accounts, roles, invitations, the four helper functions, audit, the seed','W1-W9, R1-R3, R9-R11, A1-A5'],['1b','People, athletes, contacts, relationships','R4-R8'],['1c','Settings engine and club creation','S1-S6'],['1d','Consent, links, offers, the three-level gate, the age hand-over','G1-G15'],['1e','Deletion and the 90-day prospect clean-up','D1-D8'],['1f','The thin screens and the browser tests','B1-B8, M1-M4']].map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td>'+esc(r[1])+'</td><td class="note">'+esc(r[2])+'</td></tr>'}).join('')+'</tbody>';
 $('s1Out').innerHTML=['Documents, photos, forms, the rules engine: step 2 (the gated private-details table proves the gate now)','Status timeline, messages, tasks, real email and WhatsApp: step 2 (step 1 uses a test inbox)','Groups, sessions, scheduling: step 3 (coaches see no children until then)','Ledger, fees, payments, the prospect pipeline and trials: step 4 (the gate needs no payment)','Support access windows: after the pilot','Club-specific terms text and forms: step 2','Real clubs, real children, real email: not in this build'].map(function(x){return '<li>'+esc(x)+'</li>'}).join('');
-$('s1Props').innerHTML=[['P1','A coach sees no child in step 1, only their own staff record, until step 3 attaches them to a group.','Accepted','a'],['P2','REVISED. The form asks the questions clubs already ask, in one go: guardian name, phone, WhatsApp, email, home address; child first and last name, birth date, position, previous club. A club chooses which optional ones it asks. Until the emailed link is clicked the enquiry sits in quarantine, invisible to the club and deleted after 7 days. The alternative: a short first form, then "tell us more" after the link, which asks the parent twice.','Open: your yes','w'],['P3','Age of consent: a club can raise it, only the platform owner can lower it. Default 18.','Accepted','a'],['P4','Only the family or the athlete starts a deletion. A scheduled job completes it; the Manager cannot erase a family alone.','Accepted','a'],['P5','A guardian cannot be erased while the only guardian of a child still on file. (A guardian and a child are two separate records joined by a link; a child under 13 has no login at all.)','Accepted','a'],['P6','Support windows wait until after the pilot. This means: when the platform owner needs to look at a club\'s data, the club itself clicks "allow support for up to 7 days", read-only, and it expires by itself. Not built in step 1; while testing, the builder looks at the invented data in the Supabase dashboard (the database\'s own admin website).','Explained: your yes','w'],['P7','Real email waits for step 2. Step 1 shows emails in a test inbox.','Accepted','a']].map(function(p,i){return '<li class="'+(p[3]==='a'?'done':'')+'"><label><input type="checkbox" data-i="'+i+'"'+(p[3]==='a'?' checked':'')+'><span><b>'+p[0]+'</b> <span class="tag '+p[3]+'">'+p[2]+'</span> '+esc(p[1])+'</span></label></li>'}).join('');
+$('s1Props').innerHTML=[['P1','A coach sees no child in step 1, only their own staff record, until step 3 attaches them to a group.','Accepted','a'],['P2','The form asks the questions clubs already ask in one go: guardian name, phone, WhatsApp, email, home address; child first and last name, birth date, position, previous club. A club chooses which optional ones it asks. Identity papers, photo and medical stay locked until a place is offered and accepted. (No quarantine needed.)','Accepted','a'],['P3','Age of consent: a club can raise it, only the platform owner can lower it. Default 18.','Accepted','a'],['P4','Only the family or the athlete starts a deletion. A scheduled job completes it; the Manager cannot erase a family alone.','Accepted','a'],['P5','A guardian cannot be erased while the only guardian of a child still on file. (A guardian and a child are two separate records joined by a link; a child under 13 has no login at all.)','Accepted','a'],['P6','Support windows wait until after the pilot. The club itself opens one and chooses how long, 5 minutes to 7 days (see the picker above).','Accepted','a'],['P7','Real email waits for step 2. Step 1 shows emails in a test inbox.','Accepted','a']].map(function(p,i){return '<li class="'+(p[3]==='a'?'done':'')+'"><label><input type="checkbox" data-i="'+i+'"'+(p[3]==='a'?' checked':'')+'><span><b>'+p[0]+'</b> <span class="tag '+p[3]+'">'+p[2]+'</span> '+esc(p[1])+'</span></label></li>'}).join('');
 $('s1Props').addEventListener('change',function(e){var li=e.target.closest('li');if(li)li.classList.toggle('done',e.target.checked)});
 drawS1Tables();drawS1Mx();drawS1Acts();drawS1Gate();drawS1Tests();
+var SWM=[5,10,15,30,45],SWH=[1,2,4,8,12,24,48,72,168],swSel=['m',15];
+function drawSw(){
+  $('s1SwMin').innerHTML='<span class="tag">Minutes</span>'+SWM.map(function(m){return '<button class="pill" data-u="m" data-v="'+m+'" aria-pressed="'+(swSel[0]==='m'&&swSel[1]===m)+'">'+m+' min</button>'}).join('');
+  $('s1SwHr').innerHTML='<span class="tag">Hours</span>'+SWH.map(function(h){return '<button class="pill" data-u="h" data-v="'+h+'" aria-pressed="'+(swSel[0]==='h'&&swSel[1]===h)+'">'+(h===168?'168 h (7 days)':h+' h')+'</button>'}).join('');
+  var mins=swSel[0]==='m'?swSel[1]:swSel[1]*60,end=new Date(Date.UTC(2026,9,1,9,0)+mins*60000);
+  var pad=function(n){return (n<10?'0':'')+n};
+  $('s1SwOut').textContent='Window opens 1 Oct 09:00 and closes by itself on '+end.getUTCDate()+' Oct '+pad(end.getUTCHours())+':'+pad(end.getUTCMinutes())+' ('+(mins<60?mins+' minutes':(mins<1440?(mins/60)+' hours':(mins/1440)+' days'))+'). Read-only. The club can close it earlier. Every use is audited. Limits (5 minutes to 7 days) are platform settings.';
+}
+function swClick(e){var b=e.target.closest('.pill');if(b){swSel=[b.dataset.u,+b.dataset.v];drawSw()}}
+$('s1SwMin').addEventListener('click',swClick);$('s1SwHr').addEventListener('click',swClick);
+drawSw();
+
 </script>
 
 </body></html>

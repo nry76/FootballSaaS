@@ -16,7 +16,7 @@ Enquiry, Trial booked, Trial done, Offer made, Accepted (registration can start)
 
 ## Ten decisions that shape everything
 1. One database for all clubs; each club walled off.
-2. Under 18: a parent confirms by email before more than seven basic details are held; documents only after the club offers a place and the parent accepts.
+2. Under 18: the parent gives the club's short enquiry form (ten fields, including address and previous club); identity papers, photo and medical only after the club offers a place and the parent accepts.
 3. Registration rules follow UAE FA's own table (6 categories x 3 player types), kept as data so they can change each season.
 4. Medical form: the clinic fills it; we store one signed upload; we never read the medical content.
 5. FA-Net passwords are never held by us. Recording FA-Net outcomes in our software is allowed (your answer); assisted upload waits for UAE FA's permission.
