@@ -87,6 +87,11 @@
 | 91 | **The Licensing Regulations are not needed** (the owner checked) | Supersedes 86 |
 | 92 | The medical form (PCMA) supplied is the **extensive senior form** (24 pages, cardiology, orthopaedic, labs, club doctor). The **youth form is still missing** | See reference/PCMA_FORM_2026_27.md |
 | 93 | **Wallet ticket: both iPhone and Android**, if built. Timing to decide later. The photo helper stays in the plan at lower priority | |
+| 94 | **Medical form: the clinic fills it; the platform does not.** One upload of the **entire signed copy** at once, by the parent or straight from the clinic. No filling, splitting or veracity checks (it is sensitive). Only basic file checks and a person confirming it arrived. Stored restricted | **Replaces** the proposal on medical metadata. The 7-day abnormal-result notice is the club doctor's duty; the platform may offer an optional reminder |
+| 95 | **UAE FA ID number is an optional field.** It is not published, and the first-time process is unknown | |
+| 96 | **Who submits in FA-Net:** each coach submits the list of their own players; some clubs hire an admin to do registration. So "FA-Net submitter" is a permission with a **scope** (the coach's own teams, or the whole club) | Refines 28 and 49 |
+| 97 | **The club keeps a roster of FA-Net users and authorised signatories** (name, role, signed acknowledgement, specimen signature, training, dates); the platform reminds the club to notify UAE FA of changes and removes access on the end date | From the two FA-Net undertakings |
+| 98 | **FA-Net information is confidential and passwords are never shared.** We never hold FA-Net credentials. We record from FA-Net only the minimum (submitted, date, optional reference). **Assisted upload and any reading of FA-Net screens need UAE FA's permission first** | Refines 51. See reference/FANET_UNDERTAKINGS.md |
 | 35 | Instagram is used to **capture** leads (link, QR, click-to-WhatsApp) at first; a two-way inbox comes later | Instagram does not allow cold DMs |
 | 25 | Age groups are defined by **birth years** (name = season end year minus birth year; may span two years; custom groups like "2nd Team" allowed) | From Fursan's calendar |
 | 26 | A session can serve several age groups; a player may be in several age groups and several tournaments, with one registration per tournament per season | |
@@ -121,4 +126,4 @@ Payment gateway, video, WhatsApp/SMS, ID-verification vendor, FANet.ae automatio
 * Terms and Privacy Policy wording (kept vs deleted, backups, parental responsibility)
 
 ## Proposed, awaiting the owner's OK
-* **Medical forms:** store the signed PDF in a restricted file store and keep only metadata (season, signatures present, eligibility tick, abnormal-result flag with the 7-day notice). No clinical content (ECG, echo, labs, history) in the database. See reference/PCMA_FORM_2026_27.md.
+* None at the moment.

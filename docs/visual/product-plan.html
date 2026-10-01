@@ -147,7 +147,7 @@ footer{font-size:13px;color:var(--muted)}
 
 <div class="wrap">
   <header style="display:flex;flex-direction:column;gap:10px">
-    <span class="eyebrow">FootballSaaS · pilot plan v1.0 · sample data throughout</span>
+    <span class="eyebrow">FootballSaaS · pilot plan v1.1 · sample data throughout</span>
     <h1>The plan, as pictures you can click</h1>
     <p class="lede">Seven tabs: the parent's journey, the foundation everything stands on, the weekly calendar (drag things around), registration by player category, leads and coach updates, everything that is a setting, and what is decided or still open. The names and numbers are made up. The calendar and document rules come from Fursan's 2026/27 files.</p>
     <span class="status">Plan only · nothing approved · no product code written</span>
@@ -289,6 +289,21 @@ footer{font-size:13px;color:var(--muted)}
       </div>
     </div>
     <div class="card">
+      <h2>Who submits in FA-Net, and what the undertakings say</h2>
+      <p class="note">Each coach submits the list of their own players. Some clubs hire an admin to do the registration. So "FA-Net submitter" is a permission with a scope.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Person</th><th>Can do</th><th>Scope</th></tr></thead>
+        <tbody>
+          <tr><td>Coach with the permission</td><td>Prepare and submit the list for their own players</td><td>Their own teams</td></tr>
+          <tr><td>Hired admin</td><td>Collect documents, review, submit</td><td>Whole club</td></tr>
+          <tr><td>Authorised signatory</td><td>Signs club forms; name and specimen signature known to UAE FA</td><td>Named people only</td></tr>
+        </tbody></table></div>
+      <div class="cols">
+        <div class="msg"><b>The club keeps a roster</b> of FA-Net users and signatories: name, role, signed acknowledgement, specimen signature, training, start and end dates. The system reminds the club to tell UAE FA about any change, and removes access when someone leaves.</div>
+        <div class="msg w"><b>From the undertakings:</b> FA-Net information is strictly confidential and must not go to third parties, and passwords are never shared. So we never hold FA-Net passwords, we record from FA-Net only the minimum (sent, date, optional reference), and anything that reads FA-Net screens or fills them in waits for UAE FA's permission.</div>
+      </div>
+    </div>
+    <div class="card">
       <h2>Two layers of rules: the federation and the club</h2>
       <p class="note">Four clubs, four different lists for the same federation. Some lines are UAE FA's; others are the club's own add-ons. We keep them apart, so clubs can switch add-ons on or off.</p>
       <div class="scroll"><table>
@@ -317,23 +332,16 @@ footer{font-size:13px;color:var(--muted)}
       <div id="stList" style="display:flex;flex-direction:column;gap:6px"></div>
     </div>
     <div class="card">
-      <h2>The medical form (PCMA) is signed by several people</h2>
-      <p class="note">The form you sent is the extensive senior version: 24 pages. Clinicians fill it in, not parents. The circular calls it Form (1) (first team down to U17). The youth form (U16 and below) has not arrived yet.</p>
-      <div class="scroll"><table>
-        <thead><tr><th>Part</th><th>Signed by</th><th>The system checks</th></tr></thead>
-        <tbody>
-          <tr><td>Player declaration and history</td><td>Player or guardian</td><td>Signed and dated, season 2026/2027</td></tr>
-          <tr><td>Cardiac assessment (history, ECG, echo)</td><td>Examining cardiologist, with institution stamp</td><td>Present, stamped, signed, cardiac eligibility ticked</td></tr>
-          <tr><td>Orthopaedic and general examination, blood results</td><td>Examining physician</td><td>Present and complete</td></tr>
-          <tr><td>Infectious disease and vitamin D results</td><td>Laboratory (attached)</td><td>Attachments present (U17 is exempt)</td></tr>
-          <tr><td>Final sign-off</td><td>Club doctor, plus club stamp</td><td>Eligible box ticked, stamped, no erasures, in colour</td></tr>
-        </tbody></table></div>
+      <h2>The medical form (PCMA): the clinic's job, one upload</h2>
+      <p class="note">The extensive senior form is 24 pages and several clinicians sign it: the player, a cardiologist, an examining physician, the labs, and the club doctor with the club stamp. The system does not fill it in, split it, or judge it. The youth form (U16 and below) has not arrived yet.</p>
+      <div class="pipe"><span class="s">Clinic completes and signs</span><span class="note">&rarr;</span><span class="s">Parent (or the clinic by link) uploads the whole signed copy</span><span class="note">&rarr;</span><span class="s">A person confirms it arrived</span><span class="note">&rarr;</span><span class="s on">Stored privately</span></div>
       <div class="cols">
-        <div class="msg"><b>What we keep:</b> the signed file in a restricted store, and only a few facts: season, which parts are signed, attachments present, eligible or not recommended, and whether the 7-day notice to UAE FA is due.</div>
-        <div class="msg w"><b>What we do not keep:</b> the heart scans, blood results and medical history themselves. They are the most sensitive data the platform could hold. Proposed, waiting for your OK.</div>
+        <div class="msg"><b>We check:</b> it is a readable PDF, in colour, for the right season. A person confirms it looks like the whole form.</div>
+        <div class="msg w"><b>We do not:</b> read the medical content, check whether it is true, or copy any result into the database. The UAE FA ID number field is optional.</div>
       </div>
     </div>
     <div class="card">
+      <h2>Photo helper</h2><div class="card">
       <h2>Photo helper</h2>
       <p class="note">UAE FA photo: recent, <b>4 x 6 cm</b>, white background, club sports uniform, head uncovered, head and shoulders only, colour and clear. Try one of your own photos. It is processed in your browser and goes nowhere.</p>
       <div class="cols">
@@ -808,7 +816,7 @@ drawTrk();
 
 /* ---------- FANet flow + filename ---------- */
 (function(){
-  var steps=['Parent uploads','Instant checks + AI screening','Reviewer approves','Download zip, files named','Reviewer submits in FANet','Marks "Sent to FANet"','Parent is told'];
+  var steps=['Parent uploads','Instant checks + AI screening','Reviewer approves','Download zip, files named','Submitter (coach or admin) submits in FANet','Marks "Sent to FANet"','Parent is told'];
   $('fanetFlow').innerHTML=steps.map(function(t,i){return '<span class="s'+(i>=4?' on':'')+'">'+t+'</span>'+(i<steps.length-1?'<span class="note">&rarr;</span>':'')}).join('');
   function fn(){
     var n=($('fnName').value||'Player').trim().replace(/\s+/g,'');
@@ -949,7 +957,7 @@ var SET=[
  ['Prospects',[['Default owner rule','by age group / source / round robin'],['Transfer','one or bulk'],['Stage names','rename'],['Prospect sources and landing pages','Instagram, WhatsApp, website, referral, walk-in'],['Reply-time target','15 min'],['Playbook timings','editable'],['Auto-lost after','30 days']]],
  ['Messages',[['Channels on','email, WhatsApp'],['Quiet hours (marketing)','9 pm - 7 am'],['Templates and wording','editable'],['Sender names','club name']]],
  ['Coach alerts',[['Channel per coach','app / email / WhatsApp'],['Instant or digest','digest 4 pm'],['Call tasks per week','max 3'],['What WhatsApp shows','first name, class, paid']]],
- ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['Terms per season','3 (Term 1, Terms 1+2, year)'],['Photo rule','4 x 6 cm, white background, club kit (UAE FA)'],['Photo helper','built-in crop and checks; outside links off by default'],['Rule set','UAE FA 2026/27: category x type x document'],['FA-Net user and signatory','named people']]],
+ ['Registration',[['Tournaments played','UAE National League, DOFA, YFL'],['Document rules','per tournament + category'],['Lead time','28 days'],['Reminder every','2 days'],['File naming','PlayerName-Document_Season2026-27'],['Who reviews documents','Admin (or a coach)'],['Submit to FANet','reviewer does it; we prepare the pack'],['Assigned clinic','name + email'],['Club forms','season-versioned templates'],['Terms per season','3 (Term 1, Terms 1+2, year)'],['Photo rule','4 x 6 cm, white background, club kit (UAE FA)'],['Photo helper','built-in crop and checks; outside links off by default'],['Rule set','UAE FA 2026/27: category x type x document'],['FA-Net users and signatories','roster: training, specimen signature, dates'],['Who submits','coach (own players) or admin (whole club)']]],
  ['Privacy',[['Age of consent for data','18'],['Minimum age for own login','13'],['Deletion undo window','7 days'],['Financial records kept','1 year'],['Consent wording versions','tracked']]]
 ];
 var PER=['Free trials allowed','Price','Bundles, e.g. 5-class pass','Cancellation cut-off','Fee amounts (recorded by staff)','Default owner rule','Capacity and waiting list','Default session length','Default venue per group','More trials'];
@@ -957,15 +965,13 @@ $('sgrid').innerHTML=SET.map(function(g){return '<div class="card"><h3>'+g[0]+'<
 
 /* ---------- decisions ---------- */
 var QS=[
- 'Who logs into FA-Net and submits at a club, and who is the authorised signatory? Proposed: a "FA-Net submitter" permission any staff member can hold, plus a recorded authorised signatory.',
- 'Medical forms: OK to store the signed PDF and only a few facts, never the clinical content? And please share the youth form (circular\'s Form 2, U16 and below).',
  'Which UAE FA teams does a typical academy field? It drives the "club lacks the team" rules.',
  'Programme types (for example Academy and Squad): do fees differ?',
  'Which club-specific forms exist besides terms and conditions? Please share blanks.',
+ 'Please share the youth medical form (the circular\'s Form 2, U16 and below).',
  'Medical company: how does the club check today that a professional is pre-registered?',
  'What does FANet show when it rejects an application? Someone with FANet access needs to look.',
- 'Ask UAE FA (not DOFA): can playing in a DOFA or YFL team ever count against UAE FA\'s A and B crossing rule? That fine is AED 10,000.',
- 'Order of steps for a new player: the medical form asks for a UAE FA ID number. When does a first-time registrant get one?'
+ 'Questions for UAE FA itself: (a) can playing in DOFA or YFL count against its A and B crossing rule; (b) may a club record FA-Net outcomes in its own software, given the undertaking; (c) is any assisted upload acceptable?'
 ];
 var doneQ={}; try{doneQ=JSON.parse(localStorage.getItem('fsq')||'{}')}catch(e){}
 function drawQs(){
@@ -973,7 +979,7 @@ function drawQs(){
 }
 $('qs').addEventListener('change',function(e){var i=e.target.dataset.i;doneQ[i]=e.target.checked;try{localStorage.setItem('fsq',JSON.stringify(doneQ))}catch(x){}drawQs()});
 drawQs();
-var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = first term paid: Term 1, Terms 1+2, or the full year','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Product name: Sportal for now','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
+var DEC=['Multi-tenant SaaS, one org type: Club','One account per club','Manager and Admin are separate permission levels; a person can hold several roles','Under 13: no login. 13-17: own login after parental consent. 18+: fresh consent from the athlete; parents keep access','The word is "prospect". Stages: Enquiry, Trial booked, Trial done, Offer made, Accepted, Confirmed','Prospects give 7 fields. Documents only after the club offers a place and the parent accepts. No fee needed first','Confirmed = first term paid: Term 1, Terms 1+2, or the full year','Two-step consent: trial, then membership and registration (clinic and UAE FA sharing listed)','Currency is a setting, default AED; built for clubs worldwide','English only; Arabic only in a few optional name fields','Hosted in Frankfurt; PWA only; no app stores','Pilot = prospect management + FANet registration + scheduling + status and WhatsApp / email. Payments and Zoho Books later','Coach and staff registration are in the pilot','Reviewer: admin and/or coach, a setting. Nobody retypes documents from WhatsApp','AI screens and a person decides; photos checked without AI first','Trials count attendance (no-shows free when attendance is taken); wallet ticket planned','Coaches and venues by period; group default venue with overrides','UAE FA teams are by birth year. Registering and playing are separate rules; A and B team players cannot cross','Rules follow UAE FA\'s own structure (6 categories x player type); the 5-year proof is a route; club add-ons sit on top; forms versioned by season','UAE FA first, because its penalties are severe. DOFA and YFL are light and come later. A child may hold registrations in several competitions (rare)','A and B are two teams in an age group: big clubs enter both at UAE FA; small clubs enter A at UAE FA and B at DOFA or YFL. Each team has its own competition entry','Photo: 4 x 6 cm, white background, club kit; a built-in helper runs in the browser','Medical form (PCMA): Form 1 up to U17, Form 2 below','Product name: Sportal for now','The medical form is the clinic\'s job: one upload of the whole signed copy by the parent or the clinic; no content checks; UAE FA ID number optional','FA-Net submitter is a permission with a scope: a coach for their own players, or an admin for the club; the club keeps a roster of users and signatories','FA-Net information is confidential and passwords are never shared: we never hold FA-Net credentials, and assisted upload needs UAE FA\'s permission','Passport Holder = holds a UAE passport but lacks the Family Book, so fewer privileges than a native national','Wallet ticket for both iPhone and Android, timing later; photo helper kept at lower priority','Weekend matches and fixture import: later','Deletion: everything removed except financial records, kept 1 year; prospects deleted after a club-set time','Match day (later): official and reserve kits chosen 48 hours ahead; season-long numbers; list open 24 hours to 90 minutes before kick-off','Medical staff come via a contracted company and must be pre-registered','Ads: track only. Sources: Instagram, WhatsApp, website, referral, walk-in','No leaderboards or ranking of children','Pilot first with sample data, then approach clubs','No KPIs or service promises yet','Multi-sport-ready underneath: an athlete, shown with the sport\'s own word','Campaigns only to people who contacted the club and opted in','Assisted upload into FANet: later, and only if UAE FA allows it'];
 $('dec').innerHTML=DEC.map(function(d){return '<div><b>&#10003;</b><span>'+esc(d)+'</span></div>'}).join('');
 </script>
 

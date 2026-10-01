@@ -13,9 +13,9 @@ Hand summary of the blank form supplied by the owner (24 pages, fillable). **Str
 
 Rules on the form: **any erasure or amendment makes it invalid.** The circular adds: complete, in **colour**, valid 1 June 2026 to season end, abnormal results reported to UAE FA's Sports Medicine Committee within **7 days** on the Medical Notification Form.
 
-## What this means for the system
-* The form is a **multi-part, multi-signer document with attachments**, filled in by clinicians, not by parents. It fits the "forms and signatures" foundation block, with outside signers (outside contacts).
-* **Clinical content stays out of our database.** Proposal: store the signed PDF in a restricted file store (medical-access only) and keep only **metadata**: season, date, which parts are signed and stamped, attachments present, the eligibility tick, and whether an abnormal result needs the 7-day notice. Reason: heart scans, blood tests and infectious-disease results about children are the most sensitive data the platform could hold.
-* **Automatic checks** are about completeness, not medicine: every part present, signatures and stamps present, season correct, colour copy, attachments present, no visible erasures, eligibility box ticked.
-* **A "play not recommended" or abnormal result** creates a task for the club doctor and a 7-day countdown for the notice to UAE FA.
-* The form asks for the player's **UAE FA ID number**. A first-time registrant may not have one yet; the order of steps needs checking.
+## What this means for the system (decided by the owner)
+* **The clinic fills the form. The platform does not fill, split, or check it.** The parent (or the clinic directly, through a one-time link) uploads the **entire signed copy at once**.
+* **No checks on whether it is true or medically sound.** It is sensitive information. The system does only basic file checks (readable, PDF, colour) and a person confirms the file arrived.
+* Stored in a **restricted file store** with medical-level access (parent, Manager and Admin with medical permission).
+* The form asks for the **UAE FA ID number**, which is not published and whose first-time process is unknown. The field is **optional**.
+* The 7-day abnormal-result notice to UAE FA is the club doctor's duty. The platform may offer an optional reminder task.
